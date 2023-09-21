@@ -1,14 +1,28 @@
 import React, { useState } from 'react';
+import axios from 'axios'; // Importa Axios
 
 function CrearPartidaForm() {
-  // Estado para almacenar el nombre de la partida
   const [nombrePartida, setNombrePartida] = useState('');
+  const [mensajeRespuesta, setMensajeRespuesta] = useState('');
 
-  // Función para manejar el envío del formulario
-  const handleCrearPartida = (e) => {
+  const handleCrearPartida = async (e) => {
     e.preventDefault();
-    // Aca debería enviar el nombre de la partida y de jugador al backend.
-    console.log('Nombre de la partida:', nombrePartida);
+
+    try {
+      // Enviar los datos al backend
+      const respuesta = await axios.post('URL_DEL_BACKEND', {
+        nombrePartida: nombrePartida,
+        // Otros datos relacionados con la partida, si es necesario
+      });
+
+      // Manejar la respuesta del backend
+      setMensajeRespuesta(respuesta.data);
+      
+    } catch (error) {
+      // Manejar errores, por ejemplo, mostrar un mensaje de error al usuario
+      console.error('Error al crear la partida:', error);
+      setMensajeRespuesta('Error al crear la partida');
+    }
   };
 
   return (
@@ -28,6 +42,7 @@ function CrearPartidaForm() {
         </div>
         <button type="submit" className="btn btn-primary">Crear Partida</button>
       </form>
+      {mensajeRespuesta && <p className="mt-3">{mensajeRespuesta}</p>}
     </div>
   );
 }
