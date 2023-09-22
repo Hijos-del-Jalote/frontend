@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Importa Axios
 
-function CrearPartidaForm() {
+function CrearPartida() {
   const [nombrePartida, setNombrePartida] = useState('');
   const [mensajeRespuesta, setMensajeRespuesta] = useState('');
 
@@ -47,4 +47,4 @@ function CrearPartidaForm() {
   );
 }
 
-export default CrearPartidaForm;
+export default CrearPartida;
