@@ -20,7 +20,6 @@ function CrearPartida() {
       
     } catch (error) {
       // Manejar errores, por ejemplo, mostrar un mensaje de error al usuario
-      console.error('Error al crear la partida:', error);
       setMensajeRespuesta('Error al crear la partida');
     }
   };
