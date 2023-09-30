@@ -4,6 +4,7 @@ import Navbar from "./components/NavBar";
 import UnirseAPartida from "./components/UnirseAPartida";
 import CrearJugador from "./components/CrearJugador";
 import IniciarPartida from "./components/IniciarPartida";
+import Partida from "./components/Partida2";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="unir" element={<UnirseAPartida />} />
       </Route>
       <Route path="/lobby/" element={<IniciarPartida />} />
+      <Route path="/partida/" element={<Partida />} />
     </Routes>
   );
 }
