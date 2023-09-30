@@ -1,34 +1,37 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function UnirseAPartida() {
   const [partidas, setPartidas] = useState([]);
-  const navigate = useNavigate();
+    // Saco de la url mi idJugador
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const idJugador = queryParams.get("idJugador");
 
   useEffect(() => {
     // Hacer una solicitud GET a http://localhost:8000/partidas cuando el componente se monte
     axios
       .get("http://localhost:8000/partidas")
       .then((response) => {
-        setPartidas(response.data.partidas);
+        setPartidas(response.data);
       })
       .catch((error) => {
         console.error("Error al obtener las partidas:", error);
       });
+
+      
   }, []);
 
   const handleUnirseAPartida = async (partidaId) => {
     try {
       // Realizar una solicitud POST para unirse a la partida
-      const response = await axios.post("http://localhost:8000/partidas/unir", {
-        idPartida: partidaId,
-        // Otros datos necesarios para la solicitud POST
-      });
+      const url= `http://localhost:8000/partidas/unir?idPartida=${partidaId}&idJugador=${idJugador}`;
+      const response = await axios.post(url);
 
       if (response.status === 200) {
         // Redirigir al lobby si la respuesta es exitosa
-        navigate(`/lobby/${partidaId}`);
+        console.log('Jugador unido con exito')
       } else {
         // Manejar el caso en que la respuesta no sea 200 (por ejemplo, mostrar un mensaje de error)
       }
@@ -49,10 +52,10 @@ function UnirseAPartida() {
                   <strong>{partida.nombre}</strong>
                 </h4>
                 <div className="row align-items-center">
-                  <strong>Max Jugadores: {partida.maxJugadores}</strong>
+                  <strong>Max Jugadores: {partida.maxJug}</strong>
                 </div>
                 <div className="row align-items-center">
-                  <strong>Min Jugadores: {partida.minJugadores}</strong>
+                  <strong>Min Jugadores: {partida.minJug}</strong>
                 </div>
                 <button
                   onClick={() => handleUnirseAPartida(partida.id)}
