@@ -2,6 +2,7 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios'; 
 import CrearPartida from './CrearPartida';
+import { MemoryRouter } from 'react-router-dom';
 
 // Mockear la función de axios.post para simular una respuesta exitosa
 jest.mock('axios');
@@ -9,9 +10,9 @@ jest.mock('axios');
 describe('CrearPartida', () => {
   it('debe manejar la creación de partida con éxito', async () => {
     // Configura el mock de axios para devolver una respuesta exitosa
-    axios.post.mockResolvedValue({ data: 'Partida creada con éxito' });
+    axios.post.mockResolvedValue({ status: 201 });
 
-    const { getByText, getByTestId } = render(<CrearPartida />);
+    const { getByText, getByTestId } = render(<MemoryRouter><CrearPartida /></MemoryRouter>);
 
     // Simula la entrada de un nombre de partida
     const nombrePartidaInput = getByTestId('nombrePartida');
@@ -23,7 +24,7 @@ describe('CrearPartida', () => {
 
     // Espera a que la respuesta del backend se refleje en la interfaz
     await waitFor(() => {
-      const mensajeRespuesta = getByText('Partida creada con éxito');
+      const mensajeRespuesta = getByText('Partida creada exitosamente, redirigiendo al lobby...');
       expect(mensajeRespuesta).toBeInTheDocument();
     });
   });
@@ -34,7 +35,7 @@ describe('CrearPartida', () => {
       // Configura el mock de axios para simular un error
       axios.post.mockRejectedValue(new Error('Error al crear la partida'));
   
-      const { getByText, getByLabelText } = render(<CrearPartida />);
+      const { getByText, getByLabelText } = render(<MemoryRouter><CrearPartida /></MemoryRouter>);
   
       // Simula la entrada de un nombre de partida
       const nombrePartidaInput = getByLabelText('Nombre de la partida:');

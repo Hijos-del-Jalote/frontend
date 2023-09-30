@@ -20,9 +20,8 @@ function CrearJugador() {
       if (response.status === 201) {
         setMensajeRespuesta("Jugador creado exitosamente, redirigiendo al inicio ...");
         setNombreJugador("");
-
         setTimeout(() => {
-            navigate('/home/crear');
+          navigate(`/home/crear?idJugador=${response.data.id}`);
         }, 2000)
       } else {
         setMensajeRespuesta("Error al crear el jugador");
