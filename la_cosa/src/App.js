@@ -1,8 +1,10 @@
+
 import { Route, Routes } from "react-router-dom";
 import CrearPartida from "./components/CrearPartida";
 import Navbar from "./components/NavBar";
 import UnirseAPartida from "./components/UnirseAPartida";
 import CrearJugador from "./components/CrearJugador";
+import IniciarPartida from "./components/IniciarPartida";
 
 function App() {
   return (
@@ -12,6 +14,7 @@ function App() {
     <Route path="crear" element={<CrearPartida />} />
     <Route path="unir" element={<UnirseAPartida />} />
   </Route>
+<Route path='/lobby/' element={<IniciarPartida/>}/>
 
     </Routes>
   );
