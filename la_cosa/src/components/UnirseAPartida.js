@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function UnirseAPartida() {
+  const navigate = useNavigate();
   const [partidas, setPartidas] = useState([]);
     // Saco de la url mi idJugador
     const location = useLocation();
@@ -32,6 +33,9 @@ function UnirseAPartida() {
       if (response.status === 200) {
         // Redirigir al lobby si la respuesta es exitosa
         console.log('Jugador unido con exito')
+        setTimeout(() => {
+          navigate(`/lobby?idJugador=${idJugador}&idPartida=${partidaId}`);
+        }, 2000)
       } else {
         // Manejar el caso en que la respuesta no sea 200 (por ejemplo, mostrar un mensaje de error)
       }

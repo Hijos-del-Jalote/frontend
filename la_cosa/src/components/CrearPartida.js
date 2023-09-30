@@ -1,26 +1,32 @@
 import React, { useState } from "react";
 import axios from "axios"; // Importa Axios
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function CrearPartida() {
+  const navigate = useNavigate();
   const [nombrePartida, setNombrePartida] = useState("");
   const [mensajeRespuesta, setMensajeRespuesta] = useState("");
   // Saco de la url mi idJugador
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const idJugador = queryParams.get("idJugador") || 'Undefined';
+  const idJugador = queryParams.get("idJugador") || null;
 
   const handleCrearPartida = async (e) => {
     e.preventDefault();
+    
 
     try {
       // Enviar los datos al backend
       const url =
       `http://localhost:8000/partidas?nombrePartida=${nombrePartida}&idHost=${idJugador}`;
       const respuesta = await axios.post(url);
+      console.log(respuesta.data.idPartida)
 
       if(respuesta.status === 201) {
         setMensajeRespuesta("Partida creada exitosamente, redirigiendo al lobby...");
+        setTimeout(() => {
+          navigate(`/lobby?idJugador=${idJugador}&idPartida=${respuesta.data.idPartida}`);
+        }, 2000)
       }else {
         setMensajeRespuesta("Error al crear la partida");
       }
