@@ -11,10 +11,10 @@ describe('CrearPartida', () => {
     // Configura el mock de axios para devolver una respuesta exitosa
     axios.post.mockResolvedValue({ data: 'Partida creada con éxito' });
 
-    const { getByText, getByLabelText } = render(<CrearPartida />);
+    const { getByText, getByTestId } = render(<CrearPartida />);
 
     // Simula la entrada de un nombre de partida
-    const nombrePartidaInput = getByLabelText('Nombre de la partida:');
+    const nombrePartidaInput = getByTestId('nombrePartida');
     fireEvent.change(nombrePartidaInput, { target: { value: 'Mi Partida' } });
 
     // Simula el envío del formulario
