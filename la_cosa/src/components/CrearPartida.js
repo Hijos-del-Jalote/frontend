@@ -34,6 +34,7 @@ function CrearPartida() {
             type="text"
             className="form-control"
             id="nombrePartida"
+            data-testid="nombrePartida"
             value={nombrePartida}
             onChange={(e) => setNombrePartida(e.target.value)}
             required
