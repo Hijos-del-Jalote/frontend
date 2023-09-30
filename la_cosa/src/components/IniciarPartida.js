@@ -1,33 +1,36 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useLocation, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function IniciarPartida() {
   const [searchParams] = useSearchParams();
-  const [jugadores, setJugadores] = useState([
-    { nombre: "nombre1" },
-    { nombre: "nombre2" },
-    { nombre: "nombre3" },
-    { nombre: "nombre4" },
-  ]);
-
+  const [jugadores, setJugadores] = useState([]);
+  const navigate = useNavigate();
+  const [isDisabled, setIsDisabled]= useState(true)
   const idPartida = searchParams.get("idPartida");
   const idJugador = searchParams.get("idJugador");
-  
+
   useEffect(() => {
-    console.log(id);
     axios
-      .get(`http://localhost:8000/jugador?idPArtida=${idPartida}`)
+      .get(`http://localhost:8000/jugador?idPartida=${idPartida}`)
       .then((data) => setJugadores(data))
       .catch((error) => console.log(error));
   }, []);
-
+  useEffect(()=>{
+    if(jugadores?.length < 4 || jugadores?.length > 12){
+      setIsDisabled(true)
+    }else{
+      setIsDisabled(false)
+    }
+  },[jugadores])
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (jugadores >= 4 && jugadores <= 12) {
+    if (jugadores.length >= 4 && jugadores.length <= 12) {
       axios
         .put(`http://localhost:8000/partidas/iniciar?idPartida=${idPartida}`)
-        .then((data) => console.log(data))
+        .then((data) =>
+          navigate(`/partida/idJugador=${idJugador}&idPartida=${idPartida}`)
+        )
         .catch((error) => console.log(error));
     }
   };
@@ -35,14 +38,14 @@ export default function IniciarPartida() {
   return (
     <>
       <ul>
-        {jugadores?.length &&
+        {jugadores?.length ?
           jugadores.map((jugador, index) => {
             return <li key={index}>{jugador.nombre}</li>;
-          })}
+          }):null}
       </ul>
       <button
-        disabled={jugadores?.length < 4 && jugadores?.length > 12}
-        onClick={() => handleSubmit}
+        disabled={isDisabled}
+        onClick={handleSubmit}
       >
         Iniciar Partida
       </button>
