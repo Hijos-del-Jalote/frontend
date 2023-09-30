@@ -1,9 +1,8 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import CrearPartida from "./components/CrearPartida";
 import Navbar from "./components/NavBar";
 import UnirseAPartida from "./components/UnirseAPartida";
 import CrearJugador from "./components/CrearJugador";
-import "./App.css";
 
 function App() {
   return (
