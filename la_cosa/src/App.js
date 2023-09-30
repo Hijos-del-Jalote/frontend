@@ -7,7 +7,7 @@ function App() {
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route path="/partida/crear" element={<CrearPartida />}/>
-        <Route exact path='/partida/:id' element={<IniciarPartida/>}/>
+        <Route path='/lobby/' element={<IniciarPartida/>}/>
       </Routes>
     </BrowserRouter>
   );
