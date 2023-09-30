@@ -1,16 +1,24 @@
+
 import { Route, Routes } from "react-router-dom";
 import CrearPartida from "./components/CrearPartida";
-import { Home } from "./components/Home";
-import Partida from "./components/Partida";
+import Navbar from "./components/NavBar";
+import UnirseAPartida from "./components/UnirseAPartida";
+import CrearJugador from "./components/CrearJugador";
+import IniciarPartida from "./components/IniciarPartida";
 
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Partida />} />
-      <Route path="partida">
-        <Route path="crear" element={<CrearPartida />} />
-      </Route>
+
+  <Route path="/" element={<CrearJugador />} />
+  <Route path="home" element={<Navbar />}>
+    <Route path="crear" element={<CrearPartida />} />
+    <Route path="unir" element={<UnirseAPartida />} />
+  </Route>
+<Route path='/lobby/' element={<IniciarPartida/>}/>
+
+
     </Routes>
   );
 }
