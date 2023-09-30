@@ -1,19 +1,20 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import CrearPartida from "./components/CrearPartida";
-import { Home } from "./components/Home";
 import Navbar from "./components/NavBar";
 import UnirseAPartida from "./components/UnirseAPartida";
+import CrearJugador from "./components/CrearJugador";
+import "./App.css";
 
 function App() {
   return (
     <Routes>
-  <Route path="/" element={<Home />} />
-  <Route path="partida" element={<Navbar />}>
+  <Route path="/" element={<CrearJugador />} />
+  <Route path="home" element={<Navbar />}>
     <Route path="crear" element={<CrearPartida />} />
     <Route path="unir" element={<UnirseAPartida />} />
   </Route>
-</Routes>
 
+    </Routes>
   );
 }
 
