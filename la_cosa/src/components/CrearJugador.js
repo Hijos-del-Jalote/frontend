@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import axios from "axios";
+import {  useNavigate } from "react-router-dom";
 
 function CrearJugador() {
+  const navigate = useNavigate();
+
   const [nombreJugador, setNombreJugador] = useState("");
   const [mensajeRespuesta, setMensajeRespuesta] = useState("");
 
@@ -15,8 +18,12 @@ function CrearJugador() {
       );
 
       if (response.status === 201) {
-        setMensajeRespuesta("Jugador creado exitosamente.");
+        setMensajeRespuesta("Jugador creado exitosamente, redirigiendo al inicio ...");
         setNombreJugador("");
+
+        setTimeout(() => {
+            navigate('/home/crear');
+        }, 2000)
       } else {
         setMensajeRespuesta("Error al crear el jugador");
       }
