@@ -1,0 +1,47 @@
+.contenedorPrincipal {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.contenedorJugadores {
+  text-align: center; /* Centra horizontalmente el contenido */
+  margin-top: 10px; /* Espacio entre el título y la lista de jugadores */
+}
+
+.listaJugadores {
+  display: flex; /* Alinea los jugadores horizontalmente */
+  justify-content: center; /* Centra los jugadores horizontalmente */
+  align-items: center; /* Centra los jugadores verticalmente */
+  flex-wrap: wrap; /* Distribuye los jugadores en varias filas si es necesario */
+  list-style: none; /* Elimina las viñetas (puntos) de la lista */
+}
+
+
+  .contenedorJugador {
+    text-align: center; /* Centra el contenido del jugador */
+    margin: 0 10px; /* Espacio entre los jugadores */
+    img {
+      display: block; /* Coloca la imagen en una nueva línea (arriba del nombre) */
+      margin: 0 auto; /* Centra la imagen horizontalmente */
+    }
+  }
+
+  .contenedor_mazo_y_descartes {
+    display: flex;
+    justify-content: center; /* Centra los contenedores horizontalmente */
+    align-items: center; /* Centra los contenedores verticalmente */
+    margin: 20px 0; /* Espacio entre los contenedores */
+  }
+
+  .contenedorMazo,
+  .contenedorDescartes {
+    text-align: center; /* Centra el contenido de los contenedores */
+    margin: 0 10px; /* Espacio entre los contenedores */
+  }
+
+  .contenedorManoJugador,
+  .contenedorInfo {
+    text-align: center; /* Centra el contenido de los contenedores */
+  }
