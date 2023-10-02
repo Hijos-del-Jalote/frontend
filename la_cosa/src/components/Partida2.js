@@ -26,7 +26,6 @@ function Partida() {
       .get(`http://localhost:8000/jugadores/${idJugador}`)
       .then((response) => {
         setPlayer(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error al obtener la partida:", error);
@@ -36,7 +35,6 @@ function Partida() {
       .get(`http://localhost:8000/partidas/${idPartida}`)
       .then((response) => {
         setPartida(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error al obtener la partida:", error);
@@ -82,9 +80,18 @@ function Partida() {
 
   // Mostrar oponentes 
   const jugadoresFiltrados = arrayJugadoresOrdenados.filter(
-    (jugador) => jugador.id != idJugador
+    (jugador) => jugador.id != idJugador && jugador.isAlive == 1
   );
 
+  if (jugadoresFiltrados.length === 0) {
+    return (
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="alert alert-success text-center animated fadeIn" role="alert">
+          Partida Finalizada, ¡eres el ganador!
+        </div>
+      </div>
+    );
+  }
   
 
   const onJugarCarta = () => {
@@ -111,16 +118,19 @@ function Partida() {
       console.log(error);
     }
   };
-  console.log(cartasData);
 
   const onSetOponente = async (opnenteAJugar) => {
     setOponente(opnenteAJugar);
+    console.log("Carta a jugar");
     console.log(carta);
+    console.log("Oponente a jugar");
+    console.log(opnenteAJugar);
     try {
       const response = await axios.post(
         `http://localhost:8000/cartas/jugar?id_carta=${carta.id}&id_objetivo=${opnenteAJugar.id}`
       );
       console.log("Jugador eliminado exitosamente");
+      recargarPagina();
     } catch (error) {
       console.log(error);
     }
@@ -135,8 +145,6 @@ function Partida() {
     return <div>Partida no iniciada...</div>;
   }
 
-  console.log(player);
-  console.log(cartasData.length);
   const esTurno = idJugador == jugadorConTurnoActual.id;
 
   return (
@@ -150,7 +158,7 @@ function Partida() {
               <PlayerComponent
                 player={jugador}
                 seleccionarOponente={habilitarSeleccionarOponente}
-                onSetOponente={onSetOponente}
+                onClick={onSetOponente}
               />
             </li>
           ))}

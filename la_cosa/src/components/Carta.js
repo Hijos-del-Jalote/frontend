@@ -8,7 +8,7 @@ function CartaComponent({
 }) {
 
   const onClick = () => {
-    if (carta.tipo == "lanzallamas") {
+    if (carta.nombre == "Lanzallamas") {
       console.log("esLanza");
       onClickEfectoLanzallama(carta);
     } else {
