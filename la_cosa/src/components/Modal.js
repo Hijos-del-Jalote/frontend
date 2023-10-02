@@ -13,7 +13,6 @@ export default function MultiChoiceModal(props) {
         }
       });
     };
-  
     const handleConfirm = () => {
       // Lógica para confirmar las selecciones y realizar cualquier acción necesaria
       props.onConfirm(selectedOptions);
@@ -29,15 +28,15 @@ export default function MultiChoiceModal(props) {
         <h2>Selecciona múltiples opciones</h2>
         <ul>
           {props.options.map((option) => (
-            <li key={option}>
+            <li key={option.nombre}>
               <label>
                 <input
                   type="checkbox"
-                  value={option}
+                  value={option.nombre}
                   checked={selectedOptions.includes(option)}
                   onChange={() => handleOptionChange(option)}
                 />
-                {option}
+                {option.nombre}
               </label>
             </li>
           ))}

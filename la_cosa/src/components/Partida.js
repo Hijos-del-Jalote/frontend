@@ -5,6 +5,7 @@ import MultiChoiceModal from "./Modal";
 
 export default function Partida() {
   const location = useLocation();
+  const [cardKey, setCardKey] = useState(null);
   const id = location.pathname.split("/")[2];
   const [jugadores, setJugadores] = useState([
     { nombre: "nombre1" },
@@ -50,9 +51,10 @@ export default function Partida() {
   const [showModal, setShowModal] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
 
-  const options = ['Opción 1', 'Opción 2', 'Opción 3'];
+  const options = ["Opción 1", "Opción 2", "Opción 3"];
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (index) => {
+    setCardKey(index);
     setShowModal(true);
   };
 
@@ -77,10 +79,18 @@ export default function Partida() {
         <h2>Mano del Jugador:</h2>
         {cartas.map((carta, index) => (
           <div key={index}>
-            <button onClick={handleOpenModal}>{carta.tipo}</button>
-            {showModal && (
+            {!showModal ? (
+              <button onClick={() => handleOpenModal(index)}>
+                {carta.tipo}
+              </button>
+            ) : (
+              <button onClick={handleCloseModal}>
+                {carta.tipo}
+              </button>
+            )}
+            {showModal && cardKey == index && (
               <MultiChoiceModal
-                options={options}
+                options={jugadores}
                 onConfirm={handleConfirmModal}
               />
             )}

@@ -2,9 +2,13 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import "../styles/Partida.css";
+import MultiChoiceModal from "./Modal";
 
 function Partida() {
   const [partida, setPartida] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [cardKey, setCardKey] = useState(null);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const idPartida = queryParams.get("idPartida");
@@ -36,6 +40,20 @@ function Partida() {
     jugadores,
   } = partida;
 
+  const handleOpenModal = (index) => {
+    setCardKey(index);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
+  const handleConfirmModal = (selectedOptions) => {
+    setSelectedOptions(selectedOptions);
+    setShowModal(false);
+  };
+
   return (
     <div className="contenedorPrincipal">
       <h1>{nombre}</h1>
@@ -45,7 +63,11 @@ function Partida() {
           {jugadores.map((jugador) => (
             <li key={jugador.id}>
               <div className="contenedorJugador">
-              <img src="https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png?rev=2540745" alt="Imagen del jugador" style={{ width: '100px' }}/>
+                <img
+                  src="https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png?rev=2540745"
+                  alt="Imagen del jugador"
+                  style={{ width: "100px" }}
+                />
                 <p>{jugador.nombre}</p>
               </div>
             </li>
@@ -55,16 +77,27 @@ function Partida() {
       <div className="contenedor_mazo_y_descartes">
         <div className="contenedorMazo">
           <h5>Mazo</h5>
-          <img src="https://dejpknyizje2n.cloudfront.net/marketplace/products/35568e8161034e6a9c1d71704ff96846.png" alt="Mazo de cartas" style={{ width: '75px' }}/>
+          <img
+            src="https://dejpknyizje2n.cloudfront.net/marketplace/products/35568e8161034e6a9c1d71704ff96846.png"
+            alt="Mazo de cartas"
+            style={{ width: "75px" }}
+          />
         </div>
         <div className="contenedorDescartes">
           <h5>Pila de Descartes</h5>
-          <img src="https://dejpknyizje2n.cloudfront.net/marketplace/products/35568e8161034e6a9c1d71704ff96846.png" alt="Mazo de cartas" style={{ width: '75px' }}/>
+          <img
+            src="https://dejpknyizje2n.cloudfront.net/marketplace/products/35568e8161034e6a9c1d71704ff96846.png"
+            alt="Mazo de cartas"
+            style={{ width: "75px" }}
+          />
         </div>
       </div>
       <div className="contenedorManoJugador">
         {/* Mostrar la mano del jugador actual */}
         <h3>Tu Mano</h3>
+        {showModal && (
+          <MultiChoiceModal options={jugadores} onConfirm={handleConfirmModal} />
+        )}
       </div>
       <div className="contenedorInfo">
         {/* Mostrar información adicional de la partida */}
