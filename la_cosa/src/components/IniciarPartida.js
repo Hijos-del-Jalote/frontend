@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 function IniciarPartida() {
   const [searchParams] = useSearchParams();
   const [players, setPlayers] = useState([]);
+  const [responseText, setResponseText] = useState("");
   const navigate = useNavigate();
   const idPartida = searchParams.get("idPartida");
   const idJugador = searchParams.get("idJugador");
@@ -12,7 +13,9 @@ function IniciarPartida() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/partidas/${idPartida}`);
+        const response = await axios.get(
+          `http://localhost:8000/partidas/${idPartida}`
+        );
         if (response.status === 200) {
           setPlayers(response.data.jugadores);
         }
@@ -20,35 +23,56 @@ function IniciarPartida() {
         console.error("Error fetching data:", error);
       }
     };
-  
+
     fetchData();
   }, [idPartida]);
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (players.length >= 4 && players.length <= 12) {
-      axios
-        .put(`http://localhost:8000/partidas/iniciar?idPartida=${idPartida}`)
-        .then((data) =>
-          navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
-        )
-        .catch((error) => console.log(error));
-    }
+    axios
+      .put(`http://localhost:8000/partidas/iniciar?idPartida=${idPartida}`)
+      .then((data) =>
+        navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
+      )
+      .catch((error) => {
+        setResponseText("Error al iniciar partida, compruebe la cantidad de jugadores");
+        console.log(error);
+      });
   };
 
   return (
     <>
-      <ul>
-        {players?.length
-          ? players.map((jugador, index) => {
-              return <li key={index}>{jugador.nombre}</li>;
-            })
-          : null}
-      </ul>
-      <button  onClick={handleSubmit}>
-        Iniciar Partida
-      </button>
+      <div className="text-center mb-4">
+        <h2 className="mb-3">Lobby de la Partida</h2>
+        <p>Esperando a los jugadores...</p>
+      </div>
+      <div className="d-flex justify-content-center">
+        <ul className="list-group">
+          {players?.length ? (
+            players.map((jugador, index) => (
+              <li
+                key={index}
+                className="list-group-item d-flex justify-content-between align-items-center m-2"
+              >
+                {jugador.nombre}
+                <span className="badge bg-primary rounded-pill m-2">
+                  Jugador
+                </span>
+              </li>
+            ))
+          ) : (
+            <li className="list-group-item text-center">
+              No hay jugadores aún.
+            </li>
+          )}
+        </ul>
+      </div>
+      <div className="text-center mt-4">
+        <button onClick={handleSubmit} className="btn btn-primary">
+          Iniciar Partida
+        </button>
+        <div>{responseText && <p className="mt-3">{responseText}</p>}</div>
+      </div>
     </>
   );
 }
