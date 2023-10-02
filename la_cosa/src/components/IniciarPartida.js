@@ -18,6 +18,9 @@ function IniciarPartida() {
         );
         if (response.status === 200) {
           setPlayers(response.data.jugadores);
+          if(response.data.iniciada){
+            navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
+          }
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -39,6 +42,8 @@ function IniciarPartida() {
         console.log(error);
       });
   };
+
+  
 
   return (
     <>

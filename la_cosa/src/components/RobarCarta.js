@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import axios from "axios";
 
 function RobarCarta({ idJugador, esTurno, cantidadCartasEnMano }) {
@@ -14,7 +14,7 @@ function RobarCarta({ idJugador, esTurno, cantidadCartasEnMano }) {
       //pido al back informacion
 
       // Se roba la carta y se actualiza
-      const response = await axios.put(
+       await axios.put(
         `http://localhost:8000/jugadores/${idJugador}/robar`
       );
 
@@ -24,7 +24,7 @@ function RobarCarta({ idJugador, esTurno, cantidadCartasEnMano }) {
     }
   };
 
-  if (!esTurno || cantidadCartasEnMano == 5) {
+  if (!esTurno || cantidadCartasEnMano === 5) {
     return <div></div>;
   }
 
