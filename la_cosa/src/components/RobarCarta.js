@@ -1,35 +1,36 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function RobarCarta({idJugador}) {
+function RobarCarta({idJugador, esTurno, cantidadCartasEnMano}) {
     //los estados del jugador y las cartas en null porque no tenemos informacion 
-  const [idJugador, setidJugador] = useState(null);
-  const [carta, setCarta] = useState(null);
+
+  const recargarPagina = () => {
+    // Recarga la página actual
+    window.location.reload();
+  };
  
   const handleDrawCard = async () => {
     try {
         //pido al back informacion 
-   
-      const response = await axios.get(`http://localhost:8000/jugadores?id=${idJugador}/robar`);
-      //response back: jugador y cartas
-      const data = response.data;
       
-      setidJugador(data.idJugador);
-      setCarta(data.carta);
+        // Se roba la carta y se actualiza
+      const response = await axios.put(`http://localhost:8000/jugadores/${idJugador}/robar`);
+      
+      recargarPagina();
     } catch (error) {
       console.error('Error al robar una carta:', error);
     }
   }
 
+  console.log(esTurno)
+  console.log(cantidadCartasEnMano)
+  if(!esTurno || cantidadCartasEnMano == 5){
+    return(<div></div>)
+  }
+
   return (
     <div>
       <button onClick={handleDrawCard}>Robar Carta</button>
-      {idJugador && carta && (
-        <div>
-          <p>Jugador: {idJugador}</p>
-          <p>La carta fue robada, actualice la pagina</p>
-        </div>
-      )}
     </div>
   );
 }

@@ -15,7 +15,7 @@ function Navbar() {
     // Hacer una solicitud GET a http://localhost:8000/partidas cuando el componente se monte
     if (idJugador != null) {
       axios
-        .get(`http://localhost:8000/jugadores/list?id=${idJugador}`)
+        .get(`http://localhost:8000/jugadores/${idJugador}`)
 
         .then((response) => {
           setNombreJugador(response.data.nombre);

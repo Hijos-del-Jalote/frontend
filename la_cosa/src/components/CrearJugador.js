@@ -31,37 +31,41 @@ function CrearJugador() {
     }
   };
   return (
-    <div className="container">
-      <h1 className="welcome">Bienvenidos al juego La Cosa</h1>
-      <div className="img">
-        <img
-          src="https://1.bp.blogspot.com/-CdbElErUVhY/WM1FKf5iynI/AAAAAAAArDA/pTErZTfycC0mMowqt15ljZuZCfOyeR6WwCLcB/s400/DSCN7971.JPG"
-          alt=""
-          className="logo"
-        />
-      </div>
+<div className="container text-center" >
+  <h1 className="welcome">¡Bienvenidos al juego La Cosa!</h1>
+  <div className="img">
+    <img
+      src="https://1.bp.blogspot.com/-CdbElErUVhY/WM1FKf5iynI/AAAAAAAArDA/pTErZTfycC0mMowqt15ljZuZCfOyeR6WwCLcB/s400/DSCN7971.JPG"
+      alt="Logo del juego"
+      className="logo"
+    />
+  </div>
 
-      <h4 className="subtitulos">Para poder comenzar a jugar</h4>
-      <div className="caja">
-        <input
-          type="text"
-          data-testid="nombreJugadorInput"
-          placeholder="Insertar nombre"
-          value={nombreJugador}
-          onChange={(e) => setNombreJugador(e.target.value)}
-        />
-        <br />
-        <button
-          data-testid="buttonJugador"
-          onClick={() => handleCrearJugador()}
-          className="btn btn-primary"
-        >
-          Crear Jugador
-        </button>
+  <h4 className="subtitulos">Para comenzar a jugar:</h4>
+  <div className="caja">
+    <input
+      type="text"
+      data-testid="nombreJugadorInput"
+      placeholder="Insertar nombre"
+      value={nombreJugador}
+      onChange={(e) => setNombreJugador(e.target.value)}
+      className="form-control"
+    />
+    <br />
+    <button
+      data-testid="buttonJugador"
+      onClick={() => handleCrearJugador()}
+      className="btn btn-primary"
+    >
+      Crear Jugador
+    </button>
 
-        {mensajeRespuesta && <p className="mt-3">{mensajeRespuesta}</p>}
-      </div>
-    </div>
+    {mensajeRespuesta && (
+      <p className="mt-3 alert alert-info">{mensajeRespuesta}</p>
+    )}
+  </div>
+</div>
+
   );
 }
 export default CrearJugador;
