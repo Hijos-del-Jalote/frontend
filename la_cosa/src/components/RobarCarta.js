@@ -24,8 +24,6 @@ function RobarCarta({ idJugador, esTurno, cantidadCartasEnMano }) {
     }
   };
 
-  console.log(esTurno);
-  console.log(cantidadCartasEnMano);
   if (!esTurno || cantidadCartasEnMano == 5) {
     return <div></div>;
   }
