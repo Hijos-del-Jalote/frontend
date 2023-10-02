@@ -20,7 +20,6 @@ function CrearPartida() {
       const url =
       `http://localhost:8000/partidas?nombrePartida=${nombrePartida}&idHost=${idJugador}`;
       const respuesta = await axios.post(url);
-      console.log(respuesta.data.idPartida)
 
       if(respuesta.status === 201) {
         setMensajeRespuesta("Partida creada exitosamente, redirigiendo al lobby...");
