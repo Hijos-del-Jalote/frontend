@@ -5,6 +5,7 @@ import "../styles/Partida.css";
 import MultiChoiceModal from "./Modal";
 
 function Partida() {
+  const [cartas, setCartas] = useState()
   const [partida, setPartida] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState([]);
@@ -95,9 +96,25 @@ function Partida() {
       <div className="contenedorManoJugador">
         {/* Mostrar la mano del jugador actual */}
         <h3>Tu Mano</h3>
-        {showModal && (
-          <MultiChoiceModal options={jugadores} onConfirm={handleConfirmModal} />
-        )}
+        {cartas.map((carta, index) => (
+          <div key={index}>
+            {!showModal ? (
+              <button onClick={() => handleOpenModal(index)}>
+                {carta.tipo}
+              </button>
+            ) : (
+              <button onClick={handleCloseModal}>
+                {carta.tipo}
+              </button>
+            )}
+            {showModal && cardKey == index && (
+              <MultiChoiceModal
+                options={jugadores}
+                onConfirm={handleConfirmModal}
+              />
+            )}
+          </div>
+        ))}
       </div>
       <div className="contenedorInfo">
         {/* Mostrar información adicional de la partida */}
