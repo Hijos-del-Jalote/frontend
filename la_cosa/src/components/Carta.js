@@ -10,9 +10,9 @@ function CartaComponent({
   const onClick = () => {
     if (carta.tipo == "lanzallamas") {
       console.log("esLanza");
-      onClickEfectoLanzallama();
+      onClickEfectoLanzallama(carta);
     } else {
-      onClickJugarCarta();
+      onClickJugarCarta(carta);
     }
   };
 
