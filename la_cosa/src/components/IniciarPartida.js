@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { apiIniciarPartida, apiObtenerPartida } from "./apiService";
 
 function IniciarPartida() {
   const [searchParams] = useSearchParams();
@@ -11,39 +12,39 @@ function IniciarPartida() {
   const idJugador = searchParams.get("idJugador");
 
   useEffect(() => {
-    const fetchData = async () => {
+    async function fetchData() {
       try {
-        const response = await axios.get(
-          `http://localhost:8000/partidas/${idPartida}`
-        );
-        if (response.status === 200) {
-          setPlayers(response.data.jugadores);
-          if(response.data.iniciada){
-            navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
+        const response = await apiObtenerPartida(idPartida);
+        if (response.success) {
+          setPlayers(response.jugadores);
+          if (response.iniciada) {
+            navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`);
+          }
+        } else {
+          setResponseText("Error al obtener datos de la partida");
+          if (response.error != null) {
+            console.log(response.error);
           }
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error inesperado:", error);
       }
-    };
+    }
 
     fetchData();
-  }, [idPartida]);
+  }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    axios
-      .put(`http://localhost:8000/partidas/iniciar?idPartida=${idPartida}`)
-      .then((data) =>
-        navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
-      )
-      .catch((error) => {
-        setResponseText("Error al iniciar partida, compruebe la cantidad de jugadores");
-        console.log(error);
-      });
+  const handleSubmit = async (e) => {
+    const response = await apiIniciarPartida(idPartida);
+
+    if (response.success) {
+      navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`);
+    } else {
+      setResponseText(
+        "Error al iniciar partida, compruebe la cantidad de jugadores"
+      );
+    }
   };
-
-  
 
   return (
     <>

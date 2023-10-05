@@ -38,7 +38,7 @@ export async function apiObtenerJugador(idJugador) {
       return {
         success: true,
         jugador: response.data,
-        nombre: response.nombre
+        nombre: response.nombre,
       };
     } else {
       return {
@@ -56,30 +56,108 @@ export async function apiObtenerJugador(idJugador) {
 }
 
 export async function apiCrearPartida(nombrePartida, idJugador) {
-    const url = BASE_URL + `/partidas?nombrePartida=${nombrePartida}&idHost=${idJugador}`;
-  
-    try {
-      const response = await axios.post(url);
-  
-      if (response.status === 201) {
-        const partidaId = response.data.idPartida;
-        return {
-          success: true,
-          partidaId: partidaId,
-          partida: response.data
-        };
-      } else {
-        return {
-          success: false,
-          message: 'Error al crear la partida',
-        };
-      }
-    } catch (err) {
+  const url =
+    BASE_URL + `/partidas?nombrePartida=${nombrePartida}&idHost=${idJugador}`;
+
+  try {
+    const response = await axios.post(url);
+
+    if (response.status === 201) {
+      const partidaId = response.data.idPartida;
+      return {
+        success: true,
+        partidaId: partidaId,
+        partida: response.data,
+      };
+    } else {
       return {
         success: false,
-        message: 'Error de red al crear la partida',
-        error: err,
+        message: "Error al crear la partida",
       };
     }
+  } catch (err) {
+    return {
+      success: false,
+      message: "Error de red al crear la partida",
+      error: err,
+    };
   }
-  
+}
+
+export async function apiObtenerPartidas() {
+  const url = BASE_URL + "/partidas";
+
+  try {
+    const response = await axios.get(url);
+
+    if (response.status === 200) {
+      return {
+        success: true,
+        partidas: response.data,
+      };
+    } else {
+      return {
+        success: false,
+        message: "Error al obtener las partidas",
+      };
+    }
+  } catch (err) {
+    return {
+      success: false,
+      message: "Error de red al obtener las partidas",
+      error: err,
+    };
+  }
+}
+
+export async function apiObtenerPartida(idPartida) {
+  const url = BASE_URL + `/partidas/${idPartida}`;
+
+  try {
+    const response = await axios.get(url);
+
+    if (response.status === 200) {
+      return {
+        success: true,
+        jugadores: response.data.jugadores,
+        partida: response.data,
+        iniciada: response.data.iniciada,
+      };
+    } else {
+      return {
+        success: false,
+        message: "Error al obtener las partidas",
+      };
+    }
+  } catch (err) {
+    return {
+      success: false,
+      message: "Error de red al obtener las partidas",
+      error: err,
+    };
+  }
+}
+
+export async function apiIniciarPartida(idPartida) {
+  const url = BASE_URL + `/partidas/iniciar?idPartida=${idPartida}`;
+
+  try {
+    const response = await axios.put(url);
+
+    if (response.status === 200) {
+      return {
+        success: true,
+      };
+    } else {
+        return {
+            success: false,
+          };
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+        success: false,
+      };
+    
+  }
+}
