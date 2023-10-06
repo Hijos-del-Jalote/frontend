@@ -31,7 +31,7 @@ function IniciarPartida() {
     }
 
     fetchData();
-  }, []);
+  }, [idPartida, idJugador, navigate]);
 
   const handleSubmit = async (e) => {
     const response = await apiIniciarPartida(idPartida);

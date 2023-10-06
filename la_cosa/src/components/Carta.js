@@ -7,7 +7,7 @@ function CartaComponent({
   onClickJugarCarta,
 }) {
   const onClick = () => {
-    if (carta.nombre == "Lanzallamas") {
+    if (carta.nombre === "Lanzallamas") {
       console.log("esLanza");
       onClickEfectoLanzallama(carta);
     } else {
