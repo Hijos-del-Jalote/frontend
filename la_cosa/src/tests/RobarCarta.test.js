@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import RobarCarta from './RobarCarta';
+import RobarCarta from '../components/RobarCarta';
 
 // Simulamos un jugador en su turno con menos de 5 cartas en la mano
 const jugador = {

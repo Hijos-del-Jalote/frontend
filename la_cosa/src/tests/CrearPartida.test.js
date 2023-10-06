@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react';
 import axios from 'axios'; 
-import CrearPartida from './CrearPartida';
+import CrearPartida from '../components/CrearPartida';
 import { MemoryRouter } from 'react-router-dom';
 
 // Mockear la función de axios.post para simular una respuesta exitosa
