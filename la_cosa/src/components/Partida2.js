@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import "../styles/Partida.css";
+// import "../styles/Partida.css";
 import PlayerComponent from "./Jugador";
 import CartaComponent from "./Carta";
 import RobarCarta from "./RobarCarta";
 import JugarCarta from "./JugarCarta";
+import InfoPartida from "./InfoPartida";
 
 function Partida() {
   const [partida, setPartida] = useState(null);
@@ -78,7 +79,7 @@ function Partida() {
     );
   }
 
-  // Mostrar oponentes 
+  // Mostrar oponentes
   const jugadoresFiltrados = arrayJugadoresOrdenados.filter(
     (jugador) => jugador.id != idJugador && jugador.isAlive == 1
   );
@@ -86,19 +87,20 @@ function Partida() {
   if (jugadoresFiltrados.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
-        <div className="alert alert-success text-center animated fadeIn" role="alert">
+        <div
+          className="alert alert-success text-center animated fadeIn"
+          role="alert"
+        >
           Partida Finalizada, ¡eres el ganador!
         </div>
       </div>
     );
   }
-  
 
   const onJugarCarta = () => {
     setJugandoCarta(true);
   };
 
-  
   const onClickEfectoLanzallama = (cartaAJugar) => {
     setHabilitarSeleccionarOponente(true);
     setCarta(cartaAJugar);
@@ -138,101 +140,117 @@ function Partida() {
 
   // obtengo mi jugador actual
 
-
-
   // Si la partida no esta iniciada que muestre que no esta iniciada
   if (iniciada == false || iniciada == null) {
     return <div>Partida no iniciada...</div>;
   }
 
   const esTurno = idJugador == jugadorConTurnoActual.id;
-
   return (
-    <div className="contenedorPrincipal">
-      <h1>Partida: {nombre}</h1>
-      <div className="contenedorJugadores">
-        <h3>Oponentes:</h3>
-        <ul className="listaJugadores">
-          {jugadoresFiltrados.map((jugador, index) => (
-            <li key={index} className="mt-3">
-              <PlayerComponent
-                player={jugador}
-                seleccionarOponente={habilitarSeleccionarOponente}
-                onClick={onSetOponente}
+    <div className="d-flex flex-column vh-100" id="contenedor-principal">
+      <div
+        className="d-flex justify-content-between partida-container bg-dark p-4 text-center w-100"
+        id="contenedor-titulo"
+      >
+        {/* Titulo de la partida */}
+        <h1 className="text-white display-8 align-self-center">
+          Eres {player.nombre}
+        </h1>
+
+        <h1 className="text-white display-4 align-self-left">
+          Partida {nombre}
+        </h1>
+        <div></div>
+      </div>
+
+      <div id="contenedor-relleno" className="d-flex flex-grow-1 m-2 h-100">
+        <div id="contenedor-info" className="h-100 border border-secondary">
+          <InfoPartida
+            jugadorConTurnoActual={jugadorConTurnoActual}
+            esTurno={esTurno}
+            sentido={sentido}
+          />
+        </div>
+        <div id="contenedor-game" className=" d-flex flex-column w-100 h-100 ">
+          <div id="oponentes-div" className="d-flex flex-column">
+            <div
+              id="tarjetas-oponentes"
+              className="d-flex flex-row justify-content-center"
+            >
+              {jugadoresFiltrados.map((jugador, index) => (
+                <div key={index} className="mb-2">
+                  <PlayerComponent
+                    player={jugador}
+                    seleccionarOponente={habilitarSeleccionarOponente}
+                    onClick={onSetOponente}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div id="mazo-div" className="d-flex justify-content-center">
+            <div className="contenedorMazo">
+              <h5>Mazo</h5>
+
+              <img
+                src="https://dejpknyizje2n.cloudfront.net/marketplace/products/35568e8161034e6a9c1d71704ff96846.png"
+                alt="Mazo de cartas"
+                style={{ width: "75px" }}
               />
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="contenedor_mazo_y_descartes">
-        <div className="contenedorMazo">
-          <h5>Mazo</h5>
+            </div>
+            <div className="contenedorDescartes">
+              <h5>Pila de Descartes</h5>
+              <img
+                src="https://dejpknyizje2n.cloudfront.net/marketplace/products/35568e8161034e6a9c1d71704ff96846.png"
+                alt="Mazo de cartas"
+                style={{ width: "75px" }}
+              />
+            </div>
+            <div className="contenedorBotones">
+              {esTurno && cartasData.length === 4 && (
+                <RobarCarta
+                  idJugador={idJugador}
+                  esTurno={esTurno}
+                  cantidadCartasEnMano={cartasData.length}
+                ></RobarCarta>
+              )}
 
-          <img
-            src="https://dejpknyizje2n.cloudfront.net/marketplace/products/35568e8161034e6a9c1d71704ff96846.png"
-            alt="Mazo de cartas"
-            style={{ width: "75px" }}
-          />
+              {esTurno && cartasData.length === 5 && !jugandoCarta && (
+                <JugarCarta
+                  esTurno={esTurno}
+                  onClick={onJugarCarta}
+                  cantidadCartasEnMano={cartasData.length}
+                ></JugarCarta>
+              )}
+              {jugandoCarta && !habilitarSeleccionarOponente && (
+                <div>Selecciona una carta para jugar</div>
+              )}
+              {habilitarSeleccionarOponente && (
+                <div>Selecciona una carta para jugar</div>
+              )}
+            </div>
+          </div>
+          <div id="mano-div">
+            <div className="contenedorManoJugador">
+              {/* Mostrar la mano del jugador actual */}
+              <h3 className="text-center">Mano actual</h3>
+              <ul className="list-unstyled d-flex justify-content-center">
+                {cartasData.map((carta) => (
+                  <li key={carta.id} className="mr-3">
+                    <CartaComponent
+                      esTurnoJugarCarta={jugandoCarta}
+                      carta={carta}
+                      onClickEfectoLanzallama={onClickEfectoLanzallama}
+                      onClickJugarCarta={onClickJugarCarta}
+                    ></CartaComponent>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
-        <div className="contenedorDescartes">
-          <h5>Pila de Descartes</h5>
-          <img
-            src="https://dejpknyizje2n.cloudfront.net/marketplace/products/35568e8161034e6a9c1d71704ff96846.png"
-            alt="Mazo de cartas"
-            style={{ width: "75px" }}
-          />
-        </div>
-
-        {/* Botones "Robar Carta" y "Jugar Carta" */}
-        <div className="contenedorBotones">
-          {esTurno && cartasData.length === 4 && (
-            <RobarCarta
-              idJugador={idJugador}
-              esTurno={esTurno}
-              cantidadCartasEnMano={cartasData.length}
-            ></RobarCarta>
-          )}
-
-          {esTurno && cartasData.length === 5 && !jugandoCarta && (
-            <JugarCarta
-              esTurno={esTurno}
-              onClick={onJugarCarta}
-              cantidadCartasEnMano={cartasData.length}
-            ></JugarCarta>
-          )}
-          {jugandoCarta && !habilitarSeleccionarOponente && (
-            <div>Selecciona una carta para jugar</div>
-          )}
-          {habilitarSeleccionarOponente && (
-            <div>Selecciona una carta para jugar</div>
-          )}
-        </div>
+        {/* Otras columnas aquí, si es necesario */}
       </div>
-
-      <div className="contenedorManoJugador">
-        {/* Mostrar la mano del jugador actual */}
-        <h3>Tu Mano: {player.nombre}</h3>
-        <ul className="list-unstyled d-flex justify-content-start">
-          {cartasData.map((carta) => (
-            <li key={carta.id} className="mr-3">
-              <CartaComponent
-                esTurnoJugarCarta={jugandoCarta}
-                carta={carta}
-                onClickEfectoLanzallama={onClickEfectoLanzallama}
-                onClickJugarCarta={onClickJugarCarta}
-              ></CartaComponent>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="contenedorInfo">
-        {/* Mostrar información adicional de la partida */}
-        <p>Turno Actual: {jugadorConTurnoActual.nombre}</p>
-        <p> {esTurno ? "Es tu turno!" : "No es tu turno"}</p>
-        <p>Sentido: {sentido ? "Horario" : "Antihorario"}</p>
-      </div>
-      <div>{jugandoCarta ? "Seleccione la carta que desea jugar" : ""}</div>
-      <div>{habilitarSeleccionarOponente ? "a" : "b"}</div>
     </div>
   );
 }

@@ -1,17 +1,21 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import axios from "axios";
-import CrearJugador from "./CrearJugador";
 import { MemoryRouter } from "react-router-dom";
+import CrearJugador from "../components/CrearJugador";
 
 // Mockear la función de axios.post para simular una respuesta exitosa
 jest.mock("axios");
 
 describe("CrearJugador", () => {
-  // Test Suites
+  // Restaurar el mock de axios después de cada prueba
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("debe manejar la creación de jugador con éxito", async () => {
     // Configura el mock de axios para devolver una respuesta exitosa
-    axios.post.mockResolvedValue({ status: 201 });
+    axios.post.mockResolvedValue({ status: 201, data: { success: true, playerId: 1 } });
 
     const { getByText, getByTestId } = render(
       <MemoryRouter>
@@ -19,7 +23,7 @@ describe("CrearJugador", () => {
       </MemoryRouter>
     );
 
-    // Simula la entrada de un nombre de partida
+    // Simula la entrada de un nombre de jugador
     const nombreJugador = getByTestId("nombreJugadorInput");
     fireEvent.change(nombreJugador, { target: { value: "Pepito" } });
 

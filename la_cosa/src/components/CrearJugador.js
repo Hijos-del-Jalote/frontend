@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
 import {  useNavigate } from "react-router-dom";
+import { apiCrearJugador } from "./apiService";
 
 function CrearJugador() {
   const navigate = useNavigate();
@@ -9,25 +9,20 @@ function CrearJugador() {
   const [mensajeRespuesta, setMensajeRespuesta] = useState("");
 
   const handleCrearJugador = async () => {
-    try {
-      const response = await axios.post(
-        `http://localhost:8000/jugadores?nombre=${nombreJugador}`,
-        {
-          nombre: nombreJugador,
-        }
-      );
 
-      if (response.status === 201) {
-        setMensajeRespuesta("Jugador creado exitosamente, redirigiendo al inicio ...");
-        setNombreJugador("");
-        setTimeout(() => {
-          navigate(`/home/crear?idJugador=${response.data.id}`);
-        }, 2000)
-      } else {
-        setMensajeRespuesta("Error al crear el jugador");
+    const response = await apiCrearJugador(nombreJugador);
+    if (response.success){
+      setMensajeRespuesta("Jugador creado exitosamente, redirigiendo al inicio ...");
+      setTimeout(() => {
+        navigate(`/home/crear?idJugador=${response.playerId}`);
+      }, 2000)
+    }else {
+      setMensajeRespuesta(response.message);
+
+      // Si pasa algo que me lo muestre en consola
+      if (response.error != null) {
+        console.log(response.error);
       }
-    } catch (error) {
-      setMensajeRespuesta("Error al crear el jugador");
     }
   };
   return (

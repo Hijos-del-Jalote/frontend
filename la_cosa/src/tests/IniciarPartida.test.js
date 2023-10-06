@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import axios from "axios";
-import IniciarPartida from "./IniciarPartida";
+import IniciarPartida from "../components/IniciarPartida";
 
 // Mock de Axios para simular solicitudes HTTP
 jest.mock("axios");

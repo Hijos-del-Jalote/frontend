@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios"; // Importa Axios
 import { useLocation, useNavigate } from "react-router-dom";
+import { apiCrearPartida } from "./apiService";
 
 function CrearPartida() {
   const navigate = useNavigate();
@@ -13,27 +13,24 @@ function CrearPartida() {
 
   const handleCrearPartida = async (e) => {
     e.preventDefault();
-    
 
-    try {
-      // Enviar los datos al backend
-      const url =
-      `http://localhost:8000/partidas?nombrePartida=${nombrePartida}&idHost=${idJugador}`;
-      const respuesta = await axios.post(url);
-
-      if(respuesta.status === 201) {
-        setMensajeRespuesta("Partida creada exitosamente, redirigiendo al lobby...");
-        setTimeout(() => {
-          navigate(`/lobby?idJugador=${idJugador}&idPartida=${respuesta.data.idPartida}`);
-        }, 2000)
-      }else {
-        setMensajeRespuesta("Error al crear la partida");
-      }
-
-    } catch (error) {
-      // Manejar errores, por ejemplo, mostrar un mensaje de error al usuario
+    const response = await apiCrearPartida(nombrePartida, idJugador);
+    if (response.success) {
+      setMensajeRespuesta(
+        "Partida creada exitosamente, redirigiendo al lobby..."
+      );
+      setTimeout(() => {
+        navigate(
+          `/lobby?idJugador=${idJugador}&idPartida=${response.partidaId}`
+        );
+      }, 2000);
+    }else {
       setMensajeRespuesta("Error al crear la partida");
+      if(response.error != null) {
+        console.log(response.error);
+      }
     }
+
   };
 
   return (
