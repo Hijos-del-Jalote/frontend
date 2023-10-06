@@ -149,12 +149,20 @@ function Partida() {
   return (
     <div className="d-flex flex-column vh-100" id="contenedor-principal">
       <div
-        className="partida-container bg-dark p-4 text-center w-100"
+        className="d-flex justify-content-between partida-container bg-dark p-4 text-center w-100"
         id="contenedor-titulo"
       >
         {/* Titulo de la partida */}
-        <h1 className="text-white display-4">Partida: {nombre}</h1>
+        <h1 className="text-white display-8 align-self-center">
+          Eres {player.nombre}
+        </h1>
+
+        <h1 className="text-white display-4 align-self-left">
+          Partida {nombre}
+        </h1>
+        <div></div>
       </div>
+
       <div id="contenedor-relleno" className="d-flex flex-grow-1 m-2 h-100">
         <div id="contenedor-info" className="h-100 border border-secondary">
           <InfoPartida
@@ -223,22 +231,23 @@ function Partida() {
             </div>
           </div>
           <div id="mano-div">
-      <div className="contenedorManoJugador">
-        {/* Mostrar la mano del jugador actual */}
-        <h3 className="text-center">Tu Mano: {player.nombre}</h3>
-        <ul className="list-unstyled d-flex justify-content-center">
-          {cartasData.map((carta) => (
-            <li key={carta.id} className="mr-3">
-              <CartaComponent
-                esTurnoJugarCarta={jugandoCarta}
-                carta={carta}
-                onClickEfectoLanzallama={onClickEfectoLanzallama}
-                onClickJugarCarta={onClickJugarCarta}
-              ></CartaComponent>
-            </li>
-          ))}
-        </ul>
-      </div></div>
+            <div className="contenedorManoJugador">
+              {/* Mostrar la mano del jugador actual */}
+              <h3 className="text-center">Mano actual</h3>
+              <ul className="list-unstyled d-flex justify-content-center">
+                {cartasData.map((carta) => (
+                  <li key={carta.id} className="mr-3">
+                    <CartaComponent
+                      esTurnoJugarCarta={jugandoCarta}
+                      carta={carta}
+                      onClickEfectoLanzallama={onClickEfectoLanzallama}
+                      onClickJugarCarta={onClickJugarCarta}
+                    ></CartaComponent>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
         {/* Otras columnas aquí, si es necesario */}
       </div>
