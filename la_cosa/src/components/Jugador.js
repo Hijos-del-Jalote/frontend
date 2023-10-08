@@ -2,7 +2,7 @@ import React from "react";
 
 function PlayerComponent({ player, seleccionarOponente, onClick }) {
   return (
-    <div className="card m-2 p-1">
+    <div className="card" style={{width: "150px"}}>
       {seleccionarOponente ? (
         <button
           className={`btn btn-outline-primary ${
