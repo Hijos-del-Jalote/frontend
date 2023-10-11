@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { apiIniciarPartida, apiObtenerPartida } from "./apiService";
+import { useWebSocket } from './WebSocketContext';
+
+
 
 function IniciarPartida() {
   const [searchParams] = useSearchParams();
@@ -9,41 +12,61 @@ function IniciarPartida() {
   const navigate = useNavigate();
   const idPartida = searchParams.get("idPartida");
   const idJugador = searchParams.get("idJugador");
+  const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws`;
+  const webSocket = useWebSocket(wsurl);
+
+
+
+    
 
   useEffect(() => {
-    async function fetchData() {
+    
+    const fetchData = async () => {
       try {
-        const response = await apiObtenerPartida(idPartida);
-        if (response.success) {
-          setPlayers(response.jugadores);
-          if (response.iniciada) {
-            navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`);
-          }
-        } else {
-          setResponseText("Error al obtener datos de la partida");
-          if (response.error != null) {
-            console.log(response.error);
+        const response = await axios.get(
+          `http://localhost:8000/partidas/${idPartida}`
+        );
+        if (response.status === 200) {
+          setPlayers(response.data.jugadores);
+          if(response.data.iniciada){
+            navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
           }
         }
       } catch (error) {
-        console.error("Error inesperado:", error);
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if(webSocket){
+      webSocket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        console.log("Datos recibidos:", data);
+        if (data.event === "unir"){
+          setPlayers(JSON.parse(data.data).jugadores);
+        }
+        if(data.event === "iniciar"){
+          navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
+        }
       }
     }
-
+    
     fetchData();
-  }, [idPartida, idJugador, navigate]);
-
-  const handleSubmit = async (e) => {
-    const response = await apiIniciarPartida(idPartida);
-
-    if (response.success) {
-      navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`);
-    } else {
-      setResponseText(
-        "Error al iniciar partida, compruebe la cantidad de jugadores"
-      );
-    }
+    
+  }, [idPartida,webSocket,idJugador,navigate]);
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    axios
+      .put(`http://localhost:8000/partidas/iniciar?idPartida=${idPartida}`)
+      .then((data) =>
+        navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
+      )
+      .catch((error) => {
+        setResponseText("Error al iniciar partida, compruebe la cantidad de jugadores");
+        console.log(error);
+      });
   };
+
 
   return (
     <>
