@@ -5,9 +5,12 @@ import UnirseAPartida from "./components/UnirseAPartida";
 import CrearJugador from "./components/CrearJugador";
 import IniciarPartida from "./components/IniciarPartida";
 import Partida from "./components/Partida2";
+import { WebSocketProvider } from './components/WebSocketContext';
+
 
 function App() {
   return (
+    <WebSocketProvider>
     <Routes>
       <Route path="/" element={<CrearJugador />} />
       <Route path="home" element={<Navbar />}>
@@ -17,6 +20,7 @@ function App() {
       <Route path="/lobby/" element={<IniciarPartida />} />
       <Route path="/partida/" element={<Partida />} />
     </Routes>
+    </WebSocketProvider>
   );
 }
 
