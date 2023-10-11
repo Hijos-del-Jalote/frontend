@@ -5,7 +5,6 @@ import InfoPartida from "./InfoPartida";
 import PartidaEnCurso from "./PartidaEnCurso";
 
 function Partida() {
-
   const [partida, setPartida] = useState(null);
   const [player, setPlayer] = useState(null);
 
@@ -14,7 +13,6 @@ function Partida() {
   const queryParams = new URLSearchParams(location.search);
   const idPartida = queryParams.get("idPartida");
   const idJugador = queryParams.get("idJugador");
-
 
   // Lo primero q hago es un get
   useEffect(() => {
@@ -43,20 +41,21 @@ function Partida() {
     return <div>Cargando...</div>;
   }
 
-  if (!player.isAlive) {
-    return (
-      <div className="contenedorPrincipal d-flex flex-column justify-content-center align-items-center">
-        <div className="mt-5">
-          <h2 className="text-danger">Te han eliminado...</h2>
-          <p className="lead">Fin de la partida</p>
+  if (player.isAlive != null) {
+    if (!player.isAlive) {
+      return (
+        <div className="contenedorPrincipal d-flex flex-column justify-content-center align-items-center">
+          <div className="mt-5">
+            <h2 className="text-danger">Te han eliminado...</h2>
+            <p className="lead">Fin de la partida</p>
+          </div>
         </div>
-      </div>
-    );
+      );
+    }
   }
 
   // Variables locales para acceder a los datos más fácilmente
   const { iniciada, turnoActual, sentido, jugadores } = partida;
-
 
   // Ordeno a los jugadores por posicion
   const arrayJugadoresOrdenados = jugadores
@@ -87,7 +86,6 @@ function Partida() {
     );
   }
 
-
   // obtengo mi jugador actual
 
   // Si la partida no esta iniciada que muestre que no esta iniciada
@@ -95,11 +93,9 @@ function Partida() {
     return <div>Partida no iniciada...</div>;
   }
 
-  const esTurno = idJugador === jugadorConTurnoActual.id;
+  const esTurno = idJugador.toString() === jugadorConTurnoActual.id.toString();
   return (
-    <div
-      className="container-fluid"
-    >
+    <div className="container-fluid">
       <div className="row">
         <div className="col-md-auto ">
           <InfoPartida
@@ -119,7 +115,8 @@ function Partida() {
           />
         </div>
       </div>
-    </div>);
+    </div>
+  );
 }
 
 export default Partida;
