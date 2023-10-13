@@ -13,6 +13,7 @@ function InfoPartida({ jugadorConTurnoActual, esTurno, sentido, partida, jugador
           <li className="list-group-item"><strong>Estado:</strong>{" "}
               {esTurno ? "Es tu turno" : "No es tu turno"}</li>
           <li className="list-group-item"><strong>Sentido:</strong> {sentido ? "Horario" : "Antihorario"}</li>
+          <li className="list-group-item"><strong>Rol:</strong> {jugadorEnJuego.rol}</li>
         </ul>
       </div>
     </div>
