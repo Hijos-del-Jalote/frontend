@@ -49,18 +49,18 @@ function IniciarPartida() {
           navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
         }
         if (data.event === "abandonar lobby"){
-          if (JSON.parse(data.data).host) {
+          if ((data.data).host) {
               setTimeout(() => {
                   navigate(`/home/crear?idJugador=${idJugador}`);
               }, 2000);
           }
           else {
-              if (JSON.parse(data.data).jugadores.id == idJugador) {
+              if ((data.data).jugadores.id === idJugador) {
                   setTimeout(() => {
                       navigate(`/home/crear?idJugador=${idJugador}`);
                   }, 2000);
               }
-              setPlayers(JSON.parse(data.data).jugadores);
+              setPlayers((data.data).jugadores);
           }
         
       }
