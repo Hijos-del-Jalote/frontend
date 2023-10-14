@@ -51,12 +51,14 @@ function IniciarPartida() {
         if (data.event === "abandonar lobby"){
           if ((data.data).host) {
               setTimeout(() => {
+                  setResponseText("El host abandonó el lobby, saliendo...");
                   navigate(`/home/crear?idJugador=${idJugador}`);
               }, 2000);
           }
           else {
               if ((data.data).jugadores.id === idJugador) {
                   setTimeout(() => {
+                      setResponseText("Saliendo del lobby...");
                       navigate(`/home/crear?idJugador=${idJugador}`);
                   }, 2000);
               }
@@ -93,7 +95,9 @@ function IniciarPartida() {
         // Redirigir al lobby si la respuesta es exitosa
         console.log("Jugador salio con exito");
         setTimeout(() => {
+            setResponseText("Jugador salió con exito");
             navigate(`/home/crear?idJugador=${idJugador}`);
+            
         }, 2000);
       } else {
         console.error("Error al abandonar lobby:");
@@ -137,11 +141,15 @@ function IniciarPartida() {
         <button onClick={handleSubmit} className="btn btn-primary">
           Iniciar Partida
         </button>
-        <button onClick={handleAbandonarLobby} className="btn btn-danger">
+        <div>{responseText && <p className="mt-3">{responseText}</p>}</div>
+      </div>
+      <div className="text-center mt-4">
+      <button onClick={handleAbandonarLobby} className="btn btn-danger">
           Abandonar Lobby
         </button>
         <div>{responseText && <p className="mt-3">{responseText}</p>}</div>
       </div>
+      
     </>
   );
 }
