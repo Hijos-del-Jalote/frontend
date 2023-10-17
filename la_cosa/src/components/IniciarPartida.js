@@ -5,6 +5,7 @@ import { useWebSocket } from './WebSocketContext';
 
 
 
+
 function IniciarPartida() {
   const [searchParams] = useSearchParams();
   const [players, setPlayers] = useState([]);
@@ -47,6 +48,24 @@ function IniciarPartida() {
         if(data.event === "iniciar"){
           navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
         }
+        if (data.event === "abandonar lobby"){
+          if ((data.data).host) {
+              setTimeout(() => {
+                  setResponseText("El host abandonó el lobby, saliendo...");
+                  navigate(`/home/crear?idJugador=${idJugador}`);
+              }, 2000);
+          }
+          else {
+              if ((data.data).jugadores.id === idJugador) {
+                  setTimeout(() => {
+                      setResponseText("Saliendo del lobby...");
+                      navigate(`/home/crear?idJugador=${idJugador}`);
+                  }, 2000);
+              }
+              setPlayers((data.data).jugadores);
+          }
+        
+      }
       }
     }
     
@@ -65,6 +84,29 @@ function IniciarPartida() {
         setResponseText("Error al iniciar partida, compruebe la cantidad de jugadores");
         console.log(error);
       });
+  };
+  const handleAbandonarLobby = async (partidaId) => {
+    try {
+      // Realizar una solicitud POST para unirse a la partida
+      const url = `http://localhost:8000/jugadores/${idJugador}/abandonar_lobby`;
+      const response = await axios.put(url);
+
+      if (response.status === 200) {
+        // Redirigir al lobby si la respuesta es exitosa
+        console.log("Jugador salio con exito");
+        setTimeout(() => {
+            setResponseText("Jugador salió con exito");
+            navigate(`/home/crear?idJugador=${idJugador}`);
+            
+        }, 2000);
+      } else {
+        console.error("Error al abandonar lobby:");
+        // Manejar el caso en que la respuesta no sea 200 (por ejemplo, mostrar un mensaje de error)
+      }
+    } catch (error) {
+      // Manejar errores (por ejemplo, mostrar un mensaje de error al usuario)
+      console.error("Error al abandonar lobby:", error);
+    }
   };
 
 
@@ -101,6 +143,13 @@ function IniciarPartida() {
         </button>
         <div>{responseText && <p className="mt-3">{responseText}</p>}</div>
       </div>
+      <div className="text-center mt-4">
+      <button onClick={handleAbandonarLobby} className="btn btn-danger">
+          Abandonar Lobby
+        </button>
+        <div>{responseText && <p className="mt-3">{responseText}</p>}</div>
+      </div>
+      
     </>
   );
 }
