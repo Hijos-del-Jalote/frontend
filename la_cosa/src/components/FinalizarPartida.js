@@ -1,42 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from 'react';
 
-function FinalizarPartida({ idPartida }) {
-    //inicializo como partida no terminada
-  const [part_finalizada, setpart_Finalizada] = useState(false);
-  const [ganadorId, setGanadorId] = useState(null);
+const FinalizarPartida = ({ isHumanoTeamWinner, winners }) => {
+  let mensaje = '';
+  let ganadoresMensaje = '';
 
-  useEffect(() => {
-    // Esta función se ejecutará automáticamente cuando el componente se monte
-    handleFinalizarPartida();
-  }, []);
+  if (isHumanoTeamWinner) {
+    mensaje = 'La partida termina porque los Humanos ganaron como equipo. Los ganadores son:';
+  } else {
+    mensaje = 'La partida termina porque La Cosa y los Infectados ganaron como equipo. Los ganadores son:';
+  }
 
-  const handleFinalizarPartida = async () => {
-    try {
-    
-      const response = await axios.get(`http://localhost:8000/partidas/estado?idPartida=${idPartida}`);
-      // guardo la informacion 
-      const data = response.data;
-            //verifico el estado de la partida 
-      if (data.finalizada) {
-        setpart_Finalizada(true);
-        setGanadorId(data.idGanador);
-      }
-    } catch (error) {
-      console.error('Error al finalizar la partida:', error);
-    }
+  if (winners.length > 0) {
+    ganadoresMensaje = winners.map((jugador, index) => (
+      <li key={index}>{`Jugador ${jugador}`}</li>
+    ));
   }
 
   return (
-    <div>
-      {part_finalizada ? (
-        <p>La partida está finalizada. El ganador es el jugador con ID: {ganadorId}</p>
-      ) : (
-        <p>La partida se está finalizando...</p>
-      )}
+    <div className="finalizar-partida">
+      <h2>FIN DE LA PARTIDA</h2>
+      <p>{mensaje}</p>
+      <ul>
+        {ganadoresMensaje}
+      </ul>
     </div>
   );
-}
+};
 
 export default FinalizarPartida;
-

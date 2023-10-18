@@ -3,16 +3,22 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import InfoPartida from "./InfoPartida";
 import PartidaEnCurso from "./PartidaEnCurso";
+import { useWebSocket } from "./WebSocketContext";
+import FinalizarPartida from "./FinalizarPartida";
 
 function Partida() {
   const [partida, setPartida] = useState(null);
   const [player, setPlayer] = useState(null);
-
+  const [isEndOfGame, setIsEndOfGame] = useState(false);
+  const [isHumanoTeamWinner, setIsHumanoTeamWinner] = useState(false);
+  const [winners, setWinners] = useState([]);
   // Saco los datos de la url
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const idPartida = queryParams.get("idPartida");
   const idJugador = queryParams.get("idJugador");
+  const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`;
+  const webSocket = useWebSocket(wsurl);
 
   // Lo primero q hago es un get
   useEffect(() => {
@@ -34,14 +40,36 @@ function Partida() {
       .catch((error) => {
         console.error("Error al obtener la partida:", error);
       });
-  }, [idPartida, idJugador]);
+
+
+
+    if (webSocket) {
+      webSocket.onmessage = function (event) {
+        const data = JSON.parse(event.data);
+        if (data.event === "finalizar") {
+          setIsEndOfGame(true);
+          setIsHumanoTeamWinner(JSON.parse(data.data).isHumanoTeamWinner)
+          setWinners(JSON.parse(data.data).winners)
+        }
+      };
+    }
+  }, [idPartida, idJugador, webSocket]);
 
   // Que muestre cargando mientras no se descargaron los datos
   if (!partida) {
     return <div>Cargando...</div>;
   }
 
-  if (player.isAlive != null) {
+  if (isEndOfGame) {
+    return (
+      <FinalizarPartida
+        isHumanoTeamWinner={isHumanoTeamWinner}
+        winners={winners}
+      ></FinalizarPartida>
+    );
+  }
+
+  if (player != null) {
     if (!player.isAlive) {
       return (
         <div className="contenedorPrincipal d-flex flex-column justify-content-center align-items-center">
@@ -112,6 +140,7 @@ function Partida() {
             jugadorActual={player}
             esTurno={esTurno}
             idJugador={idJugador}
+            idPartida={idPartida}
           />
         </div>
       </div>

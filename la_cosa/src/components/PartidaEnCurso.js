@@ -10,8 +10,8 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     useState(false);
   const [carta, setCarta] = useState(null);
   const [jugandoCarta, setJugandoCarta] = useState(false);
-
   const cartasData = jugadorActual.cartas;
+
 
   // Metodos del componente
 
@@ -19,7 +19,6 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
   const onClickEfectoLanzallama = (cartaAJugar) => {
     setHabilitarSeleccionarOponente(true);
     setCarta(cartaAJugar);
-    console.log("dfsfdssd");
   };
 
   const onJugarCarta = () => {
@@ -33,12 +32,11 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
       await axios.post(
         `http://localhost:8000/cartas/jugar?id_carta=${cartaAJugar.id}`
       );
-      console.log("Carta jugada exitosamente");
-      recargarPagina();
     } catch (error) {
       console.log(error);
     }
   };
+
 
   const onSetOponente = async (opnenteAJugar) => {
     console.log("Carta a jugar");
@@ -50,16 +48,11 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
         `http://localhost:8000/cartas/jugar?id_carta=${carta.id}&id_objetivo=${opnenteAJugar.id}`
       );
       console.log("Jugador eliminado exitosamente");
-      recargarPagina();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const recargarPagina = () => {
-    // Recarga la página actual
-    window.location.reload();
-  };
 
   return (
     <div className="container">
