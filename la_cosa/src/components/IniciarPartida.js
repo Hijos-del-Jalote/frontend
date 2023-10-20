@@ -12,7 +12,7 @@ function IniciarPartida() {
   const navigate = useNavigate();
   const idPartida = searchParams.get("idPartida");
   const idJugador = searchParams.get("idJugador");
-  const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws`;
+  const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`;
   const webSocket = useWebSocket(wsurl);
 
 

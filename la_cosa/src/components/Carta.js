@@ -3,10 +3,14 @@ import React from "react";
 function CartaComponent({
   carta,
   esTurnoJugarCarta,
+  esTurnoIntercambiarCarta,
   onClickEfectoLanzallama,
+  onClickEfecto,
   onClickJugarCarta,
+  onClickIntercambiarCarta,
 }) {
   const onClick = () => {
+    if (esTurnoJugarCarta) {
     if (carta.nombre === "Lanzallamas" || 
     carta.nombre === "Analisis" ||
     carta.nombre === "Sospecha" ||
@@ -19,11 +23,15 @@ function CartaComponent({
     } else {
       onClickJugarCarta(carta);
     }
+  }
+  if (esTurnoIntercambiarCarta) {
+    onClickEfecto(carta);
+  }
   };
 
   return (
     <div className="bg-info-subtle">
-      {esTurnoJugarCarta ? (
+      {esTurnoJugarCarta || esTurnoIntercambiarCarta ? (
         <button className="btn btn-outline-primary" onClick={onClick}>
           <div
             className="card bg-info-subtle"
