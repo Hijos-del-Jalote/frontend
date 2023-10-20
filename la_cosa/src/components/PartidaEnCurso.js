@@ -34,7 +34,6 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
         `http://localhost:8000/cartas/jugar?id_carta=${cartaAJugar.id}`
       );
       console.log("Carta jugada exitosamente");
-      recargarPagina();
     } catch (error) {
       console.log(error);
     }
@@ -50,16 +49,12 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
         `http://localhost:8000/cartas/jugar?id_carta=${carta.id}&id_objetivo=${opnenteAJugar.id}`
       );
       console.log("Jugador eliminado exitosamente");
-      recargarPagina();
     } catch (error) {
       console.log(error);
     }
   };
 
-  const recargarPagina = () => {
-    // Recarga la página actual
-    window.location.reload();
-  };
+
 
   return (
     <div className="container">
