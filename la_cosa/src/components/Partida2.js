@@ -16,6 +16,9 @@ function Partida() {
 
   // Lo primero q hago es un get
   useEffect(() => {
+    const actualizarPartida = (nuevaPartida) => {
+      setPartida(nuevaPartida);
+    };
     // Hacer una solicitud GET a http://localhost:8000/partidas/{idPartida} cuando el componente se monte
     axios
       .get(`http://localhost:8000/jugadores/${idJugador}`)
@@ -118,5 +121,7 @@ function Partida() {
     </div>
   );
 }
-
+export function actualizarPartida(nuevaPartida) {
+  Partida.setPartida(nuevaPartida);
+}
 export default Partida;

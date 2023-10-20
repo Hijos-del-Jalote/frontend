@@ -7,8 +7,14 @@ function CartaComponent({
   onClickJugarCarta,
 }) {
   const onClick = () => {
-    if (carta.nombre === "Lanzallamas") {
-      console.log("esLanza");
+    if (carta.nombre === "Lanzallamas" || 
+    carta.nombre === "Analisis" ||
+    carta.nombre === "Sospecha" ||
+    carta.nombre === "Whisky" ||
+    carta.nombre === "Cambio de lugar" ||
+    carta.nombre === "Mas vale que corras" ||
+    carta.nombre === "Seduccion") {
+      console.log("esLanza, alguna carta");
       onClickEfectoLanzallama(carta);
     } else {
       onClickJugarCarta(carta);
