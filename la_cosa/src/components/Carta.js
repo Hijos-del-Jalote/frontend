@@ -3,27 +3,36 @@ import React from "react";
 function CartaComponent({
   carta,
   esTurnoJugarCarta,
+  esTurnoDefender,
   onClickEfectoLanzallama,
   onClickJugarCarta,
 }) {
   const onClick = () => {
-    if (carta.nombre === "Lanzallamas" || 
-    carta.nombre === "Analisis" ||
-    carta.nombre === "Sospecha" ||
-    carta.nombre === "Whisky" ||
-    carta.nombre === "Cambio de lugar" ||
-    carta.nombre === "Mas vale que corras" ||
-    carta.nombre === "Seduccion") {
-      console.log("esLanza, alguna carta");
-      onClickEfectoLanzallama(carta);
-    } else {
-      onClickJugarCarta(carta);
+    if(esTurnoJugarCarta){
+      if (carta.nombre === "Lanzallamas" || 
+      carta.nombre === "Analisis" ||
+      carta.nombre === "Sospecha" ||
+      carta.nombre === "Whisky" ||
+      carta.nombre === "Cambio de lugar" ||
+      carta.nombre === "Mas vale que corras" ||
+      carta.nombre === "Seduccion") {
+        console.log("esLanza, alguna carta");
+        onClickEfectoLanzallama(carta);
+      } else {
+        onClickJugarCarta(carta);
+      }
+    }
+    else if (esTurnoDefender)  {
+      console.log(`esDefender, algun carta`);
+      if (carta.tipo === "defensa") {
+        onClickJugarCarta(carta);
+      }
     }
   };
 
   return (
     <div className="bg-info-subtle">
-      {esTurnoJugarCarta ? (
+      {(esTurnoJugarCarta ||  esTurnoDefender) ? (
         <button className="btn btn-outline-primary" onClick={onClick}>
           <div
             className="card bg-info-subtle"

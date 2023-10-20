@@ -3,6 +3,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 import InfoPartida from "./InfoPartida";
 import PartidaEnCurso from "./PartidaEnCurso";
+import { useWebSocket } from "./WebSocketContext";
 
 function Partida() {
   const [partida, setPartida] = useState(null);
@@ -13,6 +14,9 @@ function Partida() {
   const queryParams = new URLSearchParams(location.search);
   const idPartida = queryParams.get("idPartida");
   const idJugador = queryParams.get("idJugador");
+  const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`;
+  const webSocket = useWebSocket(wsurl);
+
 
   // Lo primero q hago es un get
   useEffect(() => {
