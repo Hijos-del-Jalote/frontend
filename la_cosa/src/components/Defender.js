@@ -39,9 +39,10 @@ function Defensa({ jugadorActual}) {
                 console.log(`${jugadorActual} quiere jugar defenderse del ataque`); 
                 // este no se porque todavia no sabemos como lo pasa el back, pero solo avisa si se defendio o no
             }
-            // if(data.event === "fin_turno_jugar"){ // esto se rompe (ver por qué)
+            if(data.event === "fin_turno_jugar"){ // esto se rompe (ver por qué)
             //     actualizarPartida(JSON.parse(data.data))
-            // }
+            window.location.reload();
+            }
             if(data.event === "defensa_erronea"){
               console.log(`Elige una carta de defensa valida`);
               setModoDefensa(true);
