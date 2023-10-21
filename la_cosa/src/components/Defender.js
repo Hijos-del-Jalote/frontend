@@ -30,21 +30,28 @@ function Defensa({ jugadorActual}) {
             console.log("datos recibidos:", data);
             if(data.event === "jugar_carta"){
                 const datinha = JSON.parse(data.data)
-                console.log(`${datinha.idJugador} quiere jugar ${datinha.template_carta} sobre ${datinha.idObjetivo}`);
+                
+                if (idJugador != datinha.idJugador) {
+                    alert(`${datinha.idJugador} quiere jugar ${datinha.template_carta} sobre ${datinha.idObjetivo}`);
+                }
+                
                 if(datinha.idObjetivo == idJugador){
                   setModoDefensa(true);
                 }
             }
             if(data.event === "jugar_resp"){
-                console.log(`${jugadorActual} quiere jugar defenderse del ataque`); 
-                // este no se porque todavia no sabemos como lo pasa el back, pero solo avisa si se defendio o no
+              
+                if (idJugador != jugadorActual) {
+                    alert(`${jugadorActual} quiere jugar defenderse del ataque`); 
+                }// este no se porque todavia no sabemos como lo pasa el back, pero solo avisa si se defendio o no
             }
             if(data.event === "fin_turno_jugar"){ // esto se rompe (ver por qué)
             //     actualizarPartida(JSON.parse(data.data))
+            alert(`${idJugador} terminó de jugar carta`)
             window.location.reload();
             }
             if(data.event === "defensa_erronea"){
-              console.log(`Elige una carta de defensa valida`);
+              alert(`Elige una carta de defensa valida`);
               setModoDefensa(true);
             }
         }
@@ -98,6 +105,7 @@ function Defensa({ jugadorActual}) {
       </div>
         
     )}
+    
     {modoDefensa && ( //todo esto esta asi nomas, se ve muy feo pero anda 
       <div>
       <button onClick={handleJugarCartaDefensa} className="btn btn-primary">Defender</button>
