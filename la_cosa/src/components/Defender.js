@@ -21,7 +21,8 @@ function Defensa({ jugadorActual}) {
   const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`; // borrar 
   const webSocket = useWebSocket(wsurl);
   const [estadoPartida, setEstadoPartida] = useState("");
-
+  const [efectoAnalisis, setEfectoAnalisis] = useState(false);
+  const [cartasOtro, setCartasOtro] = useState([]);
   const cartasData = jugadorActual.cartas;
 
   useEffect(() => {
@@ -72,6 +73,10 @@ function Defensa({ jugadorActual}) {
             if(data.event === "defensa_erronea"){
               setEstadoPartida(`Elige una carta de defensa valida`);
               setModoDefensa(true);
+            }
+            if(data.event === "analisis") {
+              setEfectoAnalisis(true);
+              setCartasOtro(data.data);
             }
         }
     }
@@ -132,6 +137,15 @@ function Defensa({ jugadorActual}) {
       <button onClick={handleJugarCartaDefensa} className="btn btn-primary">No defender</button>
       </div>
     )}
+
+        {(efectoAnalisis) && (
+          
+          <div className="col-md-auto mt-3">
+            <h5>Las cartas del otro son: </h5>
+            <h5>{cartasOtro}</h5>
+            
+          </div>
+        )}
         {
           
         <div className="col-md-auto mt-3">
