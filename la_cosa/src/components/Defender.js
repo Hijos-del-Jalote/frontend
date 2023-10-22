@@ -20,9 +20,10 @@ function Defensa({ jugadorActual}) {
   const idJugador = searchParams.get("idJugador");
   const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`; // borrar 
   const webSocket = useWebSocket(wsurl);
-  
+  const [estadoPartida, setEstadoPartida] = useState("");
+
   const cartasData = jugadorActual.cartas;
-  
+
   useEffect(() => {
     
     if(webSocket){
@@ -33,7 +34,7 @@ function Defensa({ jugadorActual}) {
                 const datinha = JSON.parse(data.data)
                 
                 if (idJugador != datinha.idJugador) {
-                    alert(`${datinha.idJugador} quiere jugar ${datinha.template_carta} sobre ${datinha.idObjetivo}`);
+                    setEstadoPartida(`${datinha.idJugador} quiere jugar ${datinha.template_carta} sobre ${datinha.idObjetivo}`);
                 }
                 
                 if(datinha.idObjetivo == idJugador){
@@ -50,7 +51,7 @@ function Defensa({ jugadorActual}) {
                   setCartasDefensa(nuevasCartasDefensa);
                   console.log(cartasDefensa);
                   if (cartasDefensa == []) {
-                      console.log("No tienes con que defenderte");
+                      setEstadoPartida("No tienes con que defenderte");
                   }
                   console.log()
                   setModoDefensa(true);
@@ -59,16 +60,16 @@ function Defensa({ jugadorActual}) {
             if(data.event === "jugar_resp"){
               
                 if (idJugador != jugadorActual) {
-                    alert(`${jugadorActual} quiere jugar defenderse del ataque`); 
+                    setEstadoPartida(`${jugadorActual} quiere jugar defenderse del ataque`); 
                 }// este no se porque todavia no sabemos como lo pasa el back, pero solo avisa si se defendio o no
             }
             if(data.event === "fin_turno_jugar"){ // esto se rompe (ver por qué)
             //     actualizarPartida(JSON.parse(data.data))
-            alert(`${idJugador} terminó de jugar carta`)
+            setEstadoPartida(`${idJugador} terminó de jugar carta`)
             window.location.reload();
             }
             if(data.event === "defensa_erronea"){
-              alert(`Elige una carta de defensa valida`);
+              setEstadoPartida(`Elige una carta de defensa valida`);
               setModoDefensa(true);
             }
         }
@@ -107,6 +108,7 @@ function Defensa({ jugadorActual}) {
   return (//esto no se como hacer para que se vea bien hasta aca llegué
     
     <div className="row">
+      
     {modoDefensa && (
     
       <div className="row justify-content-center">
@@ -129,6 +131,13 @@ function Defensa({ jugadorActual}) {
       <button onClick={handleJugarCartaDefensa} className="btn btn-primary">No defender</button>
       </div>
     )}
+        {
+          
+        <div className="col-md-auto mt-3">
+          <h5>{estadoPartida}</h5>
+          
+        </div>
+      }
     </div>
   );
 }
