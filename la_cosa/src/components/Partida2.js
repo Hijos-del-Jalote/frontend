@@ -61,7 +61,7 @@ function Partida() {
   }, [idPartida, idJugador]);
 
   if(resultados!=null){
-    return <FinalizarPartida isHumanoTeamWinner={resultados.isHumanoTeamWinner} winners={resultados.winners}></FinalizarPartida>
+    return <FinalizarPartida isHumanoTeamWinner={resultados.isHumanoTeamWinner} winners={resultados.winners} idJugador={idJugador}></FinalizarPartida>
   }
 
   // Que muestre cargando mientras no se descargaron los datos

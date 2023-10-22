@@ -1,8 +1,16 @@
 import React from "react";
+import CustomButton from "./CustomButton";
+import { useNavigate } from "react-router-dom";
+import "../styles/FinalizarPartida.css";
 
-const FinalizarPartida = ({ isHumanoTeamWinner, winners }) => {
+const FinalizarPartida = ({ isHumanoTeamWinner, winners, idJugador}) => {
+  const navigate = useNavigate();
   let mensaje = "";
   let ganadoresMensaje = "";
+  // Metodos
+  const navigateToHome = () => {
+    navigate(`/home/crear?idJugador=${idJugador}`);
+  };
 
   if (isHumanoTeamWinner) {
     mensaje =
@@ -14,25 +22,26 @@ const FinalizarPartida = ({ isHumanoTeamWinner, winners }) => {
 
   if (winners.length > 0) {
     ganadoresMensaje = winners.map((jugador, index) => (
-      <li
-        className="list-group-item justify-content-between align-items-start "
+      <div
+        className="carta-jugador"
         key={index}
       >
-      
-      <div className="ms-2 me-auto">
-      <div className="fw-bold ">{`Jugador ${jugador}`}</div>
-      "Rol final"
-    </div>
-
-      </li>
+          {`Jugador ${jugador}`}
+      </div>
     ));
   }
 
   return (
-    <div className="text-center  container h-100">
-      <h2 className="">FIN DE LA PARTIDA</h2>
-      <p>{mensaje}</p>
-      <ol className="list-group text-center">{ganadoresMensaje}</ol>
+    <div className="container_principal">
+      <h2 className="title">FIN DE LA PARTIDA</h2>
+      <p className="mensaje">{mensaje}</p>
+      <dic className="list">{ganadoresMensaje}</dic>
+      <div className="p-10"></div>
+      <div className="button-space">
+      <CustomButton
+        text={"Volver al Inicio"}
+        onClick={navigateToHome}
+      ></CustomButton></div>
     </div>
   );
 };
