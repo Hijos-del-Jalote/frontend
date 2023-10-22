@@ -115,11 +115,11 @@ function Defensa({ jugadorActual}) {
       <div className="row justify-content-center">
         {cartasDefensa.map((carta) => ( // esto esta copiado de partidaencurso, te deja seleccionar las cartas, se ve desfasado (hay que arreglar)
           <div className="col-md-auto" key={carta.id}>
-              <CartaComponent
+              {defender && (<CartaComponent
                 esTurnoDefender={modoDefensa} // Indica que es un turno para jugar carta de defensa (ver componente Carta)
                 carta={carta}
                 onClickJugarCarta={handleJugarCartaDefensa} // se le pasa la funcion (esto creo que no hace nada, que se hace cuando apretas el boton, habria que pasar otra cosa, no se xd)
-              />
+              />)}
             </div>
           ))}  
       </div>
@@ -128,7 +128,7 @@ function Defensa({ jugadorActual}) {
     
     {modoDefensa && ( //todo esto esta asi nomas, se ve muy feo pero anda 
       <div>
-      <button onClick={handleJugarCartaDefensa} className="btn btn-primary">Defender</button>
+      <button onClick={handleDefender} className="btn btn-primary">Defender</button>
       <button onClick={handleJugarCartaDefensa} className="btn btn-primary">No defender</button>
       </div>
     )}
