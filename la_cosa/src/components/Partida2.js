@@ -1,24 +1,28 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import InfoPartida from "./InfoPartida";
 import PartidaEnCurso from "./PartidaEnCurso";
 import { useWebSocket } from "./WebSocketContext";
 import FinalizarPartida from "./FinalizarPartida";
 
 function Partida() {
+  // Variables generales
   const [partida, setPartida] = useState(null);
   const [player, setPlayer] = useState(null);
-  const [isEndOfGame, setIsEndOfGame] = useState(false);
-  const [isHumanoTeamWinner, setIsHumanoTeamWinner] = useState(false);
-  const [winners, setWinners] = useState([]);
+  const [resultados, setResultados] = useState(null);
+  //Navegacion
+  const navigate = useNavigate();
   // Saco los datos de la url
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const idPartida = queryParams.get("idPartida");
   const idJugador = queryParams.get("idJugador");
+  //Websocket 
   const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`;
   const webSocket = useWebSocket(wsurl);
+
+
 
   // Lo primero q hago es un get
   useEffect(() => {
@@ -42,32 +46,29 @@ function Partida() {
       });
 
 
-
-    if (webSocket) {
-      webSocket.onmessage = function (event) {
-        const data = JSON.parse(event.data);
-        if (data.event === "finalizar") {
-          setIsEndOfGame(true);
-          setIsHumanoTeamWinner(JSON.parse(data.data).isHumanoTeamWinner)
-          setWinners(JSON.parse(data.data).winners)
+      if(webSocket){
+        webSocket.onmessage = function(event) {
+          const data = JSON.parse(event.data);
+          console.log("Datos recibidos:", data);
+          if (data.event === "finalizar"){
+            console.log(data.isHumanoTeamWinner)
+            console.log(data.winners)
+            setResultados(JSON.parse((data.data)));
+            
+          }
         }
-      };
-    }
-  }, [idPartida, idJugador, webSocket]);
+      }
+  }, [idPartida, idJugador]);
+
+  if(resultados!=null){
+    return <FinalizarPartida isHumanoTeamWinner={resultados.isHumanoTeamWinner} winners={resultados.winners} idJugador={idJugador}></FinalizarPartida>
+  }
 
   // Que muestre cargando mientras no se descargaron los datos
   if (!partida) {
     return <div>Cargando...</div>;
   }
 
-  if (isEndOfGame) {
-    return (
-      <FinalizarPartida
-        isHumanoTeamWinner={isHumanoTeamWinner}
-        winners={winners}
-      ></FinalizarPartida>
-    );
-  }
 
   if (player != null) {
     if (!player.isAlive) {

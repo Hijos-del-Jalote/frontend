@@ -47,6 +47,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
       await axios.post(
         `http://localhost:8000/cartas/jugar?id_carta=${cartaAJugar.id}`
       );
+      console.log("Carta jugada exitosamente");
     } catch (error) {
       console.log(error);
     }
