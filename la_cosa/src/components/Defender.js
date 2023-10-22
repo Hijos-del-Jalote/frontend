@@ -34,7 +34,7 @@ function Defensa({ jugadorActual}) {
                 const datinha = JSON.parse(data.data)
                 
                 if (idJugador != datinha.idJugador) {
-                    setEstadoPartida(`${datinha.idJugador} quiere jugar ${datinha.template_carta} sobre ${datinha.idObjetivo}`);
+                    setEstadoPartida(`${datinha.nombreJugador} quiere jugar ${datinha.template_carta} sobre ${datinha.nombreObjetivo}`);
                 }
                 
                 if(datinha.idObjetivo == idJugador){
@@ -61,12 +61,12 @@ function Defensa({ jugadorActual}) {
             if(data.event === "jugar_resp"){
               
                 if (idJugador != jugadorActual) {
-                    setEstadoPartida(`${jugadorActual} quiere jugar defenderse del ataque`); 
+                    setEstadoPartida(`${data.data.nombreJugador} quiere jugar defenderse del ataque`); 
                 }// este no se porque todavia no sabemos como lo pasa el back, pero solo avisa si se defendio o no
             }
             if(data.event === "fin_turno_jugar"){ // esto se rompe (ver por qué)
             //     actualizarPartida(JSON.parse(data.data))
-            setEstadoPartida(`${idJugador} terminó de jugar carta`)
+            setEstadoPartida(`${data.data.nombreJugador} terminó de jugar carta`)
             window.location.reload();
             }
             if(data.event === "defensa_erronea"){
