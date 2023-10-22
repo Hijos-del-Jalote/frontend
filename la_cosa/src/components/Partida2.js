@@ -98,7 +98,7 @@ function Partida() {
 
   // Mostrar oponentes
   const jugadoresFiltrados = arrayJugadoresOrdenados.filter(
-    (jugador) => jugador.id !== idJugador && jugador.isAlive === 1
+    (jugador) => jugador.id.toString() !== idJugador.toString() && jugador.isAlive === 1
   );
 
   if (jugadoresFiltrados.length === 0) {
