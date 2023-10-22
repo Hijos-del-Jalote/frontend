@@ -2,22 +2,26 @@ import React from "react";
 
 function CartaComponent({
   carta,
-  esTurnoJugarCarta,
+  descartandoCarta,
+  jugandoCarta,
   onClickEfectoLanzallama,
   onClickJugarCarta,
+  onDescartarCarta,
 }) {
   const onClick = () => {
-    if (carta.nombre === "Lanzallamas") {
-      console.log("esLanza");
+    if (carta.nombre === "Lanzallamas" && !descartandoCarta) {
       onClickEfectoLanzallama(carta);
-    } else {
-      onClickJugarCarta(carta);
     }
+    else if (jugandoCarta) {
+      onClickJugarCarta(carta);
+    } else if (descartandoCarta) {
+      onDescartarCarta(carta);
+    } 
   };
 
   return (
     <div className="bg-info-subtle">
-      {esTurnoJugarCarta ? (
+      {jugandoCarta || descartandoCarta ? (
         <button className="btn btn-outline-primary" onClick={onClick}>
           <div
             className="card bg-info-subtle"

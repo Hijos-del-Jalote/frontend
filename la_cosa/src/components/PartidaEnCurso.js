@@ -4,14 +4,16 @@ import axios from "axios";
 import CartaComponent from "./Carta";
 import RobarCarta from "./RobarCarta";
 import JugarCarta from "./JugarCarta";
+import DescartarCarta from "./DescartarCarta";
 
 function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
   const [habilitarSeleccionarOponente, setHabilitarSeleccionarOponente] =
     useState(false);
   const [carta, setCarta] = useState(null);
   const [jugandoCarta, setJugandoCarta] = useState(false);
-
+  const [descartandoCarta, setDescartandoCarta] = useState(false);
   const cartasData = jugadorActual.cartas;
+
 
   // Metodos del componente
 
@@ -19,11 +21,23 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
   const onClickEfectoLanzallama = (cartaAJugar) => {
     setHabilitarSeleccionarOponente(true);
     setCarta(cartaAJugar);
-    console.log("dfsfdssd");
   };
 
   const onJugarCarta = () => {
     setJugandoCarta(true);
+  };
+
+  const onClickDescartarCarta = async (cartaADescartar) => {
+    // simplemente juega la carta
+    // Jugar la carta
+    try {
+      console.log(cartaADescartar)
+      await axios.put(
+        `http://localhost:8000/cartas/descartar_carta/${cartaADescartar.id}`
+      );
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const onClickJugarCarta = async (cartaAJugar) => {
@@ -39,6 +53,11 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     }
   };
 
+  const onDescartarCarta = async () => {
+    setDescartandoCarta(true);
+  };
+
+
   const onSetOponente = async (opnenteAJugar) => {
     console.log("Carta a jugar");
     console.log(carta);
@@ -53,7 +72,6 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
       console.log(error);
     }
   };
-
 
 
   return (
@@ -96,18 +114,26 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
             ></RobarCarta>
           )}
 
-          {esTurno && cartasData.length === 5 && !jugandoCarta && (
+          {esTurno && cartasData.length === 5 && (!jugandoCarta && !descartandoCarta) && (
             <JugarCarta
               esTurno={esTurno}
               onClick={onJugarCarta}
               cantidadCartasEnMano={cartasData.length}
             ></JugarCarta>
+            
+          )}
+          {esTurno && cartasData.length === 5 && (!jugandoCarta && !descartandoCarta) && (
+            <DescartarCarta onClick={onDescartarCarta}></DescartarCarta>
+            
           )}
           {jugandoCarta && !habilitarSeleccionarOponente && (
             <div>Selecciona una carta para jugar</div>
           )}
+          {descartandoCarta &&  (
+            <div>Selecciona una carta para descartar</div>
+          )}
           {habilitarSeleccionarOponente && (
-            <div>Selecciona una carta para jugar</div>
+            <div>Selecciona un oponente </div>
           )}
         </div>
       </div>
@@ -118,10 +144,12 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
           {cartasData.map((carta) => (
             <div className="col-md-auto" key={carta.id}>
               <CartaComponent
-                esTurnoJugarCarta={jugandoCarta}
+                jugandoCarta={jugandoCarta}
+                descartandoCarta={descartandoCarta}
                 carta={carta}
                 onClickEfectoLanzallama={onClickEfectoLanzallama}
                 onClickJugarCarta={onClickJugarCarta}
+                onDescartarCarta={onClickDescartarCarta}
               ></CartaComponent>
             </div>
           ))}

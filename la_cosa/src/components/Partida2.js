@@ -69,7 +69,8 @@ function Partida() {
     return <div>Cargando...</div>;
   }
 
-  if (player.isAlive != null) {
+
+  if (player != null) {
     if (!player.isAlive) {
       return (
         <div className="contenedorPrincipal d-flex flex-column justify-content-center align-items-center">
@@ -98,7 +99,7 @@ function Partida() {
 
   // Mostrar oponentes
   const jugadoresFiltrados = arrayJugadoresOrdenados.filter(
-    (jugador) => jugador.id !== idJugador && jugador.isAlive === 1
+    (jugador) => jugador.id.toString() !== idJugador.toString() && jugador.isAlive === 1
   );
 
   if (jugadoresFiltrados.length === 0) {
@@ -140,6 +141,7 @@ function Partida() {
             jugadorActual={player}
             esTurno={esTurno}
             idJugador={idJugador}
+            idPartida={idPartida}
           />
         </div>
       </div>
