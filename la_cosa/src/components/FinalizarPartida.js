@@ -35,7 +35,7 @@ const FinalizarPartida = ({ isHumanoTeamWinner, winners, idJugador}) => {
     <div className="container_principal">
       <h2 className="title">FIN DE LA PARTIDA</h2>
       <p className="mensaje">{mensaje}</p>
-      <dic className="list">{ganadoresMensaje}</dic>
+      <div className="list">{ganadoresMensaje}</div>
       <div className="p-10"></div>
       <div className="button-space">
       <CustomButton
