@@ -10,6 +10,7 @@ function Defensa({ jugadorActual}) {
   const [idCarta, setIdCarta] = useState('');
   const [players, setPlayers] = useState([]);
   const [cartaSeleccionada, setCartaSeleccionada] = useState(null);
+  const [cartasDefensa, setCartasDefensa] = useState([]);
   const [modoDefensa, setModoDefensa] = useState(false); // Nuevo estado para controlar el modo defensa
   const [searchParams] = useSearchParams();
   const [mostrarBotones, ] = useState(false);
@@ -36,6 +37,22 @@ function Defensa({ jugadorActual}) {
                 }
                 
                 if(datinha.idObjetivo == idJugador){
+                  var nuevasCartasDefensa = []
+                  if (datinha.template_carta === "Lanzallamas") {
+                    nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.tipo.toLowerCase() === 'defensa');
+                    nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.nombre === "Nada de barbacoas");
+                  }
+                  if (datinha.template_carta === "Cambio de lugar" || datinha.template_carta === "Mas vale que corras") {
+                    nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.tipo.toLowerCase() === 'defensa');
+                    nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.nombre === "Aqui estoy bien");
+                  }
+
+                  setCartasDefensa(nuevasCartasDefensa);
+                  console.log(cartasDefensa);
+                  if (cartasDefensa == []) {
+                      console.log("No tienes con que defenderte");
+                  }
+                  console.log()
                   setModoDefensa(true);
                 }
             }
@@ -93,7 +110,7 @@ function Defensa({ jugadorActual}) {
     {modoDefensa && (
     
       <div className="row justify-content-center">
-        {cartasData.map((carta) => ( // esto esta copiado de partidaencurso, te deja seleccionar las cartas, se ve desfasado (hay que arreglar)
+        {cartasDefensa.map((carta) => ( // esto esta copiado de partidaencurso, te deja seleccionar las cartas, se ve desfasado (hay que arreglar)
           <div className="col-md-auto" key={carta.id}>
               <CartaComponent
                 esTurnoDefender={modoDefensa} // Indica que es un turno para jugar carta de defensa (ver componente Carta)

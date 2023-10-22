@@ -36,7 +36,7 @@ function CartaComponent({
         <button className="btn btn-outline-primary" onClick={onClick}>
           <div
             className="card bg-info-subtle"
-            style={{ width: "10rem", height: "13.5rem" }}
+            style={{ width: "10.5rem", height: "18rem" }}
           >
             <div className="card-body d-flex flex-column justify-content-around">
               <h5 className="card-title text-center">{carta.nombre}</h5>
@@ -48,7 +48,7 @@ function CartaComponent({
       ) : (
         <div
           className="card bg-info-subtle"
-          style={{ width: "10rem", height: "13.5rem" }}
+          style={{ width: "10.5rem", height: "18rem" }}
         >
           <div className="card-body d-flex flex-column justify-content-around">
             <h5 className="card-title text-center">{carta.nombre}</h5>
