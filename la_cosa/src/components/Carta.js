@@ -24,7 +24,7 @@ function CartaComponent({
     }
     else if (esTurnoDefender)  {
       console.log(`esDefender, algun carta`);
-      if (carta.tipo === "defensa") {
+      if (carta.tipo === "Defensa") {
         onClickJugarCarta(carta);
       }
     }

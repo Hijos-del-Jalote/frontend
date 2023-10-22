@@ -38,7 +38,8 @@ function Defensa({ jugadorActual}) {
                 }
                 
                 if(datinha.idObjetivo == idJugador){
-                  var nuevasCartasDefensa = []
+                  var nuevasCartasDefensa = [];
+                  // var nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.tipo.toLowerCase() === 'defensa');
                   if (datinha.template_carta === "Lanzallamas") {
                     nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.tipo.toLowerCase() === 'defensa');
                     nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.nombre === "Nada de barbacoas");
@@ -53,7 +54,7 @@ function Defensa({ jugadorActual}) {
                   if (cartasDefensa == []) {
                       setEstadoPartida("No tienes con que defenderte");
                   }
-                  console.log()
+                  console.log();
                   setModoDefensa(true);
                 }
             }
