@@ -5,6 +5,7 @@ import CartaComponent from "./Carta";
 import RobarCarta from "./RobarCarta";
 import JugarCarta from "./JugarCarta";
 import DescartarCarta from "./DescartarCarta";
+import "../styles/PartidaEnCurso.css";
 
 function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
   const [habilitarSeleccionarOponente, setHabilitarSeleccionarOponente] =
@@ -75,10 +76,10 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
 
 
   return (
-    <div className="container">
-      <div className="row justify-content-center">
+    <div className="container_partida_encurso">
+      <div className="jugadores_cards">
         {oponentes.map((jugador) => (
-          <div className="col-md-auto" key={jugador.id}>
+          <div className="player_card" key={jugador.id}>
             <PlayerComponent
               player={jugador}
               seleccionarOponente={habilitarSeleccionarOponente}
@@ -87,8 +88,10 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
           </div>
         ))}
       </div>
-      <div className="row justify-content-center">
-        <div className="col-md-auto">
+
+
+      <div className="mazo_container">
+        <div className="mazo">
           <h5>Mazo</h5>
 
           <img
@@ -97,15 +100,15 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
             style={{ width: "75px" }}
           />
         </div>
-        <div className="col-md-auto">
-          <h5>Pila de Descartes</h5>
+        <div className="mazo">
+          <h5>Descartes</h5>
           <img
             src="https://dejpknyizje2n.cloudfront.net/marketplace/products/35568e8161034e6a9c1d71704ff96846.png"
             alt="Mazo de cartas"
             style={{ width: "75px" }}
           />
         </div>
-        <div className="col-md-auto">
+        <div className="botones_juego">
           {esTurno && cartasData.length === 4 && (
             <RobarCarta
               idJugador={idJugador}
@@ -137,12 +140,14 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
           )}
         </div>
       </div>
-      <div className="row">
+
+
+      <div className="mano">
         {/* Mostrar la mano del jugador actual */}
-        <h3 className="text-center">Mano actual</h3>
-        <div className="row justify-content-center">
+        <h3 className="">Mano actual</h3>
+        <div className="cartas_mano">
           {cartasData.map((carta) => (
-            <div className="col-md-auto" key={carta.id}>
+            <div className="carta_mano" key={carta.id}>
               <CartaComponent
                 jugandoCarta={jugandoCarta}
                 descartandoCarta={descartandoCarta}

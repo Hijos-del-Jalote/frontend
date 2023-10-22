@@ -139,12 +139,13 @@ function IniciarPartida() {
         <button className="button_iniciar" onClick={handleSubmit} >
           Iniciar Partida
         </button>
-        <div>{responseText && <p className="mt-3">{responseText}</p>}</div>
       <button className="button_eliminar" onClick={handleAbandonarLobby} >
           Abandonar Lobby
         </button>
         </div>
-        <div>{responseText && <p className="mt-3">{responseText}</p>}</div>
+        {responseText && (
+        <p className="mt-3 alert alert-info">{responseText}</p>
+      )}
         </div>
     </div>
   );

@@ -5,6 +5,7 @@ import InfoPartida from "./InfoPartida";
 import PartidaEnCurso from "./PartidaEnCurso";
 import { useWebSocket } from "./WebSocketContext";
 import FinalizarPartida from "./FinalizarPartida";
+import "../styles/Partida.css";
 
 function Partida() {
   // Variables generales
@@ -124,9 +125,8 @@ function Partida() {
 
   const esTurno = idJugador.toString() === jugadorConTurnoActual.id.toString();
   return (
-    <div className="container-fluid">
-      <div className="row">
-        <div className="col-md-auto ">
+    <div className="container-partida">
+        <div >
           <InfoPartida
             jugadorConTurnoActual={jugadorConTurnoActual}
             esTurno={esTurno}
@@ -135,7 +135,7 @@ function Partida() {
             jugadorEnJuego={player}
           />
         </div>
-        <div className="col ">
+        <div >
           <PartidaEnCurso
             oponentes={jugadoresFiltrados}
             jugadorActual={player}
@@ -144,7 +144,6 @@ function Partida() {
             idPartida={idPartida}
           />
         </div>
-      </div>
     </div>
   );
 }
