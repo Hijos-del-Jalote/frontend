@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useWebSocket } from './WebSocketContext';
+import "../styles/IniciarPartida.css";
 
 
 
@@ -98,7 +99,7 @@ function IniciarPartida() {
             setResponseText("Jugador salió con exito");
             navigate(`/home/crear?idJugador=${idJugador}`);
             
-        }, 2000);
+        }, 0);
       } else {
         console.error("Error al abandonar lobby:");
         // Manejar el caso en que la respuesta no sea 200 (por ejemplo, mostrar un mensaje de error)
@@ -111,46 +112,41 @@ function IniciarPartida() {
 
 
   return (
-    <>
-      <div className="text-center mb-4">
-        <h2 className="mb-3">Lobby de la Partida</h2>
+    <div className="container_iniciar">
+    <div className="subcontainer">
+        <h2 className="lobby_tittle">Lobby de la Partida</h2>
         <p>Esperando a los jugadores...</p>
-      </div>
-      <div className="d-flex justify-content-center">
-        <ul className="list-group">
+      <div className="jugadores_container">
           {players?.length ? (
             players.map((jugador, index) => (
-              <li
+              <div className="jugador_card_iniciar"
                 key={index}
-                className="list-group-item d-flex justify-content-between align-items-center m-2"
+                
               >
-                {jugador.nombre}
-                <span className="badge bg-primary rounded-pill m-2">
-                  Jugador
-                </span>
-              </li>
+              <div>Jugador:</div>
+              <div className="nombre_jug">{jugador.nombre}</div>
+                
+                  
+              </div>
             ))
           ) : (
-            <li className="list-group-item text-center">
+            <div >
               No hay jugadores aún.
-            </li>
+            </div>
           )}
-        </ul>
       </div>
-      <div className="text-center mt-4">
-        <button onClick={handleSubmit} className="btn btn-primary">
+      <div className="contenedor_b">
+        <button className="button_iniciar" onClick={handleSubmit} >
           Iniciar Partida
         </button>
         <div>{responseText && <p className="mt-3">{responseText}</p>}</div>
-      </div>
-      <div className="text-center mt-4">
-      <button onClick={handleAbandonarLobby} className="btn btn-danger">
+      <button className="button_eliminar" onClick={handleAbandonarLobby} >
           Abandonar Lobby
         </button>
+        </div>
         <div>{responseText && <p className="mt-3">{responseText}</p>}</div>
-      </div>
-      
-    </>
+        </div>
+    </div>
   );
 }
 

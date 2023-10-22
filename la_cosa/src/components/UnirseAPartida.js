@@ -41,7 +41,7 @@ function UnirseAPartida() {
         console.log("Jugador unido con exito");
         setTimeout(() => {
           navigate(`/lobby?idJugador=${idJugador}&idPartida=${partidaId}`);
-        }, 2000);
+        }, 0);
       } else {
         // Manejar el caso en que la respuesta no sea 200 (por ejemplo, mostrar un mensaje de error)
       }
