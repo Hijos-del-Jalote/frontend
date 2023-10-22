@@ -7,6 +7,7 @@ import IniciarPartida from "./components/IniciarPartida";
 import Partida from "./components/Partida2";
 import { WebSocketProvider } from './components/WebSocketContext';
 import FinalizarPartida from "./components/FinalizarPartida";
+import "./styles/App.css";
 
 
 function App() {

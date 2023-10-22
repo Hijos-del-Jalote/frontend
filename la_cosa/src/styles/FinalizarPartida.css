@@ -1,12 +1,4 @@
-* {
-    box-sizing: border-box;
-  }
 
-  body {
-    background-color: #c9d2fc;
-    width: 100vw;
-    height: 100vh;
-  }
 
   .container_principal {
     text-align: center;
