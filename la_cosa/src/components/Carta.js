@@ -4,10 +4,13 @@ function CartaComponent({
   carta,
   esTurnoJugarCarta,
   esTurnoDefender,
+  esTurnoIntercambiarCarta,
   onClickEfectoLanzallama,
   onClickJugarCarta,
+  onClickIntercambiarCarta,
 }) {
   const onClick = () => {
+    console.log("esTurnoIntercambiarCarta:", esTurnoIntercambiarCarta);
     if(esTurnoJugarCarta){
       if (carta.nombre === "Lanzallamas" || 
       carta.nombre === "Analisis" ||
@@ -28,11 +31,16 @@ function CartaComponent({
         onClickJugarCarta(carta);
       }
     }
+    if (esTurnoIntercambiarCarta) {
+        console.log("aaa")
+        onClickIntercambiarCarta(carta);
+    }
+
   };
 
   return (
     <div className="bg-info-subtle">
-      {(esTurnoJugarCarta ||  esTurnoDefender) ? (
+      {(esTurnoJugarCarta ||  esTurnoDefender || esTurnoIntercambiarCarta) ? (
         <button className="btn btn-outline-primary" onClick={onClick}>
           <div
             className="card bg-info-subtle"

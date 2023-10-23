@@ -4,9 +4,10 @@ import { useWebSocket } from './WebSocketContext';
 import {useSearchParams } from "react-router-dom";
 import {actualizarPartida} from './Partida2';
 import CartaComponent from "./Carta";
+import ResponderIntercambio from './ResponderIntercambio';
 
 
-function Defensa({ jugadorActual}) {
+function Defensa({ jugadorActual, webSocket}) {
   const [idCarta, setIdCarta] = useState('');
   const [players, setPlayers] = useState([]);
   const [cartaSeleccionada, setCartaSeleccionada] = useState(null);
@@ -18,14 +19,14 @@ function Defensa({ jugadorActual}) {
   const [defender, setDefender] = useState(false); // Estado para rastrear si el jugador está defendiend
   const idPartida = searchParams.get("idPartida");
   const idJugador = searchParams.get("idJugador");
-  const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`; // borrar 
-  const webSocket = useWebSocket(wsurl);
   const [estadoPartida, setEstadoPartida] = useState("");
   const [efectoAnalisis, setEfectoAnalisis] = useState(false);
   const [cartasOtro, setCartasOtro] = useState([]);
   const cartasData = jugadorActual.cartas;
+  const [modoElegirCarta, setModoElegirCarta] = useState(false);
 
   useEffect(() => {
+    console.log("HOLA");
     
     if(webSocket){
         webSocket.onmessage = function(event){
@@ -83,6 +84,24 @@ function Defensa({ jugadorActual}) {
               setEfectoAnalisis(true);
               setCartasOtro(data.data);
             }
+            
+              if(data.event === "intercambio_request") {
+                  console.log("te estan intercambiando");
+                  setModoElegirCarta(true);
+                  
+              }
+              if(data.event === "intercambio") {
+                  console.log("otro esta intercambiando");
+              }
+              if(data.event === "intercambio exitoso") {
+                  console.log("intercambio exitoso");
+                  window.location.reload();
+              }
+              if(data.event === "fin_de_turno") {
+                  console.log("fin de turno");
+                  window.location.reload();
+              }            
+              
         }
     }
     //const algunaCartaEsDefensa = jugadorActual.cartas.some(carta => carta.tipo === 'defensa');
@@ -119,7 +138,12 @@ function Defensa({ jugadorActual}) {
   return (//esto no se como hacer para que se vea bien hasta aca llegué
     
     <div className="row">
-      
+      {!modoDefensa &&(<ResponderIntercambio
+              cartasData={cartasData}
+              cantidadCartasEnMano={cartasData.length}
+              webSocket2={webSocket}
+              modoElegirCarta={modoElegirCarta}
+            ></ResponderIntercambio>)}
     {modoDefensa && (
     
       <div className="row justify-content-center">

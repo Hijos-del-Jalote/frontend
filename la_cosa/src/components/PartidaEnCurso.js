@@ -5,19 +5,28 @@ import CartaComponent from "./Carta";
 import RobarCarta from "./RobarCarta";
 import JugarCarta from "./JugarCarta";
 import Defensa from "./Defender";
+import IntercambiarCarta from "./IntercambioCarta";
+import ResponderIntercambio from "./ResponderIntercambio";
+import { useWebSocket } from './WebSocketContext';
+import {useSearchParams } from "react-router-dom";
 
 function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
   const [habilitarSeleccionarOponente, setHabilitarSeleccionarOponente] =
     useState(false);
   const [carta, setCarta] = useState(null);
   const [jugandoCarta, setJugandoCarta] = useState(false);
-
+  const [intercambiandoCarta, setIntercambiandoCarta] = useState(false);
   const cartasData = jugadorActual.cartas;
-
+  const [searchParams] = useSearchParams();
+  const idPartida = searchParams.get("idPartida");
+  const [modoElegirCarta, setModoElegirCarta] = useState(false);
+  const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`; // borrar 
+  const webSocket = useWebSocket(wsurl);
   // Metodos del componente
 
   // aprieta un lanzallamas
   const onClickEfectoLanzallama = (cartaAJugar) => {
+    console.log("dfsfdssd");
     setHabilitarSeleccionarOponente(true);
     setCarta(cartaAJugar);
     console.log("dfsfdssd");
@@ -27,9 +36,16 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     setJugandoCarta(true);
   };
 
+  const onIntercambiarCarta = () => {
+    //setHabilitarSeleccionarOponente(true);
+    console.log("AAAA");
+    setIntercambiandoCarta(true);
+  };
+
   const onClickJugarCarta = async (cartaAJugar) => {
     // simplemente juega la carta
     // Jugar la carta
+    console.log("AAAA");
     try {
       await axios.post(
         `http://localhost:8000/cartas/jugar?id_carta=${cartaAJugar.id}`
@@ -40,16 +56,23 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
       console.log(error);
     }
   };
-
+ 
   const onSetOponente = async (opnenteAJugar) => {
     console.log("Carta a jugar");
     console.log(carta);
     console.log("Oponente a jugar");
     console.log(opnenteAJugar);
     try {
-      await axios.post(
-        `http://localhost:8000/cartas/jugar?id_carta=${carta.id}&id_objetivo=${opnenteAJugar.id}`
-      );
+      if (!intercambiandoCarta) {
+        await axios.post(
+          `http://localhost:8000/cartas/jugar?id_carta=${carta.id}&id_objetivo=${opnenteAJugar.id}`
+        );
+      }
+      if (intercambiandoCarta) {
+        await axios.put(
+          `http://localhost:8000/cartas/${carta.id}/intercambiar?idObjetivo=${opnenteAJugar.id}`
+        );
+      }
       console.log("Jugador eliminado exitosamente");
       recargarPagina();
     } catch (error) {
@@ -94,6 +117,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
           />
         </div>
         <div className="col-md-auto">
+          
           {esTurno && cartasData.length === 4 && (
             <RobarCarta
               idJugador={idJugador}
@@ -109,6 +133,11 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
               cantidadCartasEnMano={cartasData.length}
             ></JugarCarta>
           )}
+
+          
+            
+          
+
           {jugandoCarta && !habilitarSeleccionarOponente && (
             <div>Selecciona una carta para jugar</div>
           )}
@@ -116,8 +145,17 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
             <div>Selecciona una carta para jugar</div>
           )}
           <Defensa 
-          jugadorActual={jugadorActual}>
+          jugadorActual={jugadorActual}
+          webSocket={webSocket}>
           </Defensa>
+          
+          {esTurno && cartasData.length === 4 && !intercambiandoCarta && (
+            <IntercambiarCarta 
+              esTurno={esTurno}
+              onClick={onIntercambiarCarta}
+              cantidadCartasEnMano={cartasData.length} >
+            </IntercambiarCarta>
+          )}
         </div>
       </div>
       <div className="row">
@@ -128,9 +166,11 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
             <div className="col-md-auto" key={carta.id}>
               <CartaComponent
                 esTurnoJugarCarta={jugandoCarta}
+                esTurnoIntercambiarCarta={intercambiandoCarta}
                 carta={carta}
                 onClickEfectoLanzallama={onClickEfectoLanzallama}
                 onClickJugarCarta={onClickJugarCarta}
+                onClickIntercambiarCarta={onClickEfectoLanzallama}
               ></CartaComponent>
             </div>
           ))}
