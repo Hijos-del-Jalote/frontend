@@ -87,11 +87,13 @@ function Defensa({ jugadorActual, webSocket}) {
             
               if(data.event === "intercambio_request") {
                   console.log("te estan intercambiando");
+                  setEstadoPartida(`Te quieren intercambiar`);
                   setModoElegirCarta(true);
                   
               }
               if(data.event === "intercambio") {
-                  console.log("otro esta intercambiando");
+                  console.log("Otro esta en intercambio");
+                  setEstadoPartida(`Otro esta intercambiando`);
               }
               if(data.event === "intercambio exitoso") {
                   console.log("intercambio exitoso");
@@ -99,7 +101,9 @@ function Defensa({ jugadorActual, webSocket}) {
               }
               if(data.event === "fin_de_turno") {
                   console.log("fin de turno");
+                  setEstadoPartida(`Fin de intercambio y de turno`);
                   window.location.reload();
+                  
               }            
               
         }

@@ -29,6 +29,7 @@ function ResponderIntercambio({modoElegirCarta, cartasData, webSocket2, esTurno,
         }
         if(data.event === "fin_de_turno") {
             console.log("fin de turno");
+            window.location.reload();
         }            
         }
     }
