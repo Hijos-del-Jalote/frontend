@@ -2,16 +2,25 @@ import React from "react";
 
 function CartaComponent({
   carta,
+
   esTurnoJugarCarta,
   esTurnoDefender,
+
   esTurnoIntercambiarCarta,
   onClickEfectoLanzallama,
   onClickJugarCarta,
   onClickIntercambiarCarta,
+
+
+  descartandoCarta,
+  jugandoCarta,
+
+  onClickEfectoLanzallama,
+  onClickJugarCarta,
+  onDescartarCarta,
 }) {
   const onClick = () => {
-    console.log("esTurnoIntercambiarCarta:", esTurnoIntercambiarCarta);
-    if(esTurnoJugarCarta){
+    if(esTurnoJugarCarta  && !descartandoCarta){
       if (carta.nombre === "Lanzallamas" || 
       carta.nombre === "Analisis" ||
       carta.nombre === "Sospecha" ||
@@ -31,16 +40,27 @@ function CartaComponent({
         onClickJugarCarta(carta);
       }
     }
+
     if (esTurnoIntercambiarCarta) {
         console.log("aaa")
         onClickIntercambiarCarta(carta);
     }
 
+
+    else if (jugandoCarta) {
+      onClickJugarCarta(carta);
+    } else if (descartandoCarta) {
+      onDescartarCarta(carta);
+    } 
+
   };
 
   return (
     <div className="bg-info-subtle">
-      {(esTurnoJugarCarta ||  esTurnoDefender || esTurnoIntercambiarCarta) ? (
+
+      {esTurnoJugarCarta ||  esTurnoDefender || jugandoCarta || descartandoCarta || esTurnoIntercambiarCarta ? (
+
+
         <button className="btn btn-outline-primary" onClick={onClick}>
           <div
             className="card bg-info-subtle"

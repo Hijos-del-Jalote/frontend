@@ -1,23 +1,43 @@
+
 import React from "react";
-import { render, waitFor } from "@testing-library/react";
-import axios from "axios";
+import { render } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom"; // Importa MemoryRouter
 import FinalizarPartida from "../components/FinalizarPartida";
 
-jest.mock('axios');
+test("Renderiza correctamente cuando los humanos ganan", () => {
+  const winners = [1, 2, 3]; // Ejemplo de ganadores
+  const { getByText } = render(
+    <MemoryRouter> {/* Wrap con MemoryRouter */}
+      <FinalizarPartida
+        isHumanoTeamWinner={true}
+        winners={winners}
+        idJugador={123}
+      />
+    </MemoryRouter>
+  );
 
-test('Probar función FinalizarPartida', async () => {
-  const idPartida = 1;
-  const data = {
-    finalizada: true,
-    idGanador: 2
-  };
+  const mensajeElement = getByText("La partida termina porque los Humanos ganaron como equipo. Los ganadores son:");
+  const ganadoresElement = getByText("Jugador 1");
 
-  axios.get.mockResolvedValue({ data });
+  expect(mensajeElement).toBeInTheDocument();
+  expect(ganadoresElement).toBeInTheDocument();
+});
 
-  const { getByText } = render(<FinalizarPartida idPartida={idPartida} />);
+test("Renderiza correctamente cuando La Cosa e Infectados ganan", () => {
+  const winners = [4, 5, 6]; // Ejemplo de ganadores
+  const { getByText } = render(
+    <MemoryRouter> {/* Wrap con MemoryRouter */}
+      <FinalizarPartida
+        isHumanoTeamWinner={false}
+        winners={winners}
+        idJugador={456}
+      />
+    </MemoryRouter>
+  );
 
-  // Espera a que la solicitud POST se complete y el componente se actualice
-  await waitFor(() => {
-    expect(getByText(`La partida está finalizada. El ganador es el jugador con ID: ${data.idGanador}`)).toBeInTheDocument();
-  });
+  const mensajeElement = getByText("La partida termina porque La Cosa y los Infectados ganaron como equipo. Los ganadores son:");
+  const ganadoresElement = getByText("Jugador 4");
+
+  expect(mensajeElement).toBeInTheDocument();
+  expect(ganadoresElement).toBeInTheDocument();
 });

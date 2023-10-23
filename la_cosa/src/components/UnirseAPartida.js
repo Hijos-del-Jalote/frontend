@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { apiObtenerPartidas } from "./apiService";
+import "../styles/UnirseAPartida.css";
 
 function UnirseAPartida() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ function UnirseAPartida() {
     const fetchData = async () => {
       try {
         const result = await apiObtenerPartidas();
-  
+
         if (result.success) {
           setPartidas(result.partidas);
         } else {
@@ -25,11 +26,9 @@ function UnirseAPartida() {
         console.error("Error inesperado:", error);
       }
     };
-  
+
     fetchData(); // Llama a la función fetchData inmediatamente
-  
   }, []);
-  
 
   const handleUnirseAPartida = async (partidaId) => {
     try {
@@ -42,7 +41,7 @@ function UnirseAPartida() {
         console.log("Jugador unido con exito");
         setTimeout(() => {
           navigate(`/lobby?idJugador=${idJugador}&idPartida=${partidaId}`);
-        }, 2000);
+        }, 0);
       } else {
         // Manejar el caso en que la respuesta no sea 200 (por ejemplo, mostrar un mensaje de error)
       }
@@ -53,34 +52,31 @@ function UnirseAPartida() {
   };
 
   return (
-    <div className="container text-center">
-      <h2 className="mt-5">Lista de Partidas Disponibles</h2>
-      <ul className="list-unstyled">
+    <div className="container_unirse">
+      <h2>Lista de Partidas Disponibles</h2>
+      <div className="lista_partida">
         {partidas.map((partida) => (
-          <li key={partida.id} className="mb-3">
-            <div
-              className="container p-3 rounded"
-              style={{ backgroundColor: "#ffecb3" }}
-            >
-              <h4 className="mb-3">
-                <strong>{partida.nombre}</strong>
-              </h4>
-              <div className="row align-items-center">
-                <strong>Max Jugadores: {partida.maxJug}</strong>
-              </div>
-              <div className="row align-items-center">
-                <strong>Min Jugadores: {partida.minJug}</strong>
-              </div>
-              <button
-                onClick={() => handleUnirseAPartida(partida.id)}
-                className="btn btn-primary mt-2"
-              >
-                Unirse a la Partida
-              </button>
+          <div key={partida.id} className="card_partida">
+            <h4 className="partida_nombre">
+              {partida.nombre}
+            </h4>
+            <div className="cantidad_jugadores">
+            <div className="text_maxmin">
+              Max Jugadores: {partida.maxJug}
             </div>
-          </li>
+            <div className="text_maxmin">
+              Min Jugadores: {partida.minJug}
+            </div>
+            </div>
+            <button
+              onClick={() => handleUnirseAPartida(partida.id)}
+              className="button_unirse"
+            >
+              Unirse
+            </button>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

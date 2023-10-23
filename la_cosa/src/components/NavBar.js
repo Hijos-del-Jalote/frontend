@@ -1,4 +1,5 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
+import "../styles/NavBar.css";
 
 function Navbar() {
   // Saco de la url mi idJugador
@@ -8,22 +9,23 @@ function Navbar() {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg navbar-light bg-warning">
-        <div className="container">
-          <ul className="navbar-nav mx-auto">
-            <li className="nav-item">
-              <Link to={`crear?idJugador=${idJugador}`} className="nav-link">
-                <button className="btn btn-success">Crear Partida</button>
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link to={`unir?idJugador=${idJugador}`} className="nav-link">
-                <button className="btn btn-primary">Unirse a Partida</button>
-              </Link>
-            </li>
-          </ul>
+      <div className="container_nav">
+      <h1 className="la_cosa">La Cosa</h1>
+      <div className="botones_contenedor">
+        <div className="item1">
+          <Link to={`crear?idJugador=${idJugador}`} className="nav-link">
+            <button className="item">Crear Partida</button>
+          </Link>
         </div>
-      </nav>
+        <div className="item2">
+          <Link to={`unir?idJugador=${idJugador}`} className="nav-link">
+            <button className="item">Unirse a Partida</button>
+          </Link>
+        </div>
+        </div>
+        <div></div>
+        <div className="alien_img"></div>
+      </div>
 
       <Outlet />
     </>

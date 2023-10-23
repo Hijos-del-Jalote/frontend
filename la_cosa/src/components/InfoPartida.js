@@ -1,19 +1,35 @@
 // InfoPartida.js
 import React from "react";
+import "../styles/InfoPartida.css";
 
-function InfoPartida({ jugadorConTurnoActual, esTurno, sentido, partida, jugadorEnJuego }) {
+function InfoPartida({
+  jugadorConTurnoActual,
+  esTurno,
+  sentido,
+  partida,
+  jugadorEnJuego,
+}) {
   return (
-    <div className="container-fluid" style={{width: "250px"}}>
-      <div className="card">
-        <div className="card-header">Datos de la Partida</div>
-        <ul className="list-group list-group-flush">
-        <li className="list-group-item"><strong>Partida:</strong> {partida.nombre}</li>
-        <li className="list-group-item"><strong>Tú eres:</strong> {jugadorEnJuego.nombre}</li>
-          <li className="list-group-item"><strong>Turno Actual:</strong> {jugadorConTurnoActual.nombre}</li>
-          <li className="list-group-item"><strong>Estado:</strong>{" "}
-              {esTurno ? "Es tu turno" : "No es tu turno"}</li>
-          <li className="list-group-item"><strong>Sentido:</strong> {sentido ? "Horario" : "Antihorario"}</li>
-        </ul>
+    <div className="container-info">
+      <h5 className="titulo_info">Datos de la Partida</h5>
+      <div className="item_info">
+        <div className="item_title">Partida:</div> <div>{partida.nombre}</div>
+      </div>
+      <div className="item_info">
+        <div className="item_title">Tú eres:</div> <div>{jugadorEnJuego.nombre}</div>
+      </div>
+      <div className="item_info">
+        <div className="item_title">Turno Actual:</div> <div>{jugadorConTurnoActual.nombre}</div>
+      </div>
+      <div className="item_info">
+        <div className="item_title">Estado:</div>{" "}
+        <div>{esTurno ? "Es tu turno" : "No es tu turno"}</div>
+      </div>
+      <div className="item_info">
+        <div className="item_title">Sentido:</div> <div>{sentido ? "Horario" : "Antihorario"}</div>
+      </div>
+      <div className="item_info">
+        <div className="item_title">Rol:</div> <div>{jugadorEnJuego.rol}</div>
       </div>
     </div>
   );
