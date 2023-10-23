@@ -4,8 +4,12 @@ import axios from "axios";
 import CartaComponent from "./Carta";
 import RobarCarta from "./RobarCarta";
 import JugarCarta from "./JugarCarta";
+
+import Defensa from "./Defender";
+
 import DescartarCarta from "./DescartarCarta";
 import "../styles/PartidaEnCurso.css";
+
 
 function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
   const [habilitarSeleccionarOponente, setHabilitarSeleccionarOponente] =
@@ -138,6 +142,9 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
           {habilitarSeleccionarOponente && (
             <div>Selecciona un oponente </div>
           )}
+          <Defensa 
+          jugadorActual={jugadorActual}>
+          </Defensa>
         </div>
       </div>
 

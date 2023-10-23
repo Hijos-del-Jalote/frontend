@@ -19,14 +19,19 @@ function Partida() {
   const queryParams = new URLSearchParams(location.search);
   const idPartida = queryParams.get("idPartida");
   const idJugador = queryParams.get("idJugador");
+
   //Websocket 
   const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`;
   const webSocket = useWebSocket(wsurl);
 
 
 
+
   // Lo primero q hago es un get
   useEffect(() => {
+    const actualizarPartida = (nuevaPartida) => {
+      setPartida(nuevaPartida);
+    };
     // Hacer una solicitud GET a http://localhost:8000/partidas/{idPartida} cuando el componente se monte
     axios
       .get(`http://localhost:8000/jugadores/${idJugador}`)
@@ -100,7 +105,9 @@ function Partida() {
 
   // Mostrar oponentes
   const jugadoresFiltrados = arrayJugadoresOrdenados.filter(
+
     (jugador) => jugador.id.toString() !== idJugador.toString() && jugador.isAlive === 1
+
   );
 
   if (jugadoresFiltrados.length === 0) {
@@ -147,5 +154,7 @@ function Partida() {
     </div>
   );
 }
-
+export function actualizarPartida(nuevaPartida) {
+  Partida.setPartida(nuevaPartida);
+}
 export default Partida;
