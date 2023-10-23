@@ -70,10 +70,10 @@ function Defensa({ jugadorActual, webSocket}) {
               // actualizarPartida(JSON.parse(data.data))
               
               setTimeout(() => {
-                setEstadoPartida(`${data.data.nombreJugador} terminó de jugar carta`);
+                setEstadoPartida(`$El oponente terminó de jugar carta`);
                 setTimeout(() => {
                   window.location.reload();
-                }, 2000);
+                }, 500);
               }, 2000);
             }
             if(data.event === "defensa_erronea"){

@@ -52,7 +52,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     //setHabilitarSeleccionarOponente(true);
     console.log("AAAA");
     setIntercambiandoCarta(true);
-
+  }
   const onClickDescartarCarta = async (cartaADescartar) => {
     // simplemente juega la carta
     // Jugar la carta
@@ -61,6 +61,9 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
       await axios.put(
         `http://localhost:8000/cartas/descartar_carta/${cartaADescartar.id}`
       );
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.log(error);
     }
@@ -147,8 +150,8 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
         </div>
 
 
+        
           
-
         <div className="botones_juego">
 
           {esTurno && cartasData.length === 4 && (
@@ -230,5 +233,6 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     </div>
   );
 }
+
 
 export default PartidaEnCurso;

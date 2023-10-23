@@ -15,8 +15,6 @@ function CartaComponent({
   descartandoCarta,
   jugandoCarta,
 
-  onClickEfectoLanzallama,
-  onClickJugarCarta,
   onDescartarCarta,
 }) {
   const onClick = () => {
