@@ -1,42 +1,49 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React from "react";
+import CustomButton from "./CustomButton";
+import { useNavigate } from "react-router-dom";
+import "../styles/FinalizarPartida.css";
 
-function FinalizarPartida({ idPartida }) {
-    //inicializo como partida no terminada
-  const [part_finalizada, setpart_Finalizada] = useState(false);
-  const [ganadorId, setGanadorId] = useState(null);
+const FinalizarPartida = ({ isHumanoTeamWinner, winners, idJugador}) => {
+  const navigate = useNavigate();
+  let mensaje = "";
+  let ganadoresMensaje = "";
+  // Metodos
+  const navigateToHome = () => {
+    navigate(`/home/crear?idJugador=${idJugador}`);
+  };
 
-  useEffect(() => {
-    // Esta función se ejecutará automáticamente cuando el componente se monte
-    handleFinalizarPartida();
-  }, []);
+  if (isHumanoTeamWinner) {
+    mensaje =
+      "La partida termina porque los Humanos ganaron como equipo. Los ganadores son:";
+  } else {
+    mensaje =
+      "La partida termina porque La Cosa y los Infectados ganaron como equipo. Los ganadores son:";
+  }
 
-  const handleFinalizarPartida = async () => {
-    try {
-    
-      const response = await axios.get(`http://localhost:8000/partidas/estado?idPartida=${idPartida}`);
-      // guardo la informacion 
-      const data = response.data;
-            //verifico el estado de la partida 
-      if (data.finalizada) {
-        setpart_Finalizada(true);
-        setGanadorId(data.idGanador);
-      }
-    } catch (error) {
-      console.error('Error al finalizar la partida:', error);
-    }
+  if (winners.length > 0) {
+    ganadoresMensaje = winners.map((jugador, index) => (
+      <div
+        className="carta-jugador"
+        key={index}
+      >
+          {`Jugador ${jugador}`}
+      </div>
+    ));
   }
 
   return (
-    <div>
-      {part_finalizada ? (
-        <p>La partida está finalizada. El ganador es el jugador con ID: {ganadorId}</p>
-      ) : (
-        <p>La partida se está finalizando...</p>
-      )}
+    <div className="container_principal">
+      <h2 className="title">FIN DE LA PARTIDA</h2>
+      <p className="mensaje">{mensaje}</p>
+      <div className="list">{ganadoresMensaje}</div>
+      <div className="p-10"></div>
+      <div className="button-space">
+      <CustomButton
+        text={"Volver al Inicio"}
+        onClick={navigateToHome}
+      ></CustomButton></div>
     </div>
   );
-}
+};
 
 export default FinalizarPartida;
-

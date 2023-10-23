@@ -2,13 +2,19 @@ import React from "react";
 
 function CartaComponent({
   carta,
+
   esTurnoJugarCarta,
   esTurnoDefender,
+
+  descartandoCarta,
+  jugandoCarta,
+
   onClickEfectoLanzallama,
   onClickJugarCarta,
+  onDescartarCarta,
 }) {
   const onClick = () => {
-    if(esTurnoJugarCarta){
+    if(esTurnoJugarCarta  && !descartandoCarta){
       if (carta.nombre === "Lanzallamas" || 
       carta.nombre === "Analisis" ||
       carta.nombre === "Sospecha" ||
@@ -28,11 +34,17 @@ function CartaComponent({
         onClickJugarCarta(carta);
       }
     }
+    else if (jugandoCarta) {
+      onClickJugarCarta(carta);
+    } else if (descartandoCarta) {
+      onDescartarCarta(carta);
+    } 
   };
 
   return (
     <div className="bg-info-subtle">
-      {(esTurnoJugarCarta ||  esTurnoDefender) ? (
+      {esTurnoJugarCarta ||  esTurnoDefender || jugandoCarta || descartandoCarta ? (
+
         <button className="btn btn-outline-primary" onClick={onClick}>
           <div
             className="card bg-info-subtle"

@@ -30,7 +30,6 @@ function PlayerComponent({ player, seleccionarOponente, onClick }) {
               style={{ width: "100px" }}
             />
             <h5 className="card-title">{player.nombre}</h5>
-            <p className="card-text">Posición: {player.posicion}</p>
           </div>
 
       )}
