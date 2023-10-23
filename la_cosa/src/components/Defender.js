@@ -65,10 +65,15 @@ function Defensa({ jugadorActual}) {
                     setEstadoPartida(`${data.data.nombreJugador} quiere jugar defenderse del ataque`); 
                 }// este no se porque todavia no sabemos como lo pasa el back, pero solo avisa si se defendio o no
             }
-            if(data.event === "fin_turno_jugar"){ // esto se rompe (ver por qué)
-            //     actualizarPartida(JSON.parse(data.data))
-            setEstadoPartida(`${data.data.nombreJugador} terminó de jugar carta`)
-            window.location.reload();
+            if (data.event === "fin_turno_jugar") {
+              // actualizarPartida(JSON.parse(data.data))
+              
+              setTimeout(() => {
+                setEstadoPartida(`${data.data.nombreJugador} terminó de jugar carta`);
+                setTimeout(() => {
+                  window.location.reload();
+                }, 2000);
+              }, 2000);
             }
             if(data.event === "defensa_erronea"){
               setEstadoPartida(`Elige una carta de defensa valida`);
