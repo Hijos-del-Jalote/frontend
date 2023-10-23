@@ -6,6 +6,10 @@ import RobarCarta from "./RobarCarta";
 import JugarCarta from "./JugarCarta";
 
 import Defensa from "./Defender";
+import IntercambiarCarta from "./IntercambioCarta";
+import ResponderIntercambio from "./ResponderIntercambio";
+import { useWebSocket } from './WebSocketContext';
+import {useSearchParams } from "react-router-dom";
 
 import DescartarCarta from "./DescartarCarta";
 import "../styles/PartidaEnCurso.css";
@@ -16,14 +20,25 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     useState(false);
   const [carta, setCarta] = useState(null);
   const [jugandoCarta, setJugandoCarta] = useState(false);
+
+  const [intercambiandoCarta, setIntercambiandoCarta] = useState(false);
+
+  const [searchParams] = useSearchParams();
+  const idPartida = searchParams.get("idPartida");
+  const [modoElegirCarta, setModoElegirCarta] = useState(false);
+  const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`; // borrar 
+  const webSocket = useWebSocket(wsurl);
+
   const [descartandoCarta, setDescartandoCarta] = useState(false);
   const cartasData = jugadorActual.cartas;
+
 
 
   // Metodos del componente
 
   // aprieta un lanzallamas
   const onClickEfectoLanzallama = (cartaAJugar) => {
+    console.log("dfsfdssd");
     setHabilitarSeleccionarOponente(true);
     setCarta(cartaAJugar);
   };
@@ -32,6 +47,12 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     setJugandoCarta(true);
   };
 
+
+  const onIntercambiarCarta = () => {
+    //setHabilitarSeleccionarOponente(true);
+    console.log("AAAA");
+    setIntercambiandoCarta(true);
+  }
   const onClickDescartarCarta = async (cartaADescartar) => {
     // simplemente juega la carta
     // Jugar la carta
@@ -40,14 +61,19 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
       await axios.put(
         `http://localhost:8000/cartas/descartar_carta/${cartaADescartar.id}`
       );
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.log(error);
     }
+
   };
 
   const onClickJugarCarta = async (cartaAJugar) => {
     // simplemente juega la carta
     // Jugar la carta
+    console.log("AAAA");
     try {
       await axios.post(
         `http://localhost:8000/cartas/jugar?id_carta=${cartaAJugar.id}`
@@ -57,10 +83,13 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
       console.log(error);
     }
   };
+ 
+
 
   const onDescartarCarta = async () => {
     setDescartandoCarta(true);
   };
+
 
 
   const onSetOponente = async (opnenteAJugar) => {
@@ -69,9 +98,16 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     console.log("Oponente a jugar");
     console.log(opnenteAJugar);
     try {
-      await axios.post(
-        `http://localhost:8000/cartas/jugar?id_carta=${carta.id}&id_objetivo=${opnenteAJugar.id}`
-      );
+      if (!intercambiandoCarta) {
+        await axios.post(
+          `http://localhost:8000/cartas/jugar?id_carta=${carta.id}&id_objetivo=${opnenteAJugar.id}`
+        );
+      }
+      if (intercambiandoCarta) {
+        await axios.put(
+          `http://localhost:8000/cartas/${carta.id}/intercambiar?idObjetivo=${opnenteAJugar.id}`
+        );
+      }
       console.log("Jugador eliminado exitosamente");
     } catch (error) {
       console.log(error);
@@ -112,7 +148,12 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
             style={{ width: "75px" }}
           />
         </div>
+
+
+        
+          
         <div className="botones_juego">
+
           {esTurno && cartasData.length === 4 && (
             <RobarCarta
               idJugador={idJugador}
@@ -133,6 +174,11 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
             <DescartarCarta onClick={onDescartarCarta}></DescartarCarta>
             
           )}
+
+          
+            
+          
+
           {jugandoCarta && !habilitarSeleccionarOponente && (
             <div>Selecciona una carta para jugar</div>
           )}
@@ -143,8 +189,17 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
             <div>Selecciona un oponente </div>
           )}
           <Defensa 
-          jugadorActual={jugadorActual}>
+          jugadorActual={jugadorActual}
+          webSocket={webSocket}>
           </Defensa>
+          
+          {esTurno && cartasData.length === 4 && !intercambiandoCarta && (
+            <IntercambiarCarta 
+              esTurno={esTurno}
+              onClick={onIntercambiarCarta}
+              cantidadCartasEnMano={cartasData.length} >
+            </IntercambiarCarta>
+          )}
         </div>
       </div>
 
@@ -156,12 +211,20 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
           {cartasData.map((carta) => (
             <div className="carta_mano" key={carta.id}>
               <CartaComponent
+
+                esTurnoJugarCarta={jugandoCarta}
+                esTurnoIntercambiarCarta={intercambiandoCarta}
+
+                onClickIntercambiarCarta={onClickEfectoLanzallama}
+
+                
                 jugandoCarta={jugandoCarta}
                 descartandoCarta={descartandoCarta}
                 carta={carta}
                 onClickEfectoLanzallama={onClickEfectoLanzallama}
                 onClickJugarCarta={onClickJugarCarta}
                 onDescartarCarta={onClickDescartarCarta}
+
               ></CartaComponent>
             </div>
           ))}
@@ -170,5 +233,6 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     </div>
   );
 }
+
 
 export default PartidaEnCurso;
