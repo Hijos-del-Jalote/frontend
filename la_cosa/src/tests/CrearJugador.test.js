@@ -54,7 +54,7 @@ describe("CrearJugador", () => {
 
     // Simula el envío del formulario
     const crearJugador = getByText("Crear Jugador", {
-      selector: "button.btn.btn-primary",
+      selector: "button",
     });
     fireEvent.click(crearJugador);
 

@@ -22,7 +22,7 @@ describe('CrearPartida', () => {
     fireEvent.change(nombrePartidaInput, { target: { value: 'Mi Partida' } });
   
     // Simula el envío del formulario
-    const crearPartidaButton = getByText('Crear Partida', { selector: 'button.btn.btn-primary' });
+    const crearPartidaButton = getByText('Crear Partida', { selector: 'button' });
     fireEvent.click(crearPartidaButton);
   
     // Espera a que la respuesta del backend se refleje en la interfaz
@@ -46,7 +46,7 @@ describe('CrearPartida', () => {
       fireEvent.change(nombrePartidaInput, { target: { value: 'Mi Partida' } });
   
       // Simula el envío del formulario
-      const crearPartidaButton = getByText('Crear Partida', { selector: 'button.btn.btn-primary' });
+      const crearPartidaButton = getByText('Crear Partida', { selector: 'button' });
       fireEvent.click(crearPartidaButton);
   
       // Espera a que el mensaje de error se refleje en la interfaz
