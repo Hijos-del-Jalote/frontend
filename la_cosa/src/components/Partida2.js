@@ -134,22 +134,22 @@ function Partida() {
   return (
     <div className="container-partida">
         <div >
-          <InfoPartida
+          {player && <InfoPartida
             jugadorConTurnoActual={jugadorConTurnoActual}
             esTurno={esTurno}
             sentido={sentido}
             partida={partida}
             jugadorEnJuego={player}
-          />
+          />}
         </div>
         <div >
-          <PartidaEnCurso
+          {player && <PartidaEnCurso
             oponentes={jugadoresFiltrados}
             jugadorActual={player}
             esTurno={esTurno}
             idJugador={idJugador}
             idPartida={idPartida}
-          />
+          />}
         </div>
     </div>
   );
