@@ -6,10 +6,10 @@ import Tipos from "./Actions";
 
   const storeReducer = (state, action) => {
     switch (action.type) {
-      case Tipos.cambiarNombreJugador:
+      case Tipos.setJugador:
         return {
           ...state,
-          nombreJugador: action.payload,
+          jugador: action.payload,
         }
       default:
         return state;

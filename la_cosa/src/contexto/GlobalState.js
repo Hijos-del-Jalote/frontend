@@ -1,8 +1,7 @@
+import Jugador from "../data/models/Jugador";
 
 const initialGlobalState = {
-    nombreJugador: "",
-    habilitarCartas: 'HabilitarCartas',
-    habilitarOponentes: 'HabilitarOponentes',
+    jugador: Jugador
 }
 
 export default initialGlobalState;

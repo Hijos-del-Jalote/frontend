@@ -1,5 +1,5 @@
 const Tipos = {
-    cambiarNombreJugador: 'cambiar nombre jugador',
+    setJugador: 'cambiar nombre jugador',
 
 }
 

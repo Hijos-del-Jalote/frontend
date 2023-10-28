@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { useWebSocket } from './WebSocketContext';
+import { useWebSocket } from '../components/WebSocketContext';
 import "../styles/IniciarPartida.css";
 
 

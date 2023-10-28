@@ -25,7 +25,7 @@ export async function apiCrearJugador(nombreJugador) {
 }
 
 export async function apiObtenerJugador(idJugador) {
-  const url = BASE_URL + `/jugadores/${25}`;
+  const url = BASE_URL + `/jugadores/${idJugador}`;
 
   try {
     const response = await axios.get(url);

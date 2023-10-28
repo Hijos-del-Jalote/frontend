@@ -20,6 +20,7 @@ const Game = () => {
    */
   const crearJugador = async (nombre) => {
     const userId = await apiCrearJugador(nombre);
+    localStorage.saveUserId(userId);
     if (isNotNull(userId)) {
       localStorage.saveUserId(userId);
       return userId;
