@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { apiCrearJugador } from "./apiService";
 import "../styles/CrearJugador.css";
-import CustomButton from "./CustomButton";
+import { StoreContext } from "../contexto/StoreProvider";
+import Tipos from "../contexto/Actions";
 
 function CrearJugador() {
+  const [store, dispatch] = useContext(StoreContext);
+
   const navigate = useNavigate();
 
   const [nombreJugador, setNombreJugador] = useState("");
   const [mensajeRespuesta, setMensajeRespuesta] = useState("");
 
   const handleCrearJugador = async () => {
+    
     const response = await apiCrearJugador(nombreJugador);
     if (response.success) {
+      dispatch({type: Tipos.cambiarNombreJugador, payload: {nombreJugador}})
       setMensajeRespuesta(
         "Jugador creado exitosamente, redirigiendo al inicio ..."
       );
@@ -30,7 +35,7 @@ function CrearJugador() {
   };
   return (
     <div className="container_principal">
-      <div class="background-image"></div>
+      <div className="background-image"></div>
       <h1 className="welcome">¡Bienvenidos al juego La Cosa!</h1>
 
       <h4 className="subtitulos">Para comenzar a jugar:</h4>
