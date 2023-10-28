@@ -1,3 +1,4 @@
-const JugadorCreadoMsg = 'Jugador creado con exito.';
+const JugadorCreadoMsg = 'El jugador ha sido creado.';
+const PartidaCreadaConExito = "La partida ha sido creada."
 
-export default JugadorCreadoMsg;
+export  {JugadorCreadoMsg, PartidaCreadaConExito};

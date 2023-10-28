@@ -12,10 +12,10 @@ function CrearJugador() {
 
   const handleCrearJugador = async () => {
     
-    const response = await game.crearJugador(nombreJugador);
-    if (response != null) {
+    const userId = await game.crearJugador(nombreJugador);
+    if (userId != null) {
       setTimeout(() => {
-        navigate(`/home/crear?idJugador=${response.playerId}`);
+        navigate(`/home/crear?idJugador=${userId}`);
       }, 1000);
     }
   };

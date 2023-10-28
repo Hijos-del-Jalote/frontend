@@ -1,6 +1,7 @@
 import axios from "axios";
 import { showErrorMsg, showSuccessMsg } from "../utils/Toasts";
-import JugadorCreadoMsg from "../utils/Mensajes";
+import {JugadorCreadoMsg,PartidaCreadaConExito} from "../utils/Mensajes";
+import Jugador from "./models/Jugador";
 
 const BASE_URL = "http://localhost:8000";
 
@@ -24,12 +25,22 @@ export async function apiCrearJugador(nombreJugador) {
 }
 
 export async function apiObtenerJugador(idJugador) {
-  const url = BASE_URL + `/jugadores/${idJugador}`;
+  const url = BASE_URL + `/jugadores/${25}`;
 
   try {
     const response = await axios.get(url);
-
-    return response.data;
+    const data= response.data;
+    const jugador = new Jugador(
+      data.nombre,
+      data.isHost,
+      data.posicion,
+      data.isAlive,
+      data.blockIzq,
+      data.blockDer,
+      data.rol,
+      data.cartas
+    );
+    return jugador;
   } catch (error) {
     if (error.message == "Network Error") {
       showErrorMsg(error.message);
@@ -48,6 +59,8 @@ export async function apiCrearPartida(nombrePartida, idJugador) {
 
   try {
     const response = await axios.post(url);
+    console.log(response);
+    showSuccessMsg(PartidaCreadaConExito);
     return response.data.idPartida;
   } catch (error) {
     if (error.message == "Network Error") {
