@@ -1,38 +1,25 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { apiCrearJugador } from "./apiService";
 import "../styles/CrearJugador.css";
-import { StoreContext } from "../contexto/StoreProvider";
-import Tipos from "../contexto/Actions";
+import Game from "../Game.js";
 
 function CrearJugador() {
-  const [store, dispatch] = useContext(StoreContext);
+  const game = Game();
 
   const navigate = useNavigate();
 
   const [nombreJugador, setNombreJugador] = useState("");
-  const [mensajeRespuesta, setMensajeRespuesta] = useState("");
 
   const handleCrearJugador = async () => {
     
-    const response = await apiCrearJugador(nombreJugador);
-    if (response.success) {
-      dispatch({type: Tipos.cambiarNombreJugador, payload: {nombreJugador}})
-      setMensajeRespuesta(
-        "Jugador creado exitosamente, redirigiendo al inicio ..."
-      );
+    const response = await game.crearJugador(nombreJugador);
+    if (response != null) {
       setTimeout(() => {
         navigate(`/home/crear?idJugador=${response.playerId}`);
       }, 1000);
-    } else {
-      setMensajeRespuesta(response.message);
-
-      // Si pasa algo que me lo muestre en consola
-      if (response.error != null) {
-        console.log(response.error);
-      }
     }
   };
+
   return (
     <div className="container_principal">
       <div className="background-image"></div>
@@ -55,10 +42,6 @@ function CrearJugador() {
       >
         Crear Jugador
       </button>
-
-      {mensajeRespuesta && (
-        <p className="mt-3 alert alert-info">{mensajeRespuesta}</p>
-      )}
     </div>
   );
 }

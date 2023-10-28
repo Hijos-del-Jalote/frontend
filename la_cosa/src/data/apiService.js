@@ -1,4 +1,6 @@
 import axios from "axios";
+import { showErrorMsg, showSuccessMsg } from "../utils/Toasts";
+import JugadorCreadoMsg from "../utils/Mensajes";
 
 const BASE_URL = "http://localhost:8000";
 
@@ -7,24 +9,17 @@ export async function apiCrearJugador(nombreJugador) {
 
   try {
     const response = await axios.post(url);
-
-    if (response.status === 201) {
-      return {
-        success: true,
-        playerId: response.data.id,
-      };
+    showSuccessMsg(JugadorCreadoMsg);
+    return response.data.id; // ID Jugador
+  } catch (error) {
+    if (error.message == "Network Error") {
+      showErrorMsg(error.message);
     } else {
-      return {
-        success: false,
-        message: "Error al crear el jugador",
-      };
+      // Muestro los mensajes del backend
+      showErrorMsg(error.response.data.detail);
     }
-  } catch (err) {
-    return {
-      success: false,
-      message: "Error de red al crear el jugador",
-      error: err,
-    };
+
+    return null;
   }
 }
 
@@ -34,24 +29,16 @@ export async function apiObtenerJugador(idJugador) {
   try {
     const response = await axios.get(url);
 
-    if (response.status === 200) {
-      return {
-        success: true,
-        jugador: response.data,
-        nombre: response.nombre,
-      };
+    return response.data;
+  } catch (error) {
+    if (error.message == "Network Error") {
+      showErrorMsg(error.message);
     } else {
-      return {
-        success: false,
-        message: "Error al obtener el jugador",
-      };
+      // Muestro los mensajes del backend
+      showErrorMsg(error.response.data.detail);
     }
-  } catch (err) {
-    return {
-      success: false,
-      message: "Error de red al obtener el jugador",
-      error: err,
-    };
+
+    return null;
   }
 }
 
@@ -61,26 +48,16 @@ export async function apiCrearPartida(nombrePartida, idJugador) {
 
   try {
     const response = await axios.post(url);
-
-    if (response.status === 201) {
-      const partidaId = response.data.idPartida;
-      return {
-        success: true,
-        partidaId: partidaId,
-        partida: response.data,
-      };
+    return response.data.idPartida;
+  } catch (error) {
+    if (error.message == "Network Error") {
+      showErrorMsg(error.message);
     } else {
-      return {
-        success: false,
-        message: "Error al crear la partida",
-      };
+      // Muestro los mensajes del backend
+      showErrorMsg(error.response.data.detail);
     }
-  } catch (err) {
-    return {
-      success: false,
-      message: "Error de red al crear la partida",
-      error: err,
-    };
+
+    return null;
   }
 }
 
@@ -149,15 +126,14 @@ export async function apiIniciarPartida(idPartida) {
         success: true,
       };
     } else {
-        return {
-            success: false,
-          };
+      return {
+        success: false,
+      };
     }
   } catch (error) {
     console.error(error);
     return {
-        success: false,
-      };
-    
+      success: false,
+    };
   }
 }
