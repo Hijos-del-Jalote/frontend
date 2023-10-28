@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/CrearJugador.css";
 import Game from "../Game.js";
+import {StoreContext} from "../contexto/StoreProvider.js";
 
 function CrearJugador() {
   const game = Game();
+  const [store] = useContext(StoreContext);
+
+  if(store.jugador.nombre != undefined) {
+    setTimeout(() => {
+      navigate(`/home/crear?idJugador=${localStorage.getItem('userId')}`);
+    }, 1000);
+  }
 
   const navigate = useNavigate();
 
