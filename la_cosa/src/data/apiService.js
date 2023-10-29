@@ -1,6 +1,11 @@
 import axios from "axios";
 import { showErrorMsg, showSuccessMsg } from "../utils/Toasts";
-import { JugadorCreadoMsg, JugadorNoExistente, PartidaCreadaConExito } from "../utils/Mensajes";
+import {
+  JugadorAbandonoLobby,
+  JugadorCreadoMsg,
+  JugadorNoExistente,
+  PartidaCreadaConExito,
+} from "../utils/Mensajes";
 import Jugador from "./models/Jugador";
 import Partida from "./models/Partida";
 
@@ -113,7 +118,6 @@ export async function apiObtenerJugador(idJugador) {
 }
 //#endregion
 
-
 export async function apiObtenerPartida(idPartida) {
   const url = BASE_URL + `/partidas/${idPartida}`;
 
@@ -128,15 +132,13 @@ export async function apiObtenerPartida(idPartida) {
       data.iniciada,
       data.turnoActual,
       data.sentido,
-      data.jugadores,
+      data.jugadores
     );
     return partida;
-    
   } catch (error) {
     if (error.message == "Network Error") {
       showErrorMsg(error.message);
     } else {
-      // Muestro los mensajes del backend
       showErrorMsg(error.response.data.detail);
     }
 
@@ -164,5 +166,24 @@ export async function apiIniciarPartida(idPartida) {
     return {
       success: false,
     };
+  }
+}
+
+export async function apiAbandonarLobby(idJugador) {
+  const url = BASE_URL + `/jugadores/${idJugador}/abandonar_lobby`;
+
+  try {
+    await axios.put(url);
+    showSuccessMsg(JugadorAbandonoLobby);
+    return true;
+  } catch (error) {
+    if (error.message == "Network Error") {
+      showErrorMsg(error.message);
+    } else {
+      // Muestro los mensajes del backend
+      showErrorMsg(error.response.data.detail);
+    }
+
+    return null;
   }
 }

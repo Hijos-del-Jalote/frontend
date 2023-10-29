@@ -4,7 +4,6 @@ import Partida from "./components/Partida2";
 import { WebSocketProvider } from "./components/WebSocketContext";
 import FinalizarPartida from "./components/FinalizarPartida";
 import "./styles/App.css";
-import StoreProvider from "./contexto/StoreProvider";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CrearJugador from "./screens/CrearJugador";
@@ -14,7 +13,6 @@ import UnirseAPartida from "./screens/UnirseAPartida";
 
 function App() {
   return (
-    <StoreProvider>
       <WebSocketProvider>
         <Routes>
           <Route path="/" element={<CrearJugador />} />
@@ -39,7 +37,6 @@ function App() {
           theme="dark"
         />
       </WebSocketProvider>
-    </StoreProvider>
   );
 }
 

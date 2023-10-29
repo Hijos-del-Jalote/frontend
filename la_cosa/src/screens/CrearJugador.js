@@ -6,7 +6,7 @@ import {StoreContext} from "../contexto/StoreProvider.js";
 
 function CrearJugador() {
   const game = Game();
-  const [store] = useContext(StoreContext);
+  const [store,dispatch] = useContext(StoreContext);
 
   if(store.jugador.nombre != undefined) {
     setTimeout(() => {
@@ -20,10 +20,10 @@ function CrearJugador() {
 
   const handleCrearJugador = async () => {
     
-    const userId = await game.crearJugador(nombreJugador);
+    const userId = await game.crearJugador(nombreJugador,dispatch);
     if (userId != null) {
       setTimeout(() => {
-        navigate(`/home`);
+        navigate(`/home/crear`);
       }, 1000);
     }
   };

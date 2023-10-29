@@ -1,6 +1,7 @@
 // Game.js
 
 import {
+  apiAbandonarLobby,
   apiCrearJugador,
   apiCrearPartida,
   apiObtenerJugador,
@@ -8,6 +9,7 @@ import {
 } from "./data/apiService";
 import localStorage from "./data/localStorage";
 import Jugador from "./data/models/Jugador";
+import Tipos from "./contexto/Actions";
 
 // Game se encarga de manejar el contexto, localStorage y el llamado a las apis,
 // Es el unico que puede estar en comunicacion con mis componentes, para
@@ -17,17 +19,25 @@ const Game = () => {
   /**
    * Crea un jugador con un nombre y devuelve su ID de usuario si se crea con éxito.
    * @param {string} nombre - El nombre del jugador.
+   * @param {function} dispatch - El nombre del jugador.
    * @returns {number | null} El ID del jugador si se crea con éxito, o null en caso de error.
    */
-  const crearJugador = async (nombre) => {
+  async function crearJugador(nombre,dispatch) {
     const userId = await apiCrearJugador(nombre);
-    localStorage.saveUserId(userId);
     if (isNotNull(userId)) {
+      const jugador = await getJugador(userId);
+      console.log(jugador);
+      if (jugador != null) {
+        dispatch({ type: Tipos.setJugador, payload: jugador });
+      }
       localStorage.saveUserId(userId);
       return userId;
     }
     return null;
-  };
+  }
+
+
+  
 
   /**
    * Crea una partida con un nombre y un ID de jugador.
@@ -70,13 +80,20 @@ const Game = () => {
     return null;
   };
 
-  // Otras funciones relacionadas con la lógica del juego
+  const abandonarLobby = async (idJugador) => {
+    const response = await apiAbandonarLobby(idJugador);
+    if(response){
+      return response;
+    }
+    return null;
+  };
 
   return {
     crearPartida,
     crearJugador,
     getJugador,
-    getPartida
+    getPartida,
+    abandonarLobby
   };
 };
 

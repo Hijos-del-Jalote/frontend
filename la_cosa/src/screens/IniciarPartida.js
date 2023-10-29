@@ -1,44 +1,47 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/IniciarPartida.css";
 import { useWebSocket } from "../components/WebSocketContext";
+import { StoreContext } from "../contexto/StoreProvider";
+import Game from "../Game";
 
 
 
 
 function IniciarPartida() {
+  const game = Game();
+
   const [players, setPlayers] = useState([]);
   const [responseText, setResponseText] = useState("");
   
   const navigate = useNavigate();
-  const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`;
-  const webSocket = useWebSocket(wsurl);
-
-
   const [store] = useContext(StoreContext);
   const idJugador = store.jugador.id;
-  const idPartida = store.partida.id
+  const partida = store.partida;
+  const idPartida = partida.id;
+
+  let webSocket;
+
 
     
 
   useEffect(() => {
+
+    if(idJugador === undefined || idPartida === undefined){
+      return;
+    }
+
+    const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`;
+    webSocket = new WebSocket(wsurl);
+
+    if(partida.iniciada){
+      navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
+    }
+
+    setPlayers(partida.jugadores);
     
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:8000/partidas/${idPartida}`
-        );
-        if (response.status === 200) {
-          setPlayers(response.data.jugadores);
-          if(response.data.iniciada){
-            navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+
 
     if(webSocket){
       webSocket.onmessage = function(event) {
@@ -71,7 +74,7 @@ function IniciarPartida() {
       }
     }
     
-    fetchData();
+
     
   }, [idPartida,webSocket,idJugador,navigate]);
   
@@ -87,27 +90,12 @@ function IniciarPartida() {
         console.log(error);
       });
   };
-  const handleAbandonarLobby = async (partidaId) => {
-    try {
-      // Realizar una solicitud POST para unirse a la partida
-      const url = `http://localhost:8000/jugadores/${idJugador}/abandonar_lobby`;
-      const response = await axios.put(url);
-
-      if (response.status === 200) {
-        // Redirigir al lobby si la respuesta es exitosa
-        console.log("Jugador salio con exito");
-        setTimeout(() => {
-            setResponseText("Jugador salió con exito");
-            navigate(`/home/crear?idJugador=${idJugador}`);
-            
-        }, 0);
-      } else {
-        console.error("Error al abandonar lobby:");
-        // Manejar el caso en que la respuesta no sea 200 (por ejemplo, mostrar un mensaje de error)
-      }
-    } catch (error) {
-      // Manejar errores (por ejemplo, mostrar un mensaje de error al usuario)
-      console.error("Error al abandonar lobby:", error);
+  const handleAbandonarLobby = async () => {
+    const exito = game.abandonarLobby(idJugador);
+    if(exito != null) {
+      setTimeout(() => {
+        navigate(`/home/crear`);
+      }, 1000);
     }
   };
 
