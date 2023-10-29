@@ -13,12 +13,12 @@ function Navbar() {
       <h1 className="la_cosa">La Cosa</h1>
       <div className="botones_contenedor">
         <div className="item1">
-          <Link to={`crear?idJugador=${idJugador}`} className="nav-link">
+          <Link to={`crear`} className="nav-link">
             <button className="item">Crear Partida</button>
           </Link>
         </div>
         <div className="item2">
-          <Link to={`unir?idJugador=${idJugador}`} className="nav-link">
+          <Link to={`unir`} className="nav-link">
             <button className="item">Unirse a Partida</button>
           </Link>
         </div>

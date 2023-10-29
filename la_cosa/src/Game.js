@@ -56,6 +56,14 @@ const Game = () => {
     return null;
   };
 
+  const getPartida = async (idPartida) => {
+    const jugador = await api(idJugador);
+    if (isNotNull(jugador)) {
+      return jugador;
+    }
+    return null;
+  };
+
   // Otras funciones relacionadas con la lógica del juego
 
   return {

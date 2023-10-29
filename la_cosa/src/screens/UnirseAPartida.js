@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { apiObtenerPartidas } from "../data/apiService";
 import "../styles/UnirseAPartida.css";
+import { StoreContext } from "../contexto/StoreProvider";
 
 function UnirseAPartida() {
   const navigate = useNavigate();
   const [partidas, setPartidas] = useState([]);
-  // Saco de la url mi idJugador
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const idJugador = queryParams.get("idJugador");
+
+  const [store] = useContext(StoreContext);
+  const idJugador = store.jugador.id;
 
   useEffect(() => {
     const fetchData = async () => {

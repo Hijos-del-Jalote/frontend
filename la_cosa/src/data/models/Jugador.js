@@ -2,6 +2,7 @@ import Carta from "./Carta";
 
 class Jugador {
   constructor(
+    id,
     nombre,
     isHost,
     posicion,
@@ -11,6 +12,7 @@ class Jugador {
     rol,
     cartas
   ) {
+    this.id = id;
     this.nombre = nombre;
     this.isHost = isHost;
     this.posicion = posicion;

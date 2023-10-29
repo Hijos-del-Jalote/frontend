@@ -1,7 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/NavBar";
-import UnirseAPartida from "./components/UnirseAPartida";
-import IniciarPartida from "./screens/IniciarPartida";
 import Partida from "./components/Partida2";
 import { WebSocketProvider } from "./components/WebSocketContext";
 import FinalizarPartida from "./components/FinalizarPartida";
@@ -11,6 +9,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CrearJugador from "./screens/CrearJugador";
 import CrearPartida from "./screens/CrearPartida";
+import IniciarPartida from "./screens/IniciarPartida";
+import UnirseAPartida from "./screens/UnirseAPartida";
 
 function App() {
   return (

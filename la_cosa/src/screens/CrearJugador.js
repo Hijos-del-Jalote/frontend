@@ -10,7 +10,7 @@ function CrearJugador() {
 
   if(store.jugador.nombre != undefined) {
     setTimeout(() => {
-      navigate(`/home/crear?idJugador=${localStorage.getItem('userId')}`);
+      navigate(`/home/crear`);
     }, 1000);
   }
 
@@ -23,7 +23,7 @@ function CrearJugador() {
     const userId = await game.crearJugador(nombreJugador);
     if (userId != null) {
       setTimeout(() => {
-        navigate(`/home/crear?idJugador=${userId}`);
+        navigate(`/home`);
       }, 1000);
     }
   };

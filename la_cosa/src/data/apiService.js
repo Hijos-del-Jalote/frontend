@@ -1,9 +1,11 @@
 import axios from "axios";
 import { showErrorMsg, showSuccessMsg } from "../utils/Toasts";
-import {JugadorCreadoMsg,PartidaCreadaConExito} from "../utils/Mensajes";
+import { JugadorCreadoMsg, JugadorNoExistente, PartidaCreadaConExito } from "../utils/Mensajes";
 import Jugador from "./models/Jugador";
 
 const BASE_URL = "http://localhost:8000";
+
+//#region crearJugador
 
 export async function apiCrearJugador(nombreJugador) {
   const url = BASE_URL + `/jugadores?nombre=${nombreJugador}`;
@@ -23,48 +25,22 @@ export async function apiCrearJugador(nombreJugador) {
     return null;
   }
 }
+//#endregion
 
-export async function apiObtenerJugador(idJugador) {
-  const url = BASE_URL + `/jugadores/${idJugador}`;
-
-  try {
-    const response = await axios.get(url);
-    const data= response.data;
-    const jugador = new Jugador(
-      data.nombre,
-      data.isHost,
-      data.posicion,
-      data.isAlive,
-      data.blockIzq,
-      data.blockDer,
-      data.rol,
-      data.cartas
-    );
-    return jugador;
-  } catch (error) {
-    if (error.message == "Network Error") {
-      showErrorMsg(error.message);
-    } else {
-      // Muestro los mensajes del backend
-      showErrorMsg(error.response.data.detail);
-    }
-
-    return null;
-  }
-}
-
+//#region crearPartida
 export async function apiCrearPartida(nombrePartida, idJugador) {
   const url =
     BASE_URL + `/partidas?nombrePartida=${nombrePartida}&idHost=${idJugador}`;
 
   try {
     const response = await axios.post(url);
-    console.log(response);
     showSuccessMsg(PartidaCreadaConExito);
     return response.data.idPartida;
   } catch (error) {
-    if (error.message == "Network Error") {
+    if (error.response.status == 500) {
       showErrorMsg(error.message);
+    } else if (error.response.status == 422) {
+      showErrorMsg(JugadorNoExistente);
     } else {
       // Muestro los mensajes del backend
       showErrorMsg(error.response.data.detail);
@@ -73,7 +49,10 @@ export async function apiCrearPartida(nombrePartida, idJugador) {
     return null;
   }
 }
+//#endregion
 
+//#region obtener partidas
+// TODO: cambiar
 export async function apiObtenerPartidas() {
   const url = BASE_URL + "/partidas";
 
@@ -99,32 +78,57 @@ export async function apiObtenerPartidas() {
     };
   }
 }
+//#endregion
+
+//#region  getJugador
+export async function apiObtenerJugador(idJugador) {
+  const url = BASE_URL + `/jugadores/${idJugador}`;
+
+  try {
+    const response = await axios.get(url);
+    const data = response.data;
+    const jugador = new Jugador(
+      idJugador,
+      data.nombre,
+      data.isHost,
+      data.posicion,
+      data.isAlive,
+      data.blockIzq,
+      data.blockDer,
+      data.rol,
+      data.cartas
+    );
+    return jugador;
+  } catch (error) {
+    if (error.message == "Network Error") {
+      showErrorMsg(error.message);
+    } else {
+      // Muestro los mensajes del backend
+      showErrorMsg(error.response.data.detail);
+    }
+
+    return null;
+  }
+}
+//#endregion
+
 
 export async function apiObtenerPartida(idPartida) {
   const url = BASE_URL + `/partidas/${idPartida}`;
 
   try {
     const response = await axios.get(url);
-
-    if (response.status === 200) {
-      return {
-        success: true,
-        jugadores: response.data.jugadores,
-        partida: response.data,
-        iniciada: response.data.iniciada,
-      };
-    } else {
-      return {
-        success: false,
-        message: "Error al obtener las partidas",
-      };
-    }
+    const data = response.data;
+    console.log(data);
   } catch (err) {
-    return {
-      success: false,
-      message: "Error de red al obtener las partidas",
-      error: err,
-    };
+    if (error.message == "Network Error") {
+      showErrorMsg(error.message);
+    } else {
+      // Muestro los mensajes del backend
+      showErrorMsg(error.response.data.detail);
+    }
+
+    return null;
   }
 }
 

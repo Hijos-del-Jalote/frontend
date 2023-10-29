@@ -1,23 +1,24 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { useWebSocket } from '../components/WebSocketContext';
+import { useNavigate } from "react-router-dom";
 import "../styles/IniciarPartida.css";
+import { useWebSocket } from "../components/WebSocketContext";
 
 
 
 
 function IniciarPartida() {
-  const [searchParams] = useSearchParams();
   const [players, setPlayers] = useState([]);
   const [responseText, setResponseText] = useState("");
+  
   const navigate = useNavigate();
-  const idPartida = searchParams.get("idPartida");
-  const idJugador = searchParams.get("idJugador");
   const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`;
   const webSocket = useWebSocket(wsurl);
 
 
+  const [store] = useContext(StoreContext);
+  const idJugador = store.jugador.id;
+  const idPartida = store.partida.id
 
     
 

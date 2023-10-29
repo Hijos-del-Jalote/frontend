@@ -1,23 +1,23 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/CrearPartida.css";
 import Game from "../Game";
+import { StoreContext } from "../contexto/StoreProvider";
 
 function CrearPartida() {
   const game = Game();
   const navigate = useNavigate();
   const [nombrePartida, setNombrePartida] = useState("");
   // Saco de la url mi idJugador
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const idJugador = queryParams.get("idJugador") || null;
 
-  
+  const [store] = useContext(StoreContext);
+  const idJugador = store.jugador.id;
+
   const handleCrearPartida = async (e) => {
     const partidaId = await game.crearPartida(nombrePartida,idJugador);
     if (partidaId != null) {
       setTimeout(() => {
-        navigate(`/lobby?idJugador=${idJugador}&idPartida=${partidaId}`);
+        navigate(`/lobby`);
       }, 1000);
     }
   };
