@@ -4,6 +4,7 @@ import {
   apiCrearJugador,
   apiCrearPartida,
   apiObtenerJugador,
+  apiObtenerPartida,
 } from "./data/apiService";
 import localStorage from "./data/localStorage";
 import Jugador from "./data/models/Jugador";
@@ -56,10 +57,15 @@ const Game = () => {
     return null;
   };
 
+  /**
+   * Obtiene una partida con un ID de partida.
+   * @param {number} idPartida - El ID de la partida.
+   * @returns {Partida | null} El Partida obj, o null en caso de error.
+   */
   const getPartida = async (idPartida) => {
-    const jugador = await api(idJugador);
-    if (isNotNull(jugador)) {
-      return jugador;
+    const partida = await apiObtenerPartida(idPartida);
+    if (isNotNull(partida)) {
+      return partida;
     }
     return null;
   };
@@ -70,6 +76,7 @@ const Game = () => {
     crearPartida,
     crearJugador,
     getJugador,
+    getPartida
   };
 };
 

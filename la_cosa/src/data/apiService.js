@@ -2,6 +2,7 @@ import axios from "axios";
 import { showErrorMsg, showSuccessMsg } from "../utils/Toasts";
 import { JugadorCreadoMsg, JugadorNoExistente, PartidaCreadaConExito } from "../utils/Mensajes";
 import Jugador from "./models/Jugador";
+import Partida from "./models/Partida";
 
 const BASE_URL = "http://localhost:8000";
 
@@ -119,8 +120,19 @@ export async function apiObtenerPartida(idPartida) {
   try {
     const response = await axios.get(url);
     const data = response.data;
-    console.log(data);
-  } catch (err) {
+    const partida = new Partida(
+      idPartida,
+      data.nombre,
+      data.maxJugadores,
+      data.minJugadores,
+      data.iniciada,
+      data.turnoActual,
+      data.sentido,
+      data.jugadores,
+    );
+    return partida;
+    
+  } catch (error) {
     if (error.message == "Network Error") {
       showErrorMsg(error.message);
     } else {

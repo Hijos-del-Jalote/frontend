@@ -14,7 +14,7 @@ const getUserId = () => {
 }
 
 const getMatchId = () => {
-    localStorage.getItem("matchId");
+    return localStorage.getItem("matchId");
 }
 
 export default {  saveUserId,saveMatchId,getUserId,getMatchId}
