@@ -18,7 +18,7 @@ function CrearPartida() {
     if (partidaId != null) {
       setTimeout(() => {
         navigate(`/lobby`);
-      }, 1000);
+      }, 0);
     }
   };
 

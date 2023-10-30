@@ -5,6 +5,7 @@ import {
   JugadorCreadoMsg,
   JugadorNoExistente,
   PartidaCreadaConExito,
+  UnidoConExito
 } from "../utils/Mensajes";
 import Jugador from "./models/Jugador";
 import Partida from "./models/Partida";
@@ -58,30 +59,20 @@ export async function apiCrearPartida(nombrePartida, idJugador) {
 //#endregion
 
 //#region obtener partidas
-// TODO: cambiar
 export async function apiObtenerPartidas() {
   const url = BASE_URL + "/partidas";
 
   try {
     const response = await axios.get(url);
-
-    if (response.status === 200) {
-      return {
-        success: true,
-        partidas: response.data,
-      };
+    return response.data;
+  } catch (error) {
+    if (error.response.status == 500) {
+      showErrorMsg(error.message);
     } else {
-      return {
-        success: false,
-        message: "Error al obtener las partidas",
-      };
+      // Muestro los mensajes del backend
+      showErrorMsg(error.response.data.detail);
     }
-  } catch (err) {
-    return {
-      success: false,
-      message: "Error de red al obtener las partidas",
-      error: err,
-    };
+    return null;
   }
 }
 //#endregion
@@ -178,6 +169,29 @@ export async function apiAbandonarLobby(idJugador) {
     return true;
   } catch (error) {
     if (error.message == "Network Error") {
+      showErrorMsg(error.message);
+    } else {
+      // Muestro los mensajes del backend
+      showErrorMsg(error.response.data.detail);
+    }
+
+    return null;
+  }
+}
+
+
+export async function apiUnirsePartida(partidaId, idJugador) {
+  console.log(partidaId,idJugador)
+  const url =
+    BASE_URL + `/partidas/unir?idPartida=${partidaId}&idJugador=${idJugador}`;
+
+  try {
+    const response = await axios.post(url);
+    showSuccessMsg(UnidoConExito);
+    return true;
+  } catch (error) {
+    console.log(error)
+    if (error.response.status == 500) {
       showErrorMsg(error.message);
     } else {
       // Muestro los mensajes del backend

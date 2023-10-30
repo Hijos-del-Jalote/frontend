@@ -4,58 +4,36 @@ import {  useNavigate } from "react-router-dom";
 import { apiObtenerPartidas } from "../data/apiService";
 import "../styles/UnirseAPartida.css";
 import { StoreContext } from "../contexto/StoreProvider";
+import Game from "../Game";
 
 function UnirseAPartida() {
-  const navigate = useNavigate();
+
+  const game = Game();
   const [partidas, setPartidas] = useState([]);
 
-  const [store] = useContext(StoreContext);
+  const [store,dispatch] = useContext(StoreContext);
   const idJugador = store.jugador.id;
 
   useEffect(() => {
+    
     const fetchData = async () => {
-      try {
-        const result = await apiObtenerPartidas();
-
-        if (result.success) {
-          setPartidas(result.partidas);
-        } else {
-          console.error(result.message);
-        }
-      } catch (error) {
-        console.error("Error inesperado:", error);
-      }
+      const partidasget = await game.getAllPartidas();
+      if(partidasget != null) {setPartidas(partidasget)};
     };
 
     fetchData(); // Llama a la función fetchData inmediatamente
   }, []);
 
   const handleUnirseAPartida = async (partidaId) => {
-    try {
-      // Realizar una solicitud POST para unirse a la partida
-      const url = `http://localhost:8000/partidas/unir?idPartida=${partidaId}&idJugador=${idJugador}`;
-      const response = await axios.post(url);
-
-      if (response.status === 200) {
-        // Redirigir al lobby si la respuesta es exitosa
-        console.log("Jugador unido con exito");
-        setTimeout(() => {
-          navigate(`/lobby`);
-        }, 1000);
-      } else {
-        // Manejar el caso en que la respuesta no sea 200 (por ejemplo, mostrar un mensaje de error)
-      }
-    } catch (error) {
-      // Manejar errores (por ejemplo, mostrar un mensaje de error al usuario)
-      console.error("Error al unirse a la partida:", error);
-    }
+    console.log(partidaId)
+    game.unirsePartida(partidaId, idJugador,dispatch)
   };
 
   return (
     <div className="container_unirse">
       <h2>Lista de Partidas Disponibles</h2>
       <div className="lista_partida">
-        {partidas.map((partida) => (
+        {partidas && partidas.map((partida) => (
           <div key={partida.id} className="card_partida">
             <h4 className="partida_nombre">
               {partida.nombre}

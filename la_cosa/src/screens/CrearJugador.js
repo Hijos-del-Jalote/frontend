@@ -11,7 +11,7 @@ function CrearJugador() {
   if(store.jugador.nombre != undefined) {
     setTimeout(() => {
       navigate(`/home/crear`);
-    }, 1000);
+    }, 0);
   }
 
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ function CrearJugador() {
     if (userId != null) {
       setTimeout(() => {
         navigate(`/home/crear`);
-      }, 1000);
+      }, 0);
     }
   };
 

@@ -95,7 +95,7 @@ function IniciarPartida() {
     if(exito != null) {
       setTimeout(() => {
         navigate(`/home/crear`);
-      }, 1000);
+      }, 0);
     }
   };
 
