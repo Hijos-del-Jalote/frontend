@@ -17,4 +17,8 @@ const getMatchId = () => {
     return localStorage.getItem("matchId");
 }
 
-export default {  saveUserId,saveMatchId,getUserId,getMatchId}
+const deleteMatchId = () => {
+    return localStorage.removeItem("matchId");
+}
+
+export default {  saveUserId,saveMatchId,getUserId,getMatchId, deleteMatchId }

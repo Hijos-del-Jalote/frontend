@@ -10,6 +10,7 @@ import {
 import localStorage from "./data/localStorage";
 import Jugador from "./data/models/Jugador";
 import Tipos from "./contexto/Actions";
+import Partida from "./data/models/Partida";
 
 // Game se encarga de manejar el contexto, localStorage y el llamado a las apis,
 // Es el unico que puede estar en comunicacion con mis componentes, para
@@ -45,9 +46,11 @@ const Game = () => {
    * @param {number} idJugador - El ID del jugador.
    * @returns {number | null} El ID de la partida si se creó con éxito, o null en caso de error.
    */
-  const crearPartida = async (nombrePartida, idJugador) => {
+  const crearPartida = async (nombrePartida, idJugador, dispatch) => {
     const partidaId = await apiCrearPartida(nombrePartida, idJugador);
     if (isNotNull(partidaId)) {
+      const partida = await getPartida(partidaId);
+      if(isNotNull(partida)) dispatch({ type: Tipos.setPartida, payload: partida });
       localStorage.saveMatchId(partidaId);
       return partidaId;
     }
@@ -80,9 +83,11 @@ const Game = () => {
     return null;
   };
 
-  const abandonarLobby = async (idJugador) => {
+  const abandonarLobby = async (idJugador, dispatch) => {
     const response = await apiAbandonarLobby(idJugador);
     if(response){
+      dispatch({ type: Tipos.clearPartida});
+      localStorage.deleteMatchId();
       return response;
     }
     return null;

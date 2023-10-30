@@ -2,11 +2,10 @@ import { toast } from "react-toastify";
 
 const showErrorMsg = (error) =>{
     toast.error(error, {
-        position: "top-center",
-        autoClose: 5000,
+        position: "bottom-left",
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "dark",
@@ -15,11 +14,10 @@ const showErrorMsg = (error) =>{
 
 const showSuccessMsg = (success) => {
     toast.success(success, {
-        position: "top-center",
-        autoClose: 5000,
+        position: "bottom-left",
+        autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: true,
         draggable: true,
         progress: undefined,
         theme: "dark",

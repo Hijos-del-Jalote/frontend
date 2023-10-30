@@ -13,30 +13,28 @@ import UnirseAPartida from "./screens/UnirseAPartida";
 
 function App() {
   return (
-      <WebSocketProvider>
-        <Routes>
-          <Route path="/" element={<CrearJugador />} />
-          <Route path="home" element={<Navbar />}>
-            <Route path="crear" element={<CrearPartida />} />
-            <Route path="unir" element={<UnirseAPartida />} />
-          </Route>
-          <Route path="/lobby/" element={<IniciarPartida />} />
-          <Route path="/partida/" element={<Partida />} />
-          <Route path="resultados-partida" element={<FinalizarPartida />} />
-        </Routes>
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
-      </WebSocketProvider>
+    <WebSocketProvider>
+      <Routes>
+        <Route path="/" element={<CrearJugador />} />
+        <Route path="home" element={<Navbar />}>
+          <Route path="crear" element={<CrearPartida />} />
+          <Route path="unir" element={<UnirseAPartida />} />
+        </Route>
+        <Route path="/lobby/" element={<IniciarPartida />} />
+        <Route path="/partida/" element={<Partida />} />
+        <Route path="resultados-partida" element={<FinalizarPartida />} />
+      </Routes>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        draggable
+        theme="dark"
+      />
+    </WebSocketProvider>
   );
 }
 

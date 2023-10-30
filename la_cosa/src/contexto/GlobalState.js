@@ -3,7 +3,7 @@ import Partida from "../data/models/Partida";
 
 const initialGlobalState = {
     jugador: Jugador,
-    partida: Partida
+    partida: Partida,
 }
 
 export default initialGlobalState;

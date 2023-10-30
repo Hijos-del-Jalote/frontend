@@ -10,11 +10,11 @@ function CrearPartida() {
   const [nombrePartida, setNombrePartida] = useState("");
   // Saco de la url mi idJugador
 
-  const [store] = useContext(StoreContext);
+  const [store, dispatch] = useContext(StoreContext);
   const idJugador = store.jugador.id;
 
   const handleCrearPartida = async (e) => {
-    const partidaId = await game.crearPartida(nombrePartida,idJugador);
+    const partidaId = await game.crearPartida(nombrePartida,idJugador,dispatch);
     if (partidaId != null) {
       setTimeout(() => {
         navigate(`/lobby`);

@@ -1,3 +1,4 @@
+import Partida from "../data/models/Partida";
 import Tipos from "./Actions";
 
 const storeReducer = (state, action) => {
@@ -11,6 +12,11 @@ const storeReducer = (state, action) => {
       return {
         ...state,
         partida: action.payload,
+      };
+    case Tipos.clearPartida:
+      return {
+        ...state,
+        partida: Partida,
       };
     default:
       return state;

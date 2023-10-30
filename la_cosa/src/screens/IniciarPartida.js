@@ -16,7 +16,7 @@ function IniciarPartida() {
   const [responseText, setResponseText] = useState("");
   
   const navigate = useNavigate();
-  const [store] = useContext(StoreContext);
+  const [store,dispatch] = useContext(StoreContext);
   const idJugador = store.jugador.id;
   const partida = store.partida;
   const idPartida = partida.id;
@@ -91,7 +91,7 @@ function IniciarPartida() {
       });
   };
   const handleAbandonarLobby = async () => {
-    const exito = game.abandonarLobby(idJugador);
+    const exito = game.abandonarLobby(idJugador,dispatch);
     if(exito != null) {
       setTimeout(() => {
         navigate(`/home/crear`);

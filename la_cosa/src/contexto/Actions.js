@@ -1,6 +1,7 @@
 const Tipos = {
     setJugador: 'setJugador',
-    setPartida: 'setPartida	'
+    setPartida: 'setPartida	',
+    clearPartida: 'clearPartida'
 
 }
 
