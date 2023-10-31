@@ -77,12 +77,12 @@ function IniciarPartida() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:8000/partidas/iniciar?idPartida=${idPartida}`)
+      .put(`http://localhost:8000/partidas/iniciar/${idPartida}?idJugador=${idJugador}`)
       .then((data) =>
         navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
       )
       .catch((error) => {
-        setResponseText("Error al iniciar partida, compruebe la cantidad de jugadores");
+        setResponseText(error.response.data.detail);
         console.log(error);
       });
   };
@@ -136,9 +136,9 @@ function IniciarPartida() {
           )}
       </div>
       <div className="contenedor_b">
-        <button className="button_iniciar" onClick={handleSubmit} >
+        {(<button className="button_iniciar" onClick={handleSubmit} >
           Iniciar Partida
-        </button>
+        </button>)}
       <button className="button_eliminar" onClick={handleAbandonarLobby} >
           Abandonar Lobby
         </button>
