@@ -136,9 +136,9 @@ function IniciarPartida() {
           )}
       </div>
       <div className="contenedor_b">
-        {(<button className="button_iniciar" onClick={handleSubmit} >
+        <button className="button_iniciar" onClick={handleSubmit} >
           Iniciar Partida
-        </button>)}
+        </button>
       <button className="button_eliminar" onClick={handleAbandonarLobby} >
           Abandonar Lobby
         </button>
