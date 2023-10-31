@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-function LaCosaTerminaPartida({onClick, idJugador}) {
+function LaCosaTerminaPartida({onClick, idJugador, rol}) {
 
     const handleLaCosaTerminaPartida = async (partidaId) => {
         console.log("a");
@@ -26,6 +26,9 @@ function LaCosaTerminaPartida({onClick, idJugador}) {
         }
       };
 
+      if (rol !== "La cosa") {
+        return <div></div>;
+      }
   return (
     <div className="text-center mt-3">
       <button onClick={handleLaCosaTerminaPartida} className="btn btn-primary">

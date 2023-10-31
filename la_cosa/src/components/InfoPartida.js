@@ -38,7 +38,9 @@ function InfoPartida({
       {(jugadorEnJuego.rol === "La cosa") && (
           
           <LaCosaTerminaPartida 
-          idJugador={idJugador}></LaCosaTerminaPartida>
+          idJugador={idJugador}
+          rol={jugadorEnJuego.rol}
+          ></LaCosaTerminaPartida>
         )}
 
     </div>
