@@ -8,11 +8,12 @@ function CrearJugador() {
   const game = Game();
   const [store,dispatch] = useContext(StoreContext);
 
+  if(store != null && store.jugador != null) {
   if(store.jugador.nombre != undefined) {
     setTimeout(() => {
       navigate(`/home/crear`);
     }, 0);
-  }
+  }}
 
   const navigate = useNavigate();
 
