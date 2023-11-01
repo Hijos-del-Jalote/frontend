@@ -1,9 +1,7 @@
-import Jugador from "../data/models/Jugador";
-import Partida from "../data/models/Partida";
 
 const initialGlobalState = {
-    jugador: Jugador,
-    partida: Partida,
+    jugador: null,
+    partida: null,
 }
 
 export default initialGlobalState;

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 //import axios from 'axios';
 import { useWebSocket } from './WebSocketContext';
 import {useSearchParams } from "react-router-dom";
-import {actualizarPartida} from './Partida2';
 import CartaComponent from "./Carta";
 import ResponderIntercambio from './ResponderIntercambio';
 

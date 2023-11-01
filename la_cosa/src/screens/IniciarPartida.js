@@ -35,11 +35,12 @@ function IniciarPartida() {
       return;
     }
 
-    const wsurl = `ws://localhost:8000/partidas/${partidaStore.id}/ws?idJugador=${jugadorStore.id}`;
+    const wsurl = `ws://localhost:8000/partidas/${partidaStore?.id}/ws?idJugador=${jugadorStore?.id}`;
+    
     webSocket = new WebSocket(wsurl);
 
     if(partidaStore.iniciada){
-      navigate(`/partida?idJugador=${jugadorStore.id}&idPartida=${partidaStore.id}`)
+      navigate(`/partida`)
     }
 
     setPlayers(partidaStore.jugadores);
@@ -54,20 +55,20 @@ function IniciarPartida() {
           setPlayers(JSON.parse(data.data).jugadores);
         }
         if(data.event === "iniciar"){
-          navigate(`/partida?idJugador=${jugadorStore.id}&idPartida=${partidaStore.id}`)
+          navigate(`/partida`)
         }
         if (data.event === "abandonar lobby"){
           if ((data.data).host) {
               setTimeout(() => {
                   setResponseText("El host abandonó el lobby, saliendo...");
-                  navigate(`/home/crear?idJugador=${jugadorStore.id}`);
+                  navigate(`/home/crear`);
               }, 2000);
           }
           else {
               if ((data.data).jugadores.id === jugadorStore.id) {
                   setTimeout(() => {
                       setResponseText("Saliendo del lobby...");
-                      navigate(`/home/crear?idJugador=${jugadorStore.id}`);
+                      navigate(`/home/crear`);
                   }, 2000);
               }
               setPlayers((data.data).jugadores);
@@ -85,7 +86,7 @@ function IniciarPartida() {
     axios
       .put(`http://localhost:8000/partidas/iniciar?idPartida=${partidaID}`)
       .then((data) =>
-        navigate(`/partida?idJugador=${jugadorID}&idPartida=${partidaID}`)
+        navigate(`/partida`)
       )
       .catch((error) => {
         setResponseText("Error al iniciar partida, compruebe la cantidad de jugadores");
