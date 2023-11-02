@@ -2,10 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../styles/IniciarPartida.css";
-import { StoreContext } from "../contexto/StoreProvider";
 import Game from "../Game";
-import Tipos from "../contexto/Actions";
-import { apiObtenerJugador, apiObtenerPartida } from "../data/apiService";
 import { useWebSocket } from "../contexto/WebSocketContext";
 
 
@@ -16,36 +13,35 @@ function IniciarPartida() {
 
   const [players, setPlayers] = useState([]);
   const [responseText, setResponseText] = useState("");
-  const [jugadorStore, setjugadorStore] = useState(null);
-  const [partidaStore, setpartidaStore] = useState(null);
   const navigate = useNavigate();
-  const [store,dispatch] = useContext(StoreContext);
 
 
-  const wsurl = `ws://localhost:8000/partidas/${partidaStore?.id}/ws?idJugador=${jugadorStore?.id}`;
-    
-  const webSocket = useWebSocket(wsurl);
-    
+  const [store,setStore] = useState(null);
+  const jugadorStore = store?.jugador;
+  const partidaStore = store?.partida;
+
+  const matchId = localStorage.getMatchId();
+  const userId = localStorage.getUserId();
+  const wsurl = `ws://localhost:8000/partidas/${matchId}/ws?idJugador=${userId}`;
+  const webSocket = useWebSocket(wsurl)
 
   useEffect(() => {
-    if(store.jugador == null || store.partida == null){
-      return;
-    }
-    
-    setjugadorStore(store.jugador);
-    setpartidaStore(store.partida);
-
-   
-    if(jugadorStore?.id === undefined || partidaStore?.id === undefined){
-      return;
-    }
+    const fetchData = async (idPartida, idJugador) => {
+      const partidaApi = await game.getPartida(idPartida);
+      const jugadorApi = await game.getJugador(idJugador);
+  
+      if (partidaApi != null && jugadorApi != null) {
+        // Actualiza ambos estados al mismo tiempo
+        setStore({ partida: partidaApi, jugador: jugadorApi });
+      }
+    };
 
 
-    if(partidaStore.iniciada){
+    if(partidaStore?.iniciada){
       navigate(`/partida`)
     }
 
-    setPlayers(partidaStore.jugadores);
+    setPlayers(partidaStore?.jugadores);
     
 
 
@@ -81,6 +77,8 @@ function IniciarPartida() {
       }
       }
     }
+
+    fetchData(matchId, userId);
     
 
     
@@ -98,7 +96,7 @@ function IniciarPartida() {
       });
   };
   const handleAbandonarLobby = async (id) => {
-    const exito = game.abandonarLobby(id,dispatch);
+    const exito = game.abandonarLobby(id);
     if(exito != null) {
       setTimeout(() => {
         navigate(`/home/crear`);

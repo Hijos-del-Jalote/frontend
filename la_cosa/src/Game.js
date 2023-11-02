@@ -86,10 +86,9 @@ const Game = () => {
     return null;
   };
 
-  const abandonarLobby = async (idJugador, dispatch) => {
+  const abandonarLobby = async (idJugador) => {
     const response = await apiAbandonarLobby(idJugador);
     if (response) {
-      dispatch({ type: Tipos.clearPartida });
       localStorage.deleteMatchId();
       return response;
     }

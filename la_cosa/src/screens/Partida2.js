@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import InfoPartida from "../components/InfoPartida";
+import FinalizarPartida from "../components/FinalizarPartida";
 import PartidaEnCurso from "../components/PartidaEnCurso";
 import { useWebSocket } from "../contexto/WebSocketContext";
 import "../styles/Partida.css";
@@ -12,16 +13,20 @@ function Partida() {
   const game = Game();
 
   const [store, setStore] = useState(null);
+  const [resultados, setResultados] = useState(null);
+
+
   const jugadorStore = store?.jugador;
   const partidaStore = store?.partida;
   const navigate = useNavigate();
 
-  const wsurl = `ws://localhost:8000/partidas/${partidaStore?.id}/ws?idJugador=${jugadorStore?.id}`;
-
-  const webSocket = useWebSocket(wsurl);
+ ;
 
   const matchId = localStorage.getMatchId();
   const userId = localStorage.getUserId();
+  const wsurl = `ws://localhost:8000/partidas/${matchId}/ws?idJugador=${userId}`;
+
+  const webSocket = useWebSocket(wsurl)
 
   useEffect(() => {
     const fetchData = async (idPartida, idJugador) => {
@@ -40,6 +45,7 @@ function Partida() {
       webSocket.onmessage = function (event) {
         const data = JSON.parse(event.data);
         if (data.event === "finalizar") {
+          setResultados(JSON.parse(data.data));
         }
       };
     }
@@ -49,9 +55,9 @@ function Partida() {
   if (partidaStore == undefined || jugadorStore == undefined) {
     return <div></div>;
   }
-  // if(resultados!=null){
-  //   return <FinalizarPartida isHumanoTeamWinner={resultados.isHumanoTeamWinner} winners={resultados.winners} idJugador={idJugador}></FinalizarPartida>
-  // }
+  if(resultados!=null){
+    return <FinalizarPartida isHumanoTeamWinner={resultados.isHumanoTeamWinner} winners={resultados.winners} idJugador={userId}></FinalizarPartida>
+  }
 
   // // Que muestre cargando mientras no se descargaron los datos
   // if (loading == null || !loading) {
@@ -87,7 +93,6 @@ function Partida() {
       jugador.id.toString() != jugadorStore?.id.toString() &&
       jugador.isAlive === 1
   );
-
   if (jugadoresFiltrados?.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
@@ -110,6 +115,8 @@ function Partida() {
 
   const esTurno =
     jugadorStore?.id.toString() === jugadorConTurnoActual?.id.toString();
+
+    console.log(partidaStore)
   return (
     <div className="container-partida">
       <div>
