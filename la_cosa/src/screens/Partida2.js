@@ -54,8 +54,7 @@ function Partida() {
   }, [webSocket]);
 
 
-  const esTurno =
-  jugadorStore?.id.toString() === jugadorConTurnoActual?.id.toString();
+
 
 
   if (partidaStore == undefined || jugadorStore == undefined) {
@@ -95,6 +94,9 @@ function Partida() {
       jugador.id.toString() != jugadorStore?.id.toString() &&
       jugador.isAlive === 1
   );
+
+  const esTurno =
+  jugadorStore?.id.toString() === jugadorConTurnoActual?.id.toString();
   if (jugadoresFiltrados?.length === 0) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
