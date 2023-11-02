@@ -9,6 +9,7 @@ function InfoPartida({
   partida,
   jugadorEnJuego,
 }) {
+
   return (
     <div className="container-info">
       <h5 className="titulo_info">Datos de la Partida</h5>
@@ -19,7 +20,7 @@ function InfoPartida({
         <div className="item_title">Tú eres:</div> <div>{jugadorEnJuego.nombre}</div>
       </div>
       <div className="item_info">
-        <div className="item_title">Turno Actual:</div> <div>{jugadorConTurnoActual.nombre}</div>
+        <div className="item_title">Turno Actual:</div> <div>{jugadorConTurnoActual ? jugadorConTurnoActual.nombre : ""}</div>
       </div>
       <div className="item_info">
         <div className="item_title">Estado:</div>{" "}

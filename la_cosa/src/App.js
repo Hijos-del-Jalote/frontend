@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/NavBar";
 import Partida from "./screens/Partida2";
-import { WebSocketProvider } from "./components/WebSocketContext";
+import { WebSocketProvider } from "./contexto/WebSocketContext";
 import FinalizarPartida from "./components/FinalizarPartida";
 import "./styles/App.css";
 import { ToastContainer } from "react-toastify";

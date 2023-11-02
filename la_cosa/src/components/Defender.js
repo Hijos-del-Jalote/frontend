@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 //import axios from 'axios';
-import { useWebSocket } from './WebSocketContext';
+import { useWebSocket } from '../contexto/WebSocketContext';
 import {useSearchParams } from "react-router-dom";
 import CartaComponent from "./Carta";
 import ResponderIntercambio from './ResponderIntercambio';
+import Game from '../Game';
+import localStorage from '../data/localStorage';
 
 
 function Defensa({ jugadorActual, webSocket}) {
@@ -16,17 +18,23 @@ function Defensa({ jugadorActual, webSocket}) {
   const [mostrarBotones, ] = useState(false);
   //const [partida, setPartida] = useState(null);
   const [defender, setDefender] = useState(false); // Estado para rastrear si el jugador está defendiend
-  const idPartida = searchParams.get("idPartida");
-  const idJugador = searchParams.get("idJugador");
   const [estadoPartida, setEstadoPartida] = useState("");
   const [efectoAnalisis, setEfectoAnalisis] = useState(false);
   const [cartasOtro, setCartasOtro] = useState([]);
   const cartasData = jugadorActual.cartas;
   const [modoElegirCarta, setModoElegirCarta] = useState(false);
 
+
+
+
+  
+  const userId = localStorage.getUserId();
+  const idJugador = userId;;
+
+
   useEffect(() => {
-    console.log("HOLA");
-    
+
+
     if(webSocket){
         webSocket.onmessage = function(event){
             const data = JSON.parse(event.data);
@@ -37,6 +45,7 @@ function Defensa({ jugadorActual, webSocket}) {
                 if (idJugador != datinha.idJugador) {
                     setEstadoPartida(`${datinha.nombreJugador} quiere jugar ${datinha.template_carta} sobre ${datinha.nombreObjetivo}`);
                 }
+                console.log(idJugador)
                 
                 if(datinha.idObjetivo == idJugador){
                   var nuevasCartasDefensa = [];
@@ -138,6 +147,7 @@ function Defensa({ jugadorActual, webSocket}) {
       webSocket.send(mensajeJSON);
     
   };
+  console.log(cartasData)
   return (//esto no se como hacer para que se vea bien hasta aca llegué
     
     <div className="row">

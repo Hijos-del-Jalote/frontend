@@ -11,7 +11,7 @@ function CrearPartida() {
   // Saco de la url mi idJugador
 
   const [store, dispatch] = useContext(StoreContext);
-  const idJugador = store.jugador.id;
+  const idJugador = store.jugador?.id;
 
   const handleCrearPartida = async (e) => {
     const partidaId = await game.crearPartida(nombrePartida,idJugador,dispatch);

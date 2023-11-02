@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
-import { useWebSocket } from './WebSocketContext';
+import { useWebSocket } from '../contexto/WebSocketContext';
 import {useSearchParams } from "react-router-dom";
 import CartaComponent from "./Carta";
 

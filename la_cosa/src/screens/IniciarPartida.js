@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import "../styles/IniciarPartida.css";
 import { StoreContext } from "../contexto/StoreProvider";
 import Game from "../Game";
+import Tipos from "../contexto/Actions";
+import { apiObtenerJugador, apiObtenerPartida } from "../data/apiService";
+import { useWebSocket } from "../contexto/WebSocketContext";
 
 
 
@@ -18,15 +21,17 @@ function IniciarPartida() {
   const navigate = useNavigate();
   const [store,dispatch] = useContext(StoreContext);
 
-  let webSocket;
 
-
+  const wsurl = `ws://localhost:8000/partidas/${partidaStore?.id}/ws?idJugador=${jugadorStore?.id}`;
+    
+  const webSocket = useWebSocket(wsurl);
     
 
   useEffect(() => {
     if(store.jugador == null || store.partida == null){
       return;
     }
+    
     setjugadorStore(store.jugador);
     setpartidaStore(store.partida);
 
@@ -35,9 +40,6 @@ function IniciarPartida() {
       return;
     }
 
-    const wsurl = `ws://localhost:8000/partidas/${partidaStore?.id}/ws?idJugador=${jugadorStore?.id}`;
-    
-    webSocket = new WebSocket(wsurl);
 
     if(partidaStore.iniciada){
       navigate(`/partida`)
@@ -48,14 +50,16 @@ function IniciarPartida() {
 
 
     if(webSocket){
-      webSocket.onmessage = function(event) {
+      webSocket.onmessage = async function(event) {
         const data = JSON.parse(event.data);
         console.log("Datos recibidos:", data);
         if (data.event === "unir"){
           setPlayers(JSON.parse(data.data).jugadores);
         }
         if(data.event === "iniciar"){
-          navigate(`/partida`)
+          setTimeout(() => {
+            navigate(`/partida`);
+        }, 1000);
         }
         if (data.event === "abandonar lobby"){
           if ((data.data).host) {

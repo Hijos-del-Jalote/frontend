@@ -6,9 +6,6 @@ import CartaComponent from "./Carta";
 
 function ResponderIntercambio({modoElegirCarta, cartasData, webSocket2, esTurno, cantidadCartasMano, onClick}) {
   const [searchParams] = useSearchParams();
-  const idPartida = searchParams.get("idPartida");
-  const idJugador = searchParams.get("idJugador");
-  
   
   useEffect(() => {
     console.log("aasdasdasdas");
@@ -18,7 +15,7 @@ function ResponderIntercambio({modoElegirCarta, cartasData, webSocket2, esTurno,
         console.log("datos recibidosaaaaaaaaaaaaaaaaaaaaaaaaaaaa:", data);
         if(data.event === "intercambio_request") {
             console.log("te estan intercambiando");
-            //setModoElegirCarta(true);
+            // setModoElegirCarta(true);
             
         }
         if(data.event === "intercambio") {
@@ -35,7 +32,7 @@ function ResponderIntercambio({modoElegirCarta, cartasData, webSocket2, esTurno,
     }
     //const algunaCartaEsDefensa = jugadorActual.cartas.some(carta => carta.tipo === 'defensa');
     //setModoDefensa(algunaCartaEsDefensa);
-  }, [webSocket2, modoElegirCarta]);
+  }, [webSocket2, ]);
 
 
   const handleElegirCarta = (cartaSeleccionada) => {
@@ -50,7 +47,7 @@ function ResponderIntercambio({modoElegirCarta, cartasData, webSocket2, esTurno,
     webSocket2.send(mensajeJSON);
   
 };
-
+  console.log(modoElegirCarta)
   return (
     <div className="row">
       

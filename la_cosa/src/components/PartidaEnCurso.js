@@ -8,14 +8,14 @@ import JugarCarta from "./JugarCarta";
 import Defensa from "./Defender";
 import IntercambiarCarta from "./IntercambioCarta";
 import ResponderIntercambio from "./ResponderIntercambio";
-import { useWebSocket } from './WebSocketContext';
+import { useWebSocket } from '../contexto/WebSocketContext';
 import {useSearchParams } from "react-router-dom";
 
 import DescartarCarta from "./DescartarCarta";
 import "../styles/PartidaEnCurso.css";
 
 
-function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
+function PartidaEnCurso({ oponentes, jugadorActual, esTurno,webSocket }) {
   const [habilitarSeleccionarOponente, setHabilitarSeleccionarOponente] =
     useState(false);
   const [carta, setCarta] = useState(null);
@@ -23,11 +23,8 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
 
   const [intercambiandoCarta, setIntercambiandoCarta] = useState(false);
 
-  const [searchParams] = useSearchParams();
-  const idPartida = searchParams.get("idPartida");
   const [modoElegirCarta, setModoElegirCarta] = useState(false);
-  const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws?idJugador=${idJugador}`; // borrar 
-  const webSocket = useWebSocket(wsurl);
+
 
   const [descartandoCarta, setDescartandoCarta] = useState(false);
   const cartasData = jugadorActual.cartas;
@@ -156,7 +153,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
 
           {esTurno && cartasData.length === 4 && (
             <RobarCarta
-              idJugador={idJugador}
+              idJugador={jugadorActual.id}
               esTurno={esTurno}
               cantidadCartasEnMano={cartasData.length}
             ></RobarCarta>
