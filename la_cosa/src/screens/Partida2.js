@@ -10,6 +10,7 @@ import Game from "../Game";
 import localStorage from "../data/localStorage";
 
 function Partida() {
+  
   const game = Game();
 
   const [store, setStore] = useState(null);
@@ -52,30 +53,31 @@ function Partida() {
     fetchData(matchId, userId);
   }, [webSocket]);
 
+
+  const esTurno =
+  jugadorStore?.id.toString() === jugadorConTurnoActual?.id.toString();
+
+
   if (partidaStore == undefined || jugadorStore == undefined) {
     return <div></div>;
   }
+
   if(resultados!=null){
     return <FinalizarPartida isHumanoTeamWinner={resultados.isHumanoTeamWinner} winners={resultados.winners} idJugador={userId}></FinalizarPartida>
   }
 
-  // // Que muestre cargando mientras no se descargaron los datos
-  // if (loading == null || !loading) {
-  //   return <div>Cargando...</div>;
-  // }
-
-  // if (player != null) {
-  //   if (!player.isAlive) {
-  //     return (
-  //       <div className="contenedorPrincipal d-flex flex-column justify-content-center align-items-center">
-  //         <div className="mt-5">
-  //           <h2 className="text-danger">Te han eliminado...</h2>
-  //           <p className="lead">Fin de la partida</p>
-  //         </div>
-  //       </div>
-  //     );
-  //   }
-  // }
+  if (jugadorStore != null) {
+    if (!jugadorStore.isAlive) {
+      return (
+        <div className="contenedorPrincipal d-flex flex-column justify-content-center align-items-center">
+          <div className="mt-5">
+            <h2 className="text-danger">Te han eliminado...</h2>
+            <p className="lead">Fin de la partida</p>
+          </div>
+        </div>
+      );
+    }
+  }
 
   // Ordeno a los jugadores por posicion
   const arrayJugadoresOrdenados = partidaStore?.jugadores
@@ -106,17 +108,7 @@ function Partida() {
     );
   }
 
-  // // obtengo mi jugador actual
 
-  // // Si la partida no esta iniciada que muestre que no esta iniciada
-  // if (iniciada === false || iniciada == null) {
-  //   return <div>Partida no iniciada...</div>;
-  // }
-
-  const esTurno =
-    jugadorStore?.id.toString() === jugadorConTurnoActual?.id.toString();
-
-    console.log(partidaStore)
   return (
     <div className="container-partida">
       <div>
