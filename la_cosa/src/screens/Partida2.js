@@ -29,11 +29,7 @@ function Partida() {
   const matchId = localStorage.getMatchId();
   const userId = localStorage.getUserId();
 
-  if(userId) {
-    setTimeout(() => {
-      navigate(`/home/crear`);
-    }, 0);
-  }else {
+  if(!userId) {
     showErrorMsg(JugadorNoExistente)
     setTimeout(() => {
       navigate(`/`);
@@ -71,23 +67,23 @@ function Partida() {
 
 
 
-
+  console.log(store)
   if(resultados!=null){
     return <FinalizarPartida isHumanoTeamWinner={resultados.isHumanoTeamWinner} winners={resultados.winners} idJugador={userId}></FinalizarPartida>
   }
 
-  if (jugadorStore != null) {
-    if (!jugadorStore.isAlive) {
-      return (
-        <div className="contenedorPrincipal d-flex flex-column justify-content-center align-items-center">
-          <div className="mt-5">
-            <h2 className="text-danger">Te han eliminado...</h2>
-            <p className="lead">Fin de la partida</p>
-          </div>
-        </div>
-      );
-    }
-  }
+  // if (jugadorStore != null) {
+  //   if (!jugadorStore.isAlive) {
+  //     return (
+  //       <div className="contenedorPrincipal d-flex flex-column justify-content-center align-items-center">
+  //         <div className="mt-5">
+  //           <h2 className="text-danger">Te han eliminado...</h2>
+  //           <p className="lead">Fin de la partida</p>
+  //         </div>
+  //       </div>
+  //     );
+  //   }
+  // }
 
   // Ordeno a los jugadores por posicion
   const arrayJugadoresOrdenados = partidaStore?.jugadores

@@ -66,8 +66,7 @@ function IniciarPartida() {
               navigate(`/home/crear`);
             }, 2000);
           } else {
-            const jugadorId = jugadorStore?.id; // Get the player's ID
-            const playerIndex = data.data.jugadores.findIndex((jugador) => jugador.id === jugadorId);
+            const playerIndex = data.data.jugadores.findIndex((jugador) => jugador.id === userId);
             if (playerIndex !== -1) {
               setTimeout(() => {
                 showInfoMsg(SaliendoDelLobby);
@@ -137,10 +136,10 @@ function IniciarPartida() {
           )}
       </div>
       <div className="contenedor_b">
-      <button className="button_iniciar" onClick={() => handleSubmit(partidaStore.id, jugadorStore.id)}>
+      <button className="button_iniciar" onClick={() => handleSubmit(matchId, userId)}>
   Iniciar Partida
 </button>
-<button className="button_eliminar" onClick={() => handleAbandonarLobby(jugadorStore.id)}>
+<button className="button_eliminar" onClick={() => handleAbandonarLobby(userId)}>
   Abandonar Lobby
 </button>
 
