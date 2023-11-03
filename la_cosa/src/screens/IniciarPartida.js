@@ -49,32 +49,34 @@ function IniciarPartida() {
       webSocket.onmessage = async function(event) {
         const data = JSON.parse(event.data);
         console.log("Datos recibidos:", data);
-        if (data.event === "unir"){
-          setStore({ partida: data.data, jugador: store.jugador });
+        if (data.event === "unir") {
+          const parsedData = JSON.parse(data.data);
+          setStore({ partida: parsedData, jugador: store?.jugador });
         }
+        
         if(data.event === "iniciar"){
           setTimeout(() => {
             navigate(`/partida`);
         }, 1000);
         }
-        if (data.event === "abandonar lobby"){
-          if ((data.data).host) {
+        if (data.event === "abandonar lobby") {
+          if (data.data.host) {
+            setTimeout(() => {
+              showInfoMsg(HostAbandonoLobby);
+              navigate(`/home/crear`);
+            }, 2000);
+          } else {
+            const jugadorId = jugadorStore?.id; // Get the player's ID
+            const playerIndex = data.data.jugadores.findIndex((jugador) => jugador.id === jugadorId);
+            if (playerIndex !== -1) {
               setTimeout(() => {
-                showInfoMsg(HostAbandonoLobby)
-                  navigate(`/home/crear`);
+                showInfoMsg(SaliendoDelLobby);
+                navigate(`/home/crear`);
               }, 2000);
+            }
+            setStore({ partida: data.data, jugador: store?.jugador });
           }
-          else {
-              if ((data.data).jugadores.id === jugadorStore.id) {
-                  setTimeout(() => {
-                      showInfoMsg(SaliendoDelLobby);
-                      navigate(`/home/crear`);
-                  }, 2000);
-              }
-              setStore({ partida: data.data, jugador: store.jugador });
-          }
-        
-      }
+        }
       }
     }
 
