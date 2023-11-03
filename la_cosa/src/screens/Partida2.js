@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import InfoPartida from "../components/InfoPartida";
 import FinalizarPartida from "../components/FinalizarPartida";
 import PartidaEnCurso from "../components/PartidaEnCurso";
 import { useWebSocket } from "../contexto/WebSocketContext";
 import "../styles/Partida.css";
-import { StoreContext } from "../contexto/StoreProvider";
 import Game from "../Game";
 import localStorage from "../data/localStorage";
+import { showErrorMsg } from "../utils/Toasts";
+import { JugadorNoExistente } from "../utils/Mensajes";
 
 function Partida() {
+
+
   
   const game = Game();
 
@@ -25,6 +28,17 @@ function Partida() {
 
   const matchId = localStorage.getMatchId();
   const userId = localStorage.getUserId();
+
+  if(userId) {
+    setTimeout(() => {
+      navigate(`/home/crear`);
+    }, 0);
+  }else {
+    showErrorMsg(JugadorNoExistente)
+    setTimeout(() => {
+      navigate(`/`);
+    }, 0);
+  }
   const wsurl = `ws://localhost:8000/partidas/${matchId}/ws?idJugador=${userId}`;
 
   const webSocket = useWebSocket(wsurl)
@@ -57,9 +71,6 @@ function Partida() {
 
 
 
-  if (partidaStore == undefined || jugadorStore == undefined) {
-    return <div></div>;
-  }
 
   if(resultados!=null){
     return <FinalizarPartida isHumanoTeamWinner={resultados.isHumanoTeamWinner} winners={resultados.winners} idJugador={userId}></FinalizarPartida>
@@ -97,18 +108,7 @@ function Partida() {
 
   const esTurno =
   jugadorStore?.id.toString() === jugadorConTurnoActual?.id.toString();
-  if (jugadoresFiltrados?.length === 0) {
-    return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
-        <div
-          className="alert alert-success text-center animated fadeIn"
-          role="alert"
-        >
-          Partida Finalizada, ¡eres el ganador!
-        </div>
-      </div>
-    );
-  }
+
 
 
   return (

@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import "../styles/IniciarPartida.css";
 import Game from "../Game";
 import { useWebSocket } from "../contexto/WebSocketContext";
+import localStorage from "../data/localStorage";
+import { showErrorMsg, showInfoMsg } from "../utils/Toasts";
+import { ErrorIniciarPartida, HostAbandonoLobby, SaliendoDelLobby } from "../utils/Mensajes";
 
 
 
@@ -11,14 +14,15 @@ import { useWebSocket } from "../contexto/WebSocketContext";
 function IniciarPartida() {
   const game = Game();
 
-  const [players, setPlayers] = useState([]);
-  const [responseText, setResponseText] = useState("");
   const navigate = useNavigate();
 
 
   const [store,setStore] = useState(null);
+  
+  
   const jugadorStore = store?.jugador;
   const partidaStore = store?.partida;
+  const players = partidaStore?.jugadores;
 
   const matchId = localStorage.getMatchId();
   const userId = localStorage.getUserId();
@@ -26,22 +30,18 @@ function IniciarPartida() {
   const webSocket = useWebSocket(wsurl)
 
   useEffect(() => {
+
     const fetchData = async (idPartida, idJugador) => {
+      if(store == null){
       const partidaApi = await game.getPartida(idPartida);
       const jugadorApi = await game.getJugador(idJugador);
   
       if (partidaApi != null && jugadorApi != null) {
         // Actualiza ambos estados al mismo tiempo
         setStore({ partida: partidaApi, jugador: jugadorApi });
-      }
+      }}
     };
 
-
-    if(partidaStore?.iniciada){
-      navigate(`/partida`)
-    }
-
-    setPlayers(partidaStore?.jugadores);
     
 
 
@@ -50,7 +50,7 @@ function IniciarPartida() {
         const data = JSON.parse(event.data);
         console.log("Datos recibidos:", data);
         if (data.event === "unir"){
-          setPlayers(JSON.parse(data.data).jugadores);
+          setStore({ partida: data.data, jugador: store.jugador });
         }
         if(data.event === "iniciar"){
           setTimeout(() => {
@@ -60,18 +60,18 @@ function IniciarPartida() {
         if (data.event === "abandonar lobby"){
           if ((data.data).host) {
               setTimeout(() => {
-                  setResponseText("El host abandonó el lobby, saliendo...");
+                showInfoMsg(HostAbandonoLobby)
                   navigate(`/home/crear`);
               }, 2000);
           }
           else {
               if ((data.data).jugadores.id === jugadorStore.id) {
                   setTimeout(() => {
-                      setResponseText("Saliendo del lobby...");
+                      showInfoMsg(SaliendoDelLobby);
                       navigate(`/home/crear`);
                   }, 2000);
               }
-              setPlayers((data.data).jugadores);
+              setStore({ partida: data.data, jugador: store.jugador });
           }
         
       }
@@ -82,17 +82,23 @@ function IniciarPartida() {
     
 
     
-  }, [partidaStore,webSocket,jugadorStore,navigate,store]);
+  }, [webSocket,userId,matchId]);
+
+
+
+  if(partidaStore?.iniciada){
+    navigate(`/partida`)
+  }
+
   
-  const handleSubmit = (partidaID, jugadorID) => {
+  const handleSubmit = (partidaID) => {
     axios
       .put(`http://localhost:8000/partidas/iniciar?idPartida=${partidaID}`)
       .then((data) =>
         navigate(`/partida`)
       )
       .catch((error) => {
-        setResponseText("Error al iniciar partida, compruebe la cantidad de jugadores");
-        console.log(error);
+        showErrorMsg(ErrorIniciarPartida)
       });
   };
   const handleAbandonarLobby = async (id) => {
@@ -103,7 +109,6 @@ function IniciarPartida() {
       }, 0);
     }
   };
-
 
   return (
     <div className="container_iniciar">
@@ -138,9 +143,6 @@ function IniciarPartida() {
 </button>
 
         </div>
-        {responseText && (
-        <p className="mt-3 alert alert-info">{responseText}</p>
-      )}
         </div>
     </div>
   );

@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/CrearPartida.css";
 import Game from "../Game";
-import { StoreContext } from "../contexto/StoreProvider";
+import localStorage from "../data/localStorage";
 
 function CrearPartida() {
   const game = Game();
@@ -10,11 +10,10 @@ function CrearPartida() {
   const [nombrePartida, setNombrePartida] = useState("");
   // Saco de la url mi idJugador
 
-  const [store, dispatch] = useContext(StoreContext);
-  const idJugador = store.jugador?.id;
+  const idJugador = localStorage.getUserId();
 
   const handleCrearPartida = async (e) => {
-    const partidaId = await game.crearPartida(nombrePartida,idJugador,dispatch);
+    const partidaId = await game.crearPartida(nombrePartida,idJugador);
     if (partidaId != null) {
       setTimeout(() => {
         navigate(`/lobby`);

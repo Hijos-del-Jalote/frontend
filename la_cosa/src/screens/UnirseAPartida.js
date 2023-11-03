@@ -1,18 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
-import {  useNavigate } from "react-router-dom";
-import { apiObtenerPartidas } from "../data/apiService";
 import "../styles/UnirseAPartida.css";
-import { StoreContext } from "../contexto/StoreProvider";
 import Game from "../Game";
+import localStorage from "../data/localStorage";
 
 function UnirseAPartida() {
 
   const game = Game();
   const [partidas, setPartidas] = useState([]);
 
-  const [store,dispatch] = useContext(StoreContext);
-  const idJugador = store.jugador.id;
+  const idJugador = localStorage.getUserId();
 
   useEffect(() => {
     
@@ -26,7 +22,7 @@ function UnirseAPartida() {
 
   const handleUnirseAPartida = async (partidaId) => {
     console.log(partidaId)
-    game.unirsePartida(partidaId, idJugador,dispatch)
+    game.unirsePartida(partidaId, idJugador)
   };
 
   return (

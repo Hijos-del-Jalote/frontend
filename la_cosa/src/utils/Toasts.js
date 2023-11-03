@@ -24,4 +24,17 @@ const showSuccessMsg = (success) => {
         });
 }
 
-export {showErrorMsg, showSuccessMsg};
+const showInfoMsg = (info) => {
+    toast.info(info, {
+        position: "bottom-left",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
+}
+
+export {showErrorMsg, showSuccessMsg, showInfoMsg};

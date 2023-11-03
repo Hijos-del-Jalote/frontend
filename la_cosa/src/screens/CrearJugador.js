@@ -1,19 +1,17 @@
-import React, { useContext, useState } from "react";
+import React, {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/CrearJugador.css";
 import Game from "../Game.js";
-import {StoreContext} from "../contexto/StoreProvider.js";
+import localStorage from "../data/localStorage.js";
 
 function CrearJugador() {
   const game = Game();
-  const [store,dispatch] = useContext(StoreContext);
 
-  if(store != null && store.jugador != null) {
-  if(store.jugador.nombre != undefined) {
+  if(localStorage.getUserId()) {
     setTimeout(() => {
       navigate(`/home/crear`);
     }, 0);
-  }}
+  }
 
   const navigate = useNavigate();
 
@@ -21,7 +19,7 @@ function CrearJugador() {
 
   const handleCrearJugador = async () => {
     
-    const userId = await game.crearJugador(nombreJugador,dispatch);
+    const userId = await game.crearJugador(nombreJugador);
     if (userId != null) {
       setTimeout(() => {
         navigate(`/home/crear`);

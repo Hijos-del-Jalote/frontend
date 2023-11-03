@@ -7,8 +7,6 @@ import JugarCarta from "./JugarCarta";
 
 import Defensa from "./Defender";
 import IntercambiarCarta from "./IntercambioCarta";
-import ResponderIntercambio from "./ResponderIntercambio";
-import { useWebSocket } from '../contexto/WebSocketContext';
 import {useSearchParams } from "react-router-dom";
 
 import DescartarCarta from "./DescartarCarta";
