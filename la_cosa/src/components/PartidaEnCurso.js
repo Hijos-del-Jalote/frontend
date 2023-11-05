@@ -171,7 +171,11 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
             
           )}
           {esTurno && cartasData.length === 5 && (!jugandoCarta && !descartandoCarta) && (
-            <DescartarCarta onClick={onDescartarCarta}></DescartarCarta>
+            <DescartarCarta 
+              onClick={onDescartarCarta}
+              esTurno={esTurno}
+              cantidadCartasEnMano={cartasData.length}
+              ></DescartarCarta>
             
           )}
 
