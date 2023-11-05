@@ -3,6 +3,7 @@ import { render, fireEvent, waitFor } from '@testing-library/react';
 import IntercambiarCarta from '../components/IntercambioCarta';
 import axios from 'axios';
 
+
 const jugador = {
   id: 1,
   nombre: 'Pedro',

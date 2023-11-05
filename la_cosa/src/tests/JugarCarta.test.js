@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import JugarCarta from "../components/JugarCarta";
 
+
 describe("Componente JugarCarta", () => {
   it("debería renderizarse sin errores", () => {
     const { getByText } = render(<JugarCarta esTurno={true} cantidadCartasMano={5} />);
