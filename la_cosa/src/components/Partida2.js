@@ -140,6 +140,7 @@ function Partida() {
             sentido={sentido}
             partida={partida}
             jugadorEnJuego={player}
+            idJugador={idJugador}
           />}
         </div>
         <div >

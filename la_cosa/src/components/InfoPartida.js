@@ -1,6 +1,8 @@
 // InfoPartida.js
 import React from "react";
 import "../styles/InfoPartida.css";
+import LaCosaTerminaPartida from "./LaCosaTerminaPartida";
+import handleLaCosaTerminaPartida from "./LaCosaTerminaPartida";
 
 function InfoPartida({
   jugadorConTurnoActual,
@@ -8,6 +10,7 @@ function InfoPartida({
   sentido,
   partida,
   jugadorEnJuego,
+  idJugador,
 }) {
   return (
     <div className="container-info">
@@ -31,6 +34,15 @@ function InfoPartida({
       <div className="item_info">
         <div className="item_title">Rol:</div> <div>{jugadorEnJuego.rol}</div>
       </div>
+
+      {(jugadorEnJuego.rol === "La cosa") && (
+          
+          <LaCosaTerminaPartida 
+          idJugador={idJugador}
+          rol={jugadorEnJuego.rol}
+          ></LaCosaTerminaPartida>
+        )}
+
     </div>
   );
 }
