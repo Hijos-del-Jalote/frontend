@@ -99,7 +99,7 @@ function Partida() {
   let jugadorConTurnoActual = arrayJugadoresOrdenados[0];
   if (turnoActual != null) {
     jugadorConTurnoActual = arrayJugadoresOrdenados.find(
-      (jugador) => jugador.posicion === turnoActual
+      (jugador) => jugador.id === turnoActual
     );
   }
 
