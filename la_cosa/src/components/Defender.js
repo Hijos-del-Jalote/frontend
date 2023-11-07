@@ -110,15 +110,19 @@ function Defensa({ jugadorActual, webSocket}) {
                 setEstadoPartida("Estas jugando Sospecha, elige una carta:");
                 var opciones = ["1", "2", "3", "4"];
                 var opciones2 = opciones.join("\n");
-                var eleccion = prompt("Eligi una:\n" + opciones2);
-                if (opciones.includes(eleccion)) {
-                  alert("Elegiste: " + eleccion);
-                  setTimeout(
-                    setEstadoPartida(data.data[eleccion]),
-                    10000);
-                } else {
-                  alert("Elegi de nuevo");
+                
+                var elegistebien = false;
+                while(!elegistebien){
+                  var eleccion = prompt("Eligi una:\n" + opciones2);
+                  if (opciones.includes(eleccion)) {
+                    alert("Elegiste: " + eleccion);
+                      setEstadoPartida("La carta de tu oponente que elegiste es:" + data.data[eleccion-1]);
+                      elegistebien = true;
+                  } else {
+                    alert("Elegi de nuevo");
+                  }
                 }
+                
 
                 
               }       
