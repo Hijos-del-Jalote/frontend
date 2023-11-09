@@ -19,7 +19,7 @@ function InfoPartida({
         <div className="item_title">Partida:</div> <div>{partida.nombre}</div>
       </div>
       <div className="item_info">
-        <div className="item_title">Tú eres:</div> <div>{jugadorEnJuego.nombre}</div>
+        <div className="item_title">Tú eres:</div> <div>{jugadorEnJuego?.nombre}</div>
       </div>
       <div className="item_info">
         <div className="item_title">Turno Actual:</div> <div>{jugadorConTurnoActual.nombre}</div>
