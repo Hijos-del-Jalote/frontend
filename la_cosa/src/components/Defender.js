@@ -7,7 +7,7 @@ import CartaComponent from "./Carta";
 import ResponderIntercambio from './ResponderIntercambio';
 
 
-function Defensa({ jugadorActual, webSocket}) {
+function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
   const [idCarta, setIdCarta] = useState('');
   const [players, setPlayers] = useState([]);
   const [cartaSeleccionada, setCartaSeleccionada] = useState(null);
@@ -88,7 +88,7 @@ function Defensa({ jugadorActual, webSocket}) {
               if(data.event === "intercambio_request") {
                   console.log("te estan intercambiando");
                   setEstadoPartida(`Te quieren intercambiar`);
-                  setModoElegirCarta(true);
+                  onResponderIntercambio();
                   
               }
               if(data.event === "intercambio") {
