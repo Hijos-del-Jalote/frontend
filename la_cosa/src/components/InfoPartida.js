@@ -48,7 +48,7 @@ function InfoPartida({
         )}
         <div className="chat-container-margen">
           <Chat
-          alto={400}
+          alto={300}
           ancho={300}
           ></Chat>
         </div>
