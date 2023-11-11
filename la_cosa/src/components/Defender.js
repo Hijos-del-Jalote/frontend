@@ -70,14 +70,14 @@ function Defensa({ jugadorActual, webSocket}) {
               // actualizarPartida(JSON.parse(data.data))
               
               setTimeout(() => {
-                setEstadoPartida(`$El oponente terminó de jugar carta`);
+                setEstadoPartida("El oponente terminó de jugar carta");
                 setTimeout(() => {
                   window.location.reload();
                 }, 500);
               }, 2000);
             }
             if(data.event === "defensa_erronea"){
-              setEstadoPartida(`Elige una carta de defensa valida`);
+              setEstadoPartida("Elige una carta de defensa valida");
               setModoDefensa(true);
             }
             if(data.event === "analisis") {
@@ -87,7 +87,7 @@ function Defensa({ jugadorActual, webSocket}) {
             
               if(data.event === "intercambio_request") {
                   console.log("te estan intercambiando");
-                  setEstadoPartida(`Te quieren intercambiar`);
+                  setEstadoPartida("Te quieren intercambiar");
                   setModoElegirCarta(true);
                   
               }
@@ -101,10 +101,31 @@ function Defensa({ jugadorActual, webSocket}) {
               }
               if(data.event === "fin_de_turno") {
                   console.log("fin de turno");
-                  setEstadoPartida(`Fin de intercambio y de turno`);
+                  setEstadoPartida("Fin de intercambio y de turno");
                   window.location.reload();
                   
-              }            
+              }
+              if(data.event === "sospecha") {
+                console.log("sospecha");
+                setEstadoPartida("Estas jugando Sospecha, elige una carta:");
+                var opciones = ["1", "2", "3", "4"];
+                var opciones2 = opciones.join("\n");
+                
+                var elegistebien = false;
+                while(!elegistebien){
+                  var eleccion = prompt("Eligi una:\n" + opciones2);
+                  if (opciones.includes(eleccion)) {
+                    alert("Elegiste: " + eleccion);
+                      setEstadoPartida("La carta de tu oponente que elegiste es:" + data.data[eleccion-1]);
+                      elegistebien = true;
+                  } else {
+                    alert("Elegi de nuevo");
+                  }
+                }
+                
+
+                
+              }       
               
         }
     }
