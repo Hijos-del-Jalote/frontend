@@ -50,7 +50,10 @@ function Defensa({ jugadorActual, webSocket}) {
                     nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.tipo.toLowerCase() === 'defensa');
                     nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.nombre === "Aqui estoy bien");
                   }
-
+                  if (datinha.template_carta === "Cambio de lugar" || datinha.template_carta === "Mas vale que corras" || datinha.template_carta === "Seduccion") {
+                    nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.tipo.toLowerCase() === 'defensa');
+                    nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.nombre === "No gracias");
+                  }
                   setCartasDefensa(nuevasCartasDefensa);
                   console.log(cartasDefensa);
                   if (cartasDefensa == []) {
