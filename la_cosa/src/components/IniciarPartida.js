@@ -152,6 +152,8 @@ function IniciarPartida() {
         <Chat
           alto={200}
           ancho={700}
+          idPartida={idPartida}
+          idJugador={idJugador}
           ></Chat>
         </div>
     </div>

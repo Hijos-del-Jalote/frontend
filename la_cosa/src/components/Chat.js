@@ -3,27 +3,29 @@ import axios from "axios";
 import { useWebSocket } from './WebSocketContext';
 import { useSearchParams } from "react-router-dom";
 
-function Chat({ ancho, alto }) {
+function Chat({ ancho, alto, idPartida, idJugador, mensajesTest}) {
   const [chatsito, setChatsito] = useState([]);
   const [mensaje, setMensaje] = useState('');
-  const [searchParams] = useSearchParams();
-  const idPartida = searchParams.get("idPartida");
-  const idJugador = searchParams.get("idJugador");
+  
   const wsurl = `ws://localhost:8000/partidas/${idPartida}/ws/chat?idJugador=${idJugador}`;
   const webSocket = useWebSocket(wsurl);
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:8000/partidas/${idPartida}/chat`)
-      .then((response) => {
-        const mensajes = response.data.map(chat => (
-          { player: chat.player, time: chat.time, msg: chat.msg }
-        ));
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/partidas/${idPartida}/chat`);
+        const mensajes = mensajesTest || response.data.map(chat => ({
+          player: chat.player,
+          time: chat.time,
+          msg: chat.msg
+        }));
         setChatsito(mensajes);
-      })
-      .catch((error) => {
-        console.error("Error al obtener el chat: ", error);
-      });
+      } catch (error) {
+        console.error('Error al obtener chat:', error);
+      }
+    };
+  
+    fetchData();
 
     if (webSocket) {
       webSocket.onmessage = function (event) {

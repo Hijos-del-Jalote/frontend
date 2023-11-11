@@ -12,6 +12,7 @@ function InfoPartida({
   partida,
   jugadorEnJuego,
   idJugador,
+  idPartida,
 }) {
   return (
     <div className="container-info">
@@ -50,6 +51,8 @@ function InfoPartida({
           <Chat
           alto={300}
           ancho={300}
+          idPartida={idPartida}
+          idJugador={idJugador}
           ></Chat>
         </div>
     </div>

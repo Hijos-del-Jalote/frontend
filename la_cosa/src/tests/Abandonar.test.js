@@ -1,34 +1,55 @@
-import React from "react";
-import { render, fireEvent, act, waitFor } from "@testing-library/react";
-import axios from 'axios'; // Importa el mock personalizado
-import IniciarPartida from "../components/IniciarPartida";
-import { WebSocketProvider } from '../components/WebSocketContext';
+import React from 'react';
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import axios from 'axios';
+import IniciarPartida from '../components/IniciarPartida';
+import { WebSocketProvider } from '../components/WebSocketContext';
 
-jest.mock("axios"); // Mockea el módulo axios
+jest.mock('axios');
 
-describe("IniciarPartida", () => {
-  
-  it("maneja click del botón Abandonar Lobby ", async () => {
-    const { getByText } = render(
+describe('IniciarPartida Component', () => {
+  it('renderiza el componente', async () => {
+    //mockea respuesta del get
+    axios.get.mockResolvedValue({ data: [{ nombre: 'nombre1' }] });
+
+    render(
       <BrowserRouter>
         <WebSocketProvider>
           <IniciarPartida />
         </WebSocketProvider>
       </BrowserRouter>
     );
+
+    // el boton de abandonar deberia estar en el lobby
+    const abandonarLobbyButton = screen.getByText('Abandonar Lobby');
+    expect(abandonarLobbyButton).toBeInTheDocument();
+  });
+
+  it('maneja el click del boton Abandonar Lobby', async () => {
+    // mockea respuesta del get
+    axios.get.mockResolvedValue({ data: [{ nombre: 'nombre1' }] });
+
+    const {getByText} = render(
+      <BrowserRouter>
+        <WebSocketProvider>
+          <IniciarPartida />
+        </WebSocketProvider>
+      </BrowserRouter>
+    );
+
+    // settea el boton
     const abandonarLobbyButton = getByText("Abandonar Lobby");
 
-    // Configura el comportamiento simulado para axios.put
+    // mockea la respuesta del back
     axios.put.mockResolvedValue({status: 200, data: { message: "Jugador salió con exito" }});
 
     act(() => {
       fireEvent.click(abandonarLobbyButton);
     });
 
-    // Espera a que se resuelva la promesa
+
     await waitFor(() => {
-      // Verifica que el mensaje de éxito se muestra en el componente
+      // Verifica que el mensaje de exito se muestra en el componente, tras haber tocado el boton
       expect(getByText("Jugador salió con exito")).toBeInTheDocument();
     });
   });
