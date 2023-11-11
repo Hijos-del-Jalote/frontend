@@ -1,9 +1,9 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useWebSocket } from './WebSocketContext';
 import { useSearchParams } from "react-router-dom";
 
-function Chat({ancho, alto}) {
+function Chat({ ancho, alto }) {
   const [chatsito, setChatsito] = useState([]);
   const [mensaje, setMensaje] = useState('');
   const [searchParams] = useSearchParams();
@@ -14,37 +14,38 @@ function Chat({ancho, alto}) {
 
   useEffect(() => {
     axios
-    .get(`http://localhost:8000/partidas/${idPartida}/chat`)
-    .then((response) => {
-      const mensajes = response.data.map(chat => (
-        `${chat.player} ${chat.time} ${chat.msg}`
-      ));
-      setChatsito(mensajes);
-    })
-    .catch((error) => {
-      console.error("Error al obtener el chat: ", error);
-    });
+      .get(`http://localhost:8000/partidas/${idPartida}/chat`)
+      .then((response) => {
+        const mensajes = response.data.map(chat => (
+          { player: chat.player, time: chat.time, msg: chat.msg }
+        ));
+        setChatsito(mensajes);
+      })
+      .catch((error) => {
+        console.error("Error al obtener el chat: ", error);
+      });
 
     if (webSocket) {
       webSocket.onmessage = function (event) {
         const data = JSON.parse(event.data);
         if (data.event === "chat_msg") {
-          let msg = data.data.player + " " + data.data.time + " " + data.data.msg;
-          setChatsito((msgsAnteriores) => [...msgsAnteriores, msg]);
+          setChatsito((msgsAnteriores) => [
+            ...msgsAnteriores,
+            { player: data.data.player, time: data.data.time, msg: data.data.msg }
+          ]);
         }
       };
     }
   }, [webSocket, idPartida]);
 
   const handleChat = () => {
-
     webSocket.send(mensaje);
-    //desp que se mando saco para que no quede el msg en el input
+    // después de enviar, limpio el mensaje para que no quede en el input
     setMensaje('');
   };
 
   const handleKeyPress = (e) => {
-    //para que funcione el enviar msg con tecla enter
+    // para permitir enviar el mensaje con la tecla Enter
     if (e.key === 'Enter') {
       handleChat();
     }
@@ -54,12 +55,11 @@ function Chat({ancho, alto}) {
     <div className="chat-container" style={{ width: ancho, height: alto }}>
       <div className="chat-messages">
         <div className="message-list">
-          {chatsito.map((mensaje, index) => (
+          {chatsito.map((chat, index) => (
             <div key={index} className="message">
-            {/* divide las partes del mensaje para ponerle otro color */}
-            <span className="message-player">{mensaje.split(' ')[0]}</span>
-            <span className="message-time">{mensaje.split(' ')[1]}</span>
-            <span className="message-text">{mensaje.split(' ').slice(2).join(' ')}</span>
+              <span className="message-player">{chat.player}:</span>
+              <span className="message-text"> {chat.msg}</span>
+              <span className="message-time"> ({chat.time})</span>
             </div>
           ))}
         </div>
