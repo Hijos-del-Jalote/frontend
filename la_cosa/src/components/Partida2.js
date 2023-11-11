@@ -99,7 +99,7 @@ function Partida() {
   let jugadorConTurnoActual = arrayJugadoresOrdenados[0];
   if (turnoActual != null) {
     jugadorConTurnoActual = arrayJugadoresOrdenados.find(
-      (jugador) => jugador.posicion === turnoActual
+      (jugador) => jugador.id === turnoActual
     );
   }
 
@@ -130,7 +130,7 @@ function Partida() {
     return <div>Partida no iniciada...</div>;
   }
 
-  const esTurno = idJugador.toString() === jugadorConTurnoActual.id.toString();
+  const esTurno = idJugador.toString() === jugadorConTurnoActual?.id.toString();
   return (
     <div className="container-partida">
         <div >
@@ -140,6 +140,8 @@ function Partida() {
             sentido={sentido}
             partida={partida}
             jugadorEnJuego={player}
+            idJugador={idJugador}
+            idPartida={idPartida}
           />}
         </div>
         <div >

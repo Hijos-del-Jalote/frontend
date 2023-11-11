@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useWebSocket } from './WebSocketContext';
 import "../styles/IniciarPartida.css";
+import Chat from "./Chat";
 
 
 
@@ -77,12 +78,12 @@ function IniciarPartida() {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .put(`http://localhost:8000/partidas/iniciar?idPartida=${idPartida}`)
+      .put(`http://localhost:8000/partidas/iniciar/${idPartida}?idJugador=${idJugador}`)
       .then((data) =>
         navigate(`/partida?idJugador=${idJugador}&idPartida=${idPartida}`)
       )
       .catch((error) => {
-        setResponseText("Error al iniciar partida, compruebe la cantidad de jugadores");
+        setResponseText(error.response.data.detail);
         console.log(error);
       });
   };
@@ -146,6 +147,14 @@ function IniciarPartida() {
         {responseText && (
         <p className="mt-3 alert alert-info">{responseText}</p>
       )}
+      </div>
+      <div className="chat-container-margen">
+        <Chat
+          alto={200}
+          ancho={700}
+          idPartida={idPartida}
+          idJugador={idJugador}
+          ></Chat>
         </div>
     </div>
   );

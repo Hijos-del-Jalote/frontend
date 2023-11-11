@@ -1,6 +1,9 @@
 // InfoPartida.js
 import React from "react";
 import "../styles/InfoPartida.css";
+import LaCosaTerminaPartida from "./LaCosaTerminaPartida";
+import handleLaCosaTerminaPartida from "./LaCosaTerminaPartida";
+import Chat from "./Chat";
 
 function InfoPartida({
   jugadorConTurnoActual,
@@ -8,6 +11,8 @@ function InfoPartida({
   sentido,
   partida,
   jugadorEnJuego,
+  idJugador,
+  idPartida,
 }) {
   return (
     <div className="container-info">
@@ -16,7 +21,7 @@ function InfoPartida({
         <div className="item_title">Partida:</div> <div>{partida.nombre}</div>
       </div>
       <div className="item_info">
-        <div className="item_title">Tú eres:</div> <div>{jugadorEnJuego.nombre}</div>
+        <div className="item_title">Tú eres:</div> <div>{jugadorEnJuego?.nombre}</div>
       </div>
       <div className="item_info">
         <div className="item_title">Turno Actual:</div> <div>{jugadorConTurnoActual.nombre}</div>
@@ -31,6 +36,25 @@ function InfoPartida({
       <div className="item_info">
         <div className="item_title">Rol:</div> <div>{jugadorEnJuego.rol}</div>
       </div>
+
+
+
+
+      {(jugadorEnJuego.rol === "La cosa") && (
+          
+          <LaCosaTerminaPartida 
+          idJugador={idJugador}
+          rol={jugadorEnJuego.rol}
+          ></LaCosaTerminaPartida>
+        )}
+        <div className="chat-container-margen">
+          <Chat
+          alto={300}
+          ancho={300}
+          idPartida={idPartida}
+          idJugador={idJugador}
+          ></Chat>
+        </div>
     </div>
   );
 }
