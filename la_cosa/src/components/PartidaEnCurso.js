@@ -39,7 +39,9 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
   // aprieta un lanzallamas
   const onClickEfectoLanzallama = (cartaAJugar) => {
     console.log("dfsfdssd");
-    setHabilitarSeleccionarOponente(true);
+    if (cartaAJugar.nombre !== "whisky") {
+      setHabilitarSeleccionarOponente(true);
+    }
     setCarta(cartaAJugar);
   };
 

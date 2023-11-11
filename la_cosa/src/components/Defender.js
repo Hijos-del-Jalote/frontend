@@ -24,6 +24,8 @@ function Defensa({ jugadorActual, webSocket}) {
   const [cartasOtro, setCartasOtro] = useState([]);
   const cartasData = jugadorActual.cartas;
   const [modoElegirCarta, setModoElegirCarta] = useState(false);
+  const [efectoWhisky, setEfectoWhisky] = useState(false);       //agregado por whisky
+  const [cartasMismoJugador, setcartasMismoJugador] = useState([]);   //agregado para mostrar cartas whisky
 
   useEffect(() => {
     console.log("HOLA");
@@ -59,7 +61,35 @@ function Defensa({ jugadorActual, webSocket}) {
                   console.log();
                   setModoDefensa(true);
                 }
-            }
+                // else if(datinha.idJugador === idJugador){
+                //    if (data.event === "whisky"){
+                //      setEfectoWhisky(true);
+                //      setcartasMismoJugador(data.data);
+                //      // Itera sobre las cartas del jugador y muestra sus nombres
+                //      const cartasDelJugador = data.data.cartas;
+                //      const nombresCartas = cartasDelJugador.map((carta) => carta.nombre);
+
+                //     setEstadoPartida(`${data.data.template_carta} sus cartas: ${nombresCartas.join(", ")}`);
+                //    }else{
+                //      setEstadoPartida("No puedes jugar la carta Whisky sobre otro jugador");
+                //    }
+                //  }
+
+
+                if (data.event === "whisky") {
+                  if(datinha.idJugador === idJugador){
+                    setEfectoWhisky(true);
+                    setcartasMismoJugador(data.data);
+                    // Itera sobre las cartas del jugador y muestra sus nombres
+                    const cartasDelJugador = data.data.cartas;
+                    const nombresCartas = cartasDelJugador.map((carta) => carta.nombre);
+
+                    setEstadoPartida(`${data.data.template_carta} sus cartas: ${nombresCartas.join(", ")}`);
+                  }else{
+                    setEstadoPartida("No puedes jugar la carta Whisky sobre otro jugador");
+                  }
+                }
+             }
             if(data.event === "jugar_resp"){
               
                 if (idJugador != jugadorActual) {
@@ -179,6 +209,14 @@ function Defensa({ jugadorActual, webSocket}) {
             
           </div>
         )}
+        {/* {efectoWhisky && (
+          <div className="cartas_mismo_jugador">
+          <h4>Cartas del jugador al que se jugó el whisky:</h4>
+            {cartasMismoJugador.map((carta, index) => (
+            <div key={index}>{carta.nombre}</div>
+             ))}
+          </div>
+        )} */}
         {
           
         <div className="col-md-auto mt-3">
