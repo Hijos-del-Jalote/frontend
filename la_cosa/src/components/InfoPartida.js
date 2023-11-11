@@ -3,6 +3,7 @@ import React from "react";
 import "../styles/InfoPartida.css";
 import LaCosaTerminaPartida from "./LaCosaTerminaPartida";
 import handleLaCosaTerminaPartida from "./LaCosaTerminaPartida";
+import Chat from "./Chat";
 
 function InfoPartida({
   jugadorConTurnoActual,
@@ -11,6 +12,7 @@ function InfoPartida({
   partida,
   jugadorEnJuego,
   idJugador,
+  idPartida,
 }) {
   return (
     <div className="container-info">
@@ -35,6 +37,9 @@ function InfoPartida({
         <div className="item_title">Rol:</div> <div>{jugadorEnJuego.rol}</div>
       </div>
 
+
+
+
       {(jugadorEnJuego.rol === "La cosa") && (
           
           <LaCosaTerminaPartida 
@@ -42,7 +47,14 @@ function InfoPartida({
           rol={jugadorEnJuego.rol}
           ></LaCosaTerminaPartida>
         )}
-
+        <div className="chat-container-margen">
+          <Chat
+          alto={300}
+          ancho={300}
+          idPartida={idPartida}
+          idJugador={idJugador}
+          ></Chat>
+        </div>
     </div>
   );
 }

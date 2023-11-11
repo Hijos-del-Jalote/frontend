@@ -141,6 +141,7 @@ function Partida() {
             partida={partida}
             jugadorEnJuego={player}
             idJugador={idJugador}
+            idPartida={idPartida}
           />}
         </div>
         <div >
