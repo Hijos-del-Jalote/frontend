@@ -28,10 +28,10 @@
     flex-direction: column;
     width: 300px; /* Ancho rectangulo */
     height: 400px; /* Alto rectangulo*/
-    border: 1px solid #ccc;
+    border: 2px solid #ccc;
     overflow-y: scroll;
-    color:lightcyan;
-    background-color: lightcyan;
+    color:darkslategrey;
+    background-color: darkslategrey;
 
   }
   .chat-container-margen {
@@ -39,26 +39,25 @@
   }
   .chat-messages {
     flex: 1;
-    overflow-y: auto;
     font-size: 14px;
   }
   
   .message-list {
     padding: 10px;
-    background-color: lightcyan;
+    background-color: darkslategrey;
   }
   
   .message-player {
-    color: blue;
+    color: orange;
     font-weight: bold; 
     font-size: 14px;
   }
   .message-time {
-    color: green;
+    color: lightgray;
     font-size: 10px;
   }
   .message-text {
-    color: black;
+    color: white;
     font-size: 14px;
   }
 
@@ -89,6 +88,6 @@
     cursor: pointer;
     font-size: 8px;
     background-color: green;
-    color: black;
+    color: white;
   }
   
