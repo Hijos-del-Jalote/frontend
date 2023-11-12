@@ -24,6 +24,7 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
   const [cartasOtro, setCartasOtro] = useState([]);
   const cartasData = jugadorActual.cartas;
   const [modoElegirCarta, setModoElegirCarta] = useState(false);
+  const [respondiendoIntercambio, setRespondiendoIntercambio] = useState(false);
 
   useEffect(() => {
     console.log("HOLA");
@@ -88,7 +89,29 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
               if(data.event === "intercambio_request") {
                   console.log("te estan intercambiando");
                   setEstadoPartida(`Te quieren intercambiar`);
-                  onResponderIntercambio();
+                  
+                  setRespondiendoIntercambio(true); 
+                  console.log("te estan intercambiando");
+                  setEstadoPartida(`Te quieren intercambiar`);
+                  let nuevasCartasDefensa = [];
+                  nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.tipo.toLowerCase() === 'defensa');
+                  console.log(nuevasCartasDefensa)
+                  nuevasCartasDefensa = nuevasCartasDefensa.filter(carta => 
+                    carta.nombre === "No, gracias" || 
+                    carta.nombre.toLowerCase() === "fallaste" || 
+                    carta.nombre === "Aterrador"
+                  );
+                  
+
+                  setCartasDefensa(nuevasCartasDefensa);
+                  console.log(nuevasCartasDefensa);
+                  if (nuevasCartasDefensa.length == 0) {
+                      setEstadoPartida("No tienes con que defenderte al intercambio, selecciona una carta");
+                      onResponderIntercambio();
+                  }else{
+                    setModoDefensa(true);
+                    
+                  }
                   
               }
               if(data.event === "intercambio") {
@@ -122,14 +145,15 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
   };
 
   const handleNoDefender = () => {
+    
     if (modoDefensa) {
       setDefender(false);
     }
   
   };
   const handleJugarCartaDefensa = (cartaSeleccionada) => {
-
       // Enviar la carta seleccionada al servidor a través de WebSocket
+      if(!respondiendoIntercambio){
       const mensaje = {
         defendido: defender,
         idCarta: cartaSeleccionada.id,
@@ -137,6 +161,22 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
 
       const mensajeJSON = JSON.stringify(mensaje);
       webSocket.send(mensajeJSON);
+    }else{
+      if(cartaSeleccionada){
+      console.log("Gsdfsd")
+        const mensaje = {
+          'aceptado': false,
+        'data': cartaSeleccionada.id,
+      };
+  
+      const mensajeJSON = JSON.stringify(mensaje);
+      webSocket.send(mensajeJSON);
+      setRespondiendoIntercambio(false);
+      }else{
+        console.log("gola")
+        onResponderIntercambio();
+        setModoDefensa(false);
+      }}
     
   };
   return (//esto no se como hacer para que se vea bien hasta aca llegué
@@ -167,7 +207,7 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
     {modoDefensa && ( //todo esto esta asi nomas, se ve muy feo pero anda 
       <div>
       <button onClick={handleDefender} className="btn btn-primary">Defender</button>
-      <button onClick={handleJugarCartaDefensa} className="btn btn-primary">No defender</button>
+      <button onClick={() => handleJugarCartaDefensa(false)} className="btn btn-primary">No defender</button>
       </div>
     )}
 
