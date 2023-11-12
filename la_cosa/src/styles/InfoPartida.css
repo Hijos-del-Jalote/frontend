@@ -91,3 +91,14 @@
     color: white;
   }
   
+
+  .boton-chat {
+    background-color: #4CAF50; /* Color cuando está activo (Chat) */
+    color: white;
+    box-sizing: border-box;
+  }
+  
+  .boton-logs {
+    background-color: #008CBA; /* Color cuando no está activo (Logs) */
+    color: white;
+  }
