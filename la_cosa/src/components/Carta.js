@@ -22,7 +22,7 @@ function CartaComponent({
       if (carta.nombre === "Lanzallamas" || 
       carta.nombre === "Analisis" ||
       carta.nombre === "Sospecha" ||
-      //carta.nombre === "Whisky" ||
+      carta.nombre === "Whisky" ||
       carta.nombre === "Cambio de lugar" ||
       carta.nombre === "Mas vale que corras" ||
       carta.nombre === "Seduccion") {
