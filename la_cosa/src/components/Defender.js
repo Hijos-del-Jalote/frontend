@@ -25,6 +25,8 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
   const cartasData = jugadorActual.cartas;
   const [modoElegirCarta, setModoElegirCarta] = useState(false);
   const [respondiendoIntercambio, setRespondiendoIntercambio] = useState(false);
+  const [efectoWhisky, setEfectoWhisky] = useState(false);       //agregado por whisky
+  const [cartasMismoJugador, setcartasMismoJugador] = useState([]);   //agregado para mostrar cartas whisky
 
   useEffect(() => {
     console.log("HOLA");
@@ -60,7 +62,14 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
                   console.log();
                   setModoDefensa(true);
                 }
+ 
             }
+             if (data.event === "Whisky") {
+              setcartasMismoJugador(data.data);
+              setEfectoWhisky(true);
+              
+            
+          }
             if(data.event === "jugar_resp"){
               
                 if (idJugador != jugadorActual) {
@@ -71,17 +80,17 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
               // actualizarPartida(JSON.parse(data.data))
               
               setTimeout(() => {
-                setEstadoPartida(`$El oponente terminó de jugar carta`);
+                setEstadoPartida("El oponente terminó de jugar carta");
                 setTimeout(() => {
                   window.location.reload();
                 }, 500);
               }, 2000);
             }
             if(data.event === "defensa_erronea"){
-              setEstadoPartida(`Elige una carta de defensa valida`);
+              setEstadoPartida("Elige una carta de defensa valida");
               setModoDefensa(true);
             }
-            if(data.event === "analisis") {
+            if(data.event === "Analisis") {
               setEfectoAnalisis(true);
               setCartasOtro(data.data);
             }
@@ -112,6 +121,7 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
                     setModoDefensa(true);
                     
                   }
+
                   
               }
               if(data.event === "intercambio") {
@@ -124,10 +134,31 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
               }
               if(data.event === "fin_de_turno") {
                   console.log("fin de turno");
-                  setEstadoPartida(`Fin de intercambio y de turno`);
+                  setEstadoPartida("Fin de intercambio y de turno");
                   window.location.reload();
                   
-              }            
+              }
+              if(data.event === "sospecha") {
+                console.log("sospecha");
+                setEstadoPartida("Estas jugando Sospecha, elige una carta:");
+                var opciones = ["1", "2", "3", "4"];
+                var opciones2 = opciones.join("\n");
+                
+                var elegistebien = false;
+                while(!elegistebien){
+                  var eleccion = prompt("Eligi una:\n" + opciones2);
+                  if (opciones.includes(eleccion)) {
+                    alert("Elegiste: " + eleccion);
+                      setEstadoPartida("La carta de tu oponente que elegiste es:" + data.data[eleccion-1]);
+                      elegistebien = true;
+                  } else {
+                    alert("Elegi de nuevo");
+                  }
+                }
+                
+
+                
+              }       
               
         }
     }
@@ -214,11 +245,22 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
         {(efectoAnalisis) && (
           
           <div className="col-md-auto mt-3">
-            <h5>Las cartas del otro son: </h5>
-            <h5>{cartasOtro}</h5>
+            <h5>Analisis: Las cartas del otro son: </h5>
+            {cartasOtro.map((carta, index) => (
+            <div key={index}>{carta}</div>
+             ))}
+            
             
           </div>
         )}
+         {efectoWhisky && (
+          <div className="cartas_mismo_jugador">
+          <h4>Cartas del jugador que jugó whisky:</h4>
+            {cartasMismoJugador.map((carta, index) => (
+            <div key={index}>{carta}</div>
+             ))}
+          </div>
+        )} 
         {
           
         <div className="col-md-auto mt-3">

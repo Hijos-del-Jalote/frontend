@@ -130,7 +130,7 @@ function Partida() {
     return <div>Partida no iniciada...</div>;
   }
 
-  const esTurno = idJugador.toString() === jugadorConTurnoActual.id.toString();
+  const esTurno = idJugador.toString() === jugadorConTurnoActual?.id.toString();
   return (
     <div className="container-partida">
         <div >
@@ -141,6 +141,7 @@ function Partida() {
             partida={partida}
             jugadorEnJuego={player}
             idJugador={idJugador}
+            idPartida={idPartida}
           />}
         </div>
         <div >
