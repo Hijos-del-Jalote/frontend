@@ -80,7 +80,7 @@ function Defensa({ jugadorActual, webSocket}) {
               setEstadoPartida("Elige una carta de defensa valida");
               setModoDefensa(true);
             }
-            if(data.event === "analisis") {
+            if(data.event === "Analisis") {
               setEfectoAnalisis(true);
               setCartasOtro(data.data);
             }
@@ -195,8 +195,11 @@ function Defensa({ jugadorActual, webSocket}) {
         {(efectoAnalisis) && (
           
           <div className="col-md-auto mt-3">
-            <h5>Las cartas del otro son: </h5>
-            <h5>{cartasOtro}</h5>
+            <h5>Analisis: Las cartas del otro son: </h5>
+            {cartasOtro.map((carta, index) => (
+            <div key={index}>{carta}</div>
+             ))}
+            
             
           </div>
         )}
