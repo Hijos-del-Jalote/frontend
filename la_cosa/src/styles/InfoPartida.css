@@ -93,12 +93,11 @@
   
 
   .boton-chat {
-    background-color: #4CAF50; /* Color cuando está activo (Chat) */
+    background-color: greenyellow;
     color: white;
-    box-sizing: border-box;
   }
   
   .boton-logs {
-    background-color: #008CBA; /* Color cuando no está activo (Logs) */
+    background-color: cyan;
     color: white;
   }
