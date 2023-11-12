@@ -31,7 +31,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
 
   const [descartandoCarta, setDescartandoCarta] = useState(false);
   const cartasData = jugadorActual.cartas;
-
+  const [respondiendoIntercambio, setRespondiendoIntercambio] = useState(false);
 
 
   // Metodos del componente
@@ -45,6 +45,11 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
 
   const onJugarCarta = () => {
     setJugandoCarta(true);
+  };
+
+  const onResponderIntercambio = () => {
+    setJugandoCarta(true);
+    setRespondiendoIntercambio(true);
   };
 
 
@@ -74,6 +79,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     // simplemente juega la carta
     // Jugar la carta
     console.log("AAAA");
+    if(!respondiendoIntercambio){
     try {
       await axios.post(
         `http://localhost:8000/cartas/jugar?id_carta=${cartaAJugar.id}`
@@ -81,6 +87,15 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
       console.log("Carta jugada exitosamente");
     } catch (error) {
       console.log(error);
+    }}else{
+          const mensaje = {
+        'aceptado': true,
+      'data': cartaAJugar.id,
+    };
+
+    const mensajeJSON = JSON.stringify(mensaje);
+    webSocket.send(mensajeJSON);
+  
     }
   };
  
@@ -183,7 +198,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
             
           
 
-          {jugandoCarta && !habilitarSeleccionarOponente && (
+          {jugandoCarta && !habilitarSeleccionarOponente && !respondiendoIntercambio && (
             <div>Selecciona una carta para jugar</div>
           )}
           {descartandoCarta &&  (
@@ -192,7 +207,11 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
           {habilitarSeleccionarOponente && (
             <div>Selecciona un oponente </div>
           )}
+          {respondiendoIntercambio && (
+            <div>Te estan intercambiando, selecciona una carta </div>
+          )}
           <Defensa 
+          onResponderIntercambio={onResponderIntercambio}
           jugadorActual={jugadorActual}
           webSocket={webSocket}>
           </Defensa>
