@@ -26,6 +26,7 @@ function Defensa({ jugadorActual, webSocket}) {
   const [modoElegirCarta, setModoElegirCarta] = useState(false);
   const [efectoWhisky, setEfectoWhisky] = useState(false);       //agregado por whisky
   const [cartasMismoJugador, setcartasMismoJugador] = useState([]);   //agregado para mostrar cartas whisky
+  const [efectoUps, setEfectoUps] = useState(false);
 
   useEffect(() => {
     console.log("HOLA");
@@ -68,7 +69,12 @@ function Defensa({ jugadorActual, webSocket}) {
               setEfectoWhisky(true);
               
             
-          }
+             }
+            if (data.event === "Ups") {
+              setcartasMismoJugador(data.data);
+              setEfectoUps(true);
+            }
+
             if(data.event === "jugar_resp"){
               
                 if (idJugador != jugadorActual) {
@@ -219,7 +225,15 @@ function Defensa({ jugadorActual, webSocket}) {
             <div key={index}>{carta}</div>
              ))}
           </div>
-        )} 
+        )}
+        {efectoUps && (
+          <div className="cartas_mismo_jugador">
+          <h4>Ups: Cartas del jugador que jugó ups:</h4>
+            {cartasMismoJugador.map((carta, index) => (
+            <div key={index}>{carta}</div>
+             ))}
+          </div>
+        )}
         {
           
         <div className="col-md-auto mt-3">
