@@ -36,7 +36,15 @@ function InfoPartida({
       <div className="item_info">
         <div className="item_title">Rol:</div> <div>{jugadorEnJuego.rol}</div>
       </div>
-
+      <div className="item_info">
+        <div className="item_title">Posición:</div> <div>{jugadorEnJuego.posicion}</div>
+      </div>
+      <div className="item_info">
+        <div className="item_title">Bloqueado:</div> <div>{jugadorEnJuego.bloqueado ? "true" : "false"}</div>
+      </div>
+      <div className="item_info">
+        <div className="item_title">Cuarentena:</div> <div>{jugadorEnJuego.cuarentena ? "true" : "false"}</div>
+      </div>
 
 
 
