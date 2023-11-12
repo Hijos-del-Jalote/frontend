@@ -32,6 +32,8 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
   const [descartandoCarta, setDescartandoCarta] = useState(false);
   const cartasData = jugadorActual.cartas;
 
+  const [estadoPartida, setEstadoPartida] = useState("");
+
 
 
   // Metodos del componente
@@ -66,6 +68,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
       }, 1000);
     } catch (error) {
       console.log(error);
+      setEstadoPartida(error.response.data.detail);
     }
 
   };
@@ -81,6 +84,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
       console.log("Carta jugada exitosamente");
     } catch (error) {
       console.log(error);
+      
     }
   };
  
@@ -111,6 +115,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
       console.log("Jugador eliminado exitosamente");
     } catch (error) {
       console.log(error);
+      setEstadoPartida(error.response.data.detail);
     }
   };
 
@@ -118,6 +123,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
   return (
     <div className="container_partida_encurso">
       <div className="jugadores_cards">
+        
         {oponentes.map((jugador) => (
           <div className="player_card" key={jugador.id}>
             <PlayerComponent
@@ -149,7 +155,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
           />
         </div>
 
-
+          
         
           
         <div className="botones_juego">
@@ -206,7 +212,13 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
           )}
         </div>
       </div>
-
+      {
+          
+          <div className="col-md-auto mt-3">
+            <h5>{estadoPartida}</h5>
+            
+          </div>
+        }
 
       <div className="mano">
         {/* Mostrar la mano del jugador actual */}
@@ -234,6 +246,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
           ))}
         </div>
       </div>
+      
     </div>
   );
 }

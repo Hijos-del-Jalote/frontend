@@ -1,7 +1,9 @@
-import React from "react";
+import React, {useState} from "react";
 import axios from "axios";
 
+
 function RobarCarta({ idJugador, esTurno, cantidadCartasEnMano }) {
+  const [estadoPartida, setEstadoPartida] = useState("");
   //los estados del jugador y las cartas en null porque no tenemos informacion
 
   const recargarPagina = () => {
@@ -21,6 +23,7 @@ function RobarCarta({ idJugador, esTurno, cantidadCartasEnMano }) {
       recargarPagina();
     } catch (error) {
       console.error("Error al robar una carta:", error);
+      setEstadoPartida(error.response.data.detail);
     }
   };
 
@@ -33,6 +36,13 @@ function RobarCarta({ idJugador, esTurno, cantidadCartasEnMano }) {
       <button onClick={handleDrawCard} className="btn btn-primary">
         Robar Carta
       </button>
+      {
+          
+          <div className="col-md-auto mt-3">
+            <h5>{estadoPartida}</h5>
+            
+          </div>
+        }
     </div>
   );
 }
