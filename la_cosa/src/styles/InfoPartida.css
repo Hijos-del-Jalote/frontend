@@ -91,3 +91,13 @@
     color: white;
   }
   
+
+  .boton-chat {
+    background-color: green;
+    color: white;
+  }
+  
+  .boton-logs {
+    background-color: blueviolet;
+    color: white;
+  }
