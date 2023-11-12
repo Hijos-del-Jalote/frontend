@@ -106,7 +106,6 @@ function Chat({ ancho, alto, idPartida, idJugador, mensajesTest }) {
                 ))
               : logs.map((log, index) => (
                   <div key={index} className="message">
-                    <span className="message-player">{log.player}:</span>
                     <span className="message-text"> {log.msg}</span>
                     <span className="message-time"> ({log.time})</span>
                   </div>
