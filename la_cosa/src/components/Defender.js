@@ -61,35 +61,14 @@ function Defensa({ jugadorActual, webSocket}) {
                   console.log();
                   setModoDefensa(true);
                 }
-                // else if(datinha.idJugador === idJugador){
-                //    if (data.event === "whisky"){
-                //      setEfectoWhisky(true);
-                //      setcartasMismoJugador(data.data);
-                //      // Itera sobre las cartas del jugador y muestra sus nombres
-                //      const cartasDelJugador = data.data.cartas;
-                //      const nombresCartas = cartasDelJugador.map((carta) => carta.nombre);
-
-                //     setEstadoPartida(`${data.data.template_carta} sus cartas: ${nombresCartas.join(", ")}`);
-                //    }else{
-                //      setEstadoPartida("No puedes jugar la carta Whisky sobre otro jugador");
-                //    }
-                //  }
-
-
-                if (data.event === "whisky") {
-                  if(datinha.idJugador === idJugador){
-                    setEfectoWhisky(true);
-                    setcartasMismoJugador(data.data);
-                    // Itera sobre las cartas del jugador y muestra sus nombres
-                    const cartasDelJugador = data.data.cartas;
-                    const nombresCartas = cartasDelJugador.map((carta) => carta.nombre);
-
-                    setEstadoPartida(`${data.data.template_carta} sus cartas: ${nombresCartas.join(", ")}`);
-                  }else{
-                    setEstadoPartida("No puedes jugar la carta Whisky sobre otro jugador");
-                  }
-                }
-             }
+ 
+            }
+             if (data.event === "Whisky") {
+              setcartasMismoJugador(data.data);
+              setEfectoWhisky(true);
+              
+            
+          }
             if(data.event === "jugar_resp"){
               
                 if (idJugador != jugadorActual) {
@@ -209,14 +188,14 @@ function Defensa({ jugadorActual, webSocket}) {
             
           </div>
         )}
-        {/* {efectoWhisky && (
+         {efectoWhisky && (
           <div className="cartas_mismo_jugador">
-          <h4>Cartas del jugador al que se jugó el whisky:</h4>
+          <h4>Cartas del jugador que jugó whisky:</h4>
             {cartasMismoJugador.map((carta, index) => (
-            <div key={index}>{carta.nombre}</div>
+            <div key={index}>{carta}</div>
              ))}
           </div>
-        )} */}
+        )} 
         {
           
         <div className="col-md-auto mt-3">
