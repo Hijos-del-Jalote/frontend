@@ -25,7 +25,8 @@ function CartaComponent({
       carta.nombre === "Whisky" ||
       carta.nombre === "Cambio de lugar" ||
       carta.nombre === "Mas vale que corras" ||
-      carta.nombre === "Seduccion") {
+      carta.nombre === "Seduccion" ||
+      carta.nombre === "Hacha") {
         console.log("esLanza, alguna carta");
         onClickEfectoLanzallama(carta);
       } else {

@@ -151,6 +151,7 @@ function Partida() {
             esTurno={esTurno}
             idJugador={idJugador}
             idPartida={idPartida}
+            oponentesConJugadorMismo={jugadores}
           />}
         </div>
     </div>
