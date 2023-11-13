@@ -101,3 +101,26 @@
     background-color: blueviolet;
     color: white;
   }
+
+  .barra-marron-izq {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 10px;
+    background-color: brown;
+  }
+
+  .barra-marron-der {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 10px;
+    background-color:brown;
+  }
+
+  .margen-rectangulo {
+    border: 10px solid green;
+  }
+  

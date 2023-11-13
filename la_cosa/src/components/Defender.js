@@ -136,7 +136,7 @@ window.location.reload();
               }
               if(data.event === "intercambio") {
                   console.log("Otro esta en intercambio");
-                  setEstadoPartida(`Otro esta intercambiando`);
+                  setEstadoPartida("Otro esta intercambiando");
               }
               if(data.event === "intercambio exitoso") {
                   console.log("intercambio exitoso");
