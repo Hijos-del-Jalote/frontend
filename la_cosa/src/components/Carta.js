@@ -22,6 +22,7 @@ function CartaComponent({
       if (carta.nombre === "Lanzallamas" || 
       carta.nombre === "Analisis" ||
       carta.nombre === "Sospecha" ||
+      carta.nombre === "Que quede entre nosotros" ||
       carta.nombre === "Whisky" ||
       carta.nombre === "Cambio de lugar" ||
       carta.nombre === "Mas vale que corras" ||
@@ -59,7 +60,7 @@ function CartaComponent({
       {esTurnoJugarCarta ||  esTurnoDefender || jugandoCarta || descartandoCarta || esTurnoIntercambiarCarta ? (
 
 
-        <button className="btn btn-outline-primary" onClick={onClick}>
+        <button className="btn btn-outline-primary" onClick={onClick} data-testid="onClickCarta">
           <div
             className="card bg-info-subtle"
             style={{ width: "10.5rem", height: "18rem" }}
