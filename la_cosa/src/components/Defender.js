@@ -209,10 +209,15 @@ window.location.reload();
           'aceptado': false,
         'data': cartaSeleccionada.id,
       };
-  
+      
       const mensajeJSON = JSON.stringify(mensaje);
       webSocket.send(mensajeJSON);
       setRespondiendoIntercambio(false);
+      
+      if(cartaSeleccionada.nombre === "Fallaste") {
+        setModoDefensa(false);
+      }
+      
       }else{
         console.log("gola")
         onResponderIntercambio();
