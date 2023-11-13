@@ -28,6 +28,8 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
   const [efectoWhisky, setEfectoWhisky] = useState(false);       //agregado por whisky
   const [cartasMismoJugador, setcartasMismoJugador] = useState([]);   //agregado para mostrar cartas whisky
 
+  const [fallaste, setFallaste] = useState(false);
+
   useEffect(() => {
     console.log("HOLA");
     
@@ -199,10 +201,15 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
           'aceptado': false,
         'data': cartaSeleccionada.id,
       };
-  
+      
       const mensajeJSON = JSON.stringify(mensaje);
       webSocket.send(mensajeJSON);
       setRespondiendoIntercambio(false);
+      
+      if(cartaSeleccionada.nombre === "Fallaste") {
+        setModoDefensa(false);
+      }
+      
       }else{
         console.log("gola")
         onResponderIntercambio();
