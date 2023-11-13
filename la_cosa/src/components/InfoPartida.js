@@ -40,7 +40,10 @@ function InfoPartida({
         <div className="item_title">Posición:</div> <div>{jugadorEnJuego.posicion}</div>
       </div>
       <div className="item_info">
-        <div className="item_title">Bloqueado:</div> <div>{jugadorEnJuego.bloqueado ? "true" : "false"}</div>
+        <div className="item_title">Bloqueo Izquierdo:</div> <div>{jugadorEnJuego.blockIzq ? "true" : "false"}</div>
+      </div>
+      <div className="item_info">
+        <div className="item_title">Bloqueo Derecho:</div> <div>{jugadorEnJuego.blockDer ? "true" : "false"}</div>
       </div>
       <div className="item_info">
         <div className="item_title">Cuarentena:</div> <div>{jugadorEnJuego.cuarentena ? "true" : "false"}</div>
