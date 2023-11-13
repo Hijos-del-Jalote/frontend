@@ -27,6 +27,7 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
   const [respondiendoIntercambio, setRespondiendoIntercambio] = useState(false);
   const [efectoWhisky, setEfectoWhisky] = useState(false);       //agregado por whisky
   const [cartasMismoJugador, setcartasMismoJugador] = useState([]);   //agregado para mostrar cartas whisky
+  const [efectoAterrador, setEfectoAterrador] = useState(false);
   const [entreNosotros, setEntreNosotros] = useState(false);
 
   useEffect(() => {
@@ -71,6 +72,10 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
               
             
           }
+          if(data.event === "Aterrador"){
+            setEfectoAterrador(true); 
+            setCartasOtro(data.data);
+          }
             if(data.event === "jugar_resp"){
               
                 if (idJugador != jugadorActual) {
@@ -83,7 +88,7 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
               setTimeout(() => {
                 setEstadoPartida("El oponente terminó de jugar carta");
                 setTimeout(() => {
-                  window.location.reload();
+window.location.reload();
                 }, 500);
               }, 2000);
             }
@@ -135,12 +140,12 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
               }
               if(data.event === "intercambio exitoso") {
                   console.log("intercambio exitoso");
-                  window.location.reload();
+window.location.reload();
               }
               if(data.event === "fin_de_turno") {
                   console.log("fin de turno");
                   setEstadoPartida("Fin de intercambio y de turno");
-                  window.location.reload();
+window.location.reload();
                   
               }
               if(data.event === "sospecha") {
@@ -258,7 +263,16 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
             
           </div>
         )}
-         {efectoWhisky && (
+        {(efectoAterrador) && (
+          
+          <div className="col-md-auto mt-3">
+            <h5>Aterrador: La carta del otro es: </h5>
+            <div >{cartasOtro}</div>
+            
+            
+          </div>
+        )}
+         {efectoWhisky  && (
           <div className="cartas_mismo_jugador">
           <h4>Cartas del jugador que jugó whisky:</h4>
             {cartasMismoJugador.map((carta, index) => (
