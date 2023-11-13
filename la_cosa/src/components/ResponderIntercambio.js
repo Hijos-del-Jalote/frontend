@@ -41,13 +41,13 @@ function ResponderIntercambio({modoElegirCarta, cartasData, webSocket2, esTurno,
   const handleElegirCarta = (cartaSeleccionada) => {
 
     // Enviar la carta seleccionada al servidor a través de WebSocket
-    const mensaje = {
-        'aceptado': true,
-      'data': cartaSeleccionada.id,
-    };
+    // const mensaje = {
+    //     'aceptado': true,
+    //   'data': cartaSeleccionada.id,
+    // };
 
-    const mensajeJSON = JSON.stringify(mensaje);
-    webSocket2.send(mensajeJSON);
+    // const mensajeJSON = JSON.stringify(mensaje);
+    // webSocket2.send(mensajeJSON);
   
 };
 

@@ -7,7 +7,7 @@ import CartaComponent from "./Carta";
 import ResponderIntercambio from './ResponderIntercambio';
 
 
-function Defensa({ jugadorActual, webSocket}) {
+function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
   const [idCarta, setIdCarta] = useState('');
   const [players, setPlayers] = useState([]);
   const [cartaSeleccionada, setCartaSeleccionada] = useState(null);
@@ -24,9 +24,12 @@ function Defensa({ jugadorActual, webSocket}) {
   const [cartasOtro, setCartasOtro] = useState([]);
   const cartasData = jugadorActual.cartas;
   const [modoElegirCarta, setModoElegirCarta] = useState(false);
+  const [respondiendoIntercambio, setRespondiendoIntercambio] = useState(false);
   const [efectoWhisky, setEfectoWhisky] = useState(false);       //agregado por whisky
   const [cartasMismoJugador, setcartasMismoJugador] = useState([]);   //agregado para mostrar cartas whisky
   const [efectoUps, setEfectoUps] = useState(false);
+  const [efectoAterrador, setEfectoAterrador] = useState(false);
+  const [entreNosotros, setEntreNosotros] = useState(false);
 
   useEffect(() => {
     console.log("HOLA");
@@ -75,6 +78,11 @@ function Defensa({ jugadorActual, webSocket}) {
               setEfectoUps(true);
             }
 
+          }
+          if(data.event === "Aterrador"){
+            setEfectoAterrador(true); 
+            setCartasOtro(data.data);
+          }
             if(data.event === "jugar_resp"){
               
                 if (idJugador != jugadorActual) {
@@ -87,7 +95,7 @@ function Defensa({ jugadorActual, webSocket}) {
               setTimeout(() => {
                 setEstadoPartida("El oponente terminó de jugar carta");
                 setTimeout(() => {
-                  window.location.reload();
+window.location.reload();
                 }, 500);
               }, 2000);
             }
@@ -99,25 +107,52 @@ function Defensa({ jugadorActual, webSocket}) {
               setEfectoAnalisis(true);
               setCartasOtro(data.data);
             }
+            if(data.event === "Que quede entre nosotros") {
+              setEntreNosotros(true);
+              setCartasOtro(data.data);
+            }
             
               if(data.event === "intercambio_request") {
                   console.log("te estan intercambiando");
-                  setEstadoPartida("Te quieren intercambiar");
-                  setModoElegirCarta(true);
+                  setEstadoPartida(`Te quieren intercambiar`);
+                  
+                  setRespondiendoIntercambio(true); 
+                  console.log("te estan intercambiando");
+                  setEstadoPartida(`Te quieren intercambiar`);
+                  let nuevasCartasDefensa = [];
+                  nuevasCartasDefensa = jugadorActual.cartas.filter(carta => carta.tipo.toLowerCase() === 'defensa');
+                  console.log(nuevasCartasDefensa)
+                  nuevasCartasDefensa = nuevasCartasDefensa.filter(carta => 
+                    carta.nombre === "No, gracias" || 
+                    carta.nombre.toLowerCase() === "fallaste" || 
+                    carta.nombre === "Aterrador"
+                  );
+                  
+
+                  setCartasDefensa(nuevasCartasDefensa);
+                  console.log(nuevasCartasDefensa);
+                  if (nuevasCartasDefensa.length == 0) {
+                      setEstadoPartida("No tienes con que defenderte al intercambio, selecciona una carta");
+                      onResponderIntercambio();
+                  }else{
+                    setModoDefensa(true);
+                    
+                  }
+
                   
               }
               if(data.event === "intercambio") {
                   console.log("Otro esta en intercambio");
-                  setEstadoPartida(`Otro esta intercambiando`);
+                  setEstadoPartida("Otro esta intercambiando");
               }
               if(data.event === "intercambio exitoso") {
                   console.log("intercambio exitoso");
-                  window.location.reload();
+window.location.reload();
               }
               if(data.event === "fin_de_turno") {
                   console.log("fin de turno");
                   setEstadoPartida("Fin de intercambio y de turno");
-                  window.location.reload();
+window.location.reload();
                   
               }
               if(data.event === "sospecha") {
@@ -158,14 +193,15 @@ function Defensa({ jugadorActual, webSocket}) {
   };
 
   const handleNoDefender = () => {
+    
     if (modoDefensa) {
       setDefender(false);
     }
   
   };
   const handleJugarCartaDefensa = (cartaSeleccionada) => {
-
       // Enviar la carta seleccionada al servidor a través de WebSocket
+      if(!respondiendoIntercambio){
       const mensaje = {
         defendido: defender,
         idCarta: cartaSeleccionada.id,
@@ -173,6 +209,27 @@ function Defensa({ jugadorActual, webSocket}) {
 
       const mensajeJSON = JSON.stringify(mensaje);
       webSocket.send(mensajeJSON);
+    }else{
+      if(cartaSeleccionada){
+      console.log("Gsdfsd")
+        const mensaje = {
+          'aceptado': false,
+        'data': cartaSeleccionada.id,
+      };
+      
+      const mensajeJSON = JSON.stringify(mensaje);
+      webSocket.send(mensajeJSON);
+      setRespondiendoIntercambio(false);
+      
+      if(cartaSeleccionada.nombre === "Fallaste") {
+        setModoDefensa(false);
+      }
+      
+      }else{
+        console.log("gola")
+        onResponderIntercambio();
+        setModoDefensa(false);
+      }}
     
   };
   return (//esto no se como hacer para que se vea bien hasta aca llegué
@@ -203,7 +260,7 @@ function Defensa({ jugadorActual, webSocket}) {
     {modoDefensa && ( //todo esto esta asi nomas, se ve muy feo pero anda 
       <div>
       <button onClick={handleDefender} className="btn btn-primary">Defender</button>
-      <button onClick={handleJugarCartaDefensa} className="btn btn-primary">No defender</button>
+      <button onClick={() => handleJugarCartaDefensa(false)} className="btn btn-primary">No defender</button>
       </div>
     )}
 
@@ -218,7 +275,16 @@ function Defensa({ jugadorActual, webSocket}) {
             
           </div>
         )}
-         {efectoWhisky && (
+        {(efectoAterrador) && (
+          
+          <div className="col-md-auto mt-3">
+            <h5>Aterrador: La carta del otro es: </h5>
+            <div >{cartasOtro}</div>
+            
+            
+          </div>
+        )}
+         {efectoWhisky  && (
           <div className="cartas_mismo_jugador">
           <h4>Cartas del jugador que jugó whisky:</h4>
             {cartasMismoJugador.map((carta, index) => (
@@ -232,9 +298,20 @@ function Defensa({ jugadorActual, webSocket}) {
             {cartasMismoJugador.map((carta, index) => (
             <div key={index}>{carta}</div>
              ))}
+        )} 
+        {(entreNosotros) && (
+          
+          <div className="col-md-auto mt-3">
+            <h5>Entre Nosotros: Las cartas del otro son: </h5>
+            {cartasOtro.map((carta, index) => (
+            <div key={index}>{carta}</div>
+             ))}
+            
+            
           </div>
         )}
         {
+          
           
         <div className="col-md-auto mt-3">
           <h5>{estadoPartida}</h5>

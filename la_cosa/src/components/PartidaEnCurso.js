@@ -31,8 +31,8 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
 
   const [descartandoCarta, setDescartandoCarta] = useState(false);
   const cartasData = jugadorActual.cartas;
-
-
+  const [estadoPartida, setEstadoPartida] = useState("");
+  const [respondiendoIntercambio, setRespondiendoIntercambio] = useState(false);
   // Metodos del componente
 
   // aprieta un lanzallamas
@@ -45,6 +45,11 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
 
   const onJugarCarta = () => {
     setJugandoCarta(true);
+  };
+
+  const onResponderIntercambio = () => {
+    setJugandoCarta(true);
+    setRespondiendoIntercambio(true);
   };
 
 
@@ -66,6 +71,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
       }, 1000);
     } catch (error) {
       console.log(error);
+      setEstadoPartida(error.response.data.detail);
     }
 
   };
@@ -74,6 +80,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
     // simplemente juega la carta
     // Jugar la carta
     console.log("AAAA");
+    if(!respondiendoIntercambio){
     try {
       await axios.post(
         `http://localhost:8000/cartas/jugar?id_carta=${cartaAJugar.id}`
@@ -81,6 +88,17 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
       console.log("Carta jugada exitosamente");
     } catch (error) {
       console.log(error);
+
+    }}else{
+          const mensaje = {
+        'aceptado': true,
+      'data': cartaAJugar.id,
+    };
+
+    const mensajeJSON = JSON.stringify(mensaje);
+    webSocket.send(mensajeJSON);
+  
+
     }
   };
  
@@ -114,6 +132,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
       console.log("Jugador eliminado exitosamente");
     } catch (error) {
       console.log(error);
+      setEstadoPartida(error.response.data.detail);
     }
   };
 
@@ -130,6 +149,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
           />
         </div>
       ))}
+
       </div>
       <div className="mazo_container">
         <div className="mazo">
@@ -150,7 +170,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
           />
         </div>
 
-
+          
         
           
         <div className="botones_juego">
@@ -184,7 +204,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
             
           
 
-          {jugandoCarta && !habilitarSeleccionarOponente && (
+          {jugandoCarta && !habilitarSeleccionarOponente && !respondiendoIntercambio && (
             <div>Selecciona una carta para jugar</div>
           )}
           {descartandoCarta &&  (
@@ -193,7 +213,11 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
           {habilitarSeleccionarOponente && (
             <div>Selecciona un oponente </div>
           )}
+          {respondiendoIntercambio && (
+            <div>Te estan intercambiando, selecciona una carta </div>
+          )}
           <Defensa 
+          onResponderIntercambio={onResponderIntercambio}
           jugadorActual={jugadorActual}
           webSocket={webSocket}>
           </Defensa>
@@ -207,7 +231,13 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
           )}
         </div>
       </div>
-
+      {
+          
+          <div className="col-md-auto mt-3">
+            <h5>{estadoPartida}</h5>
+            
+          </div>
+        }
 
       <div className="mano">
         {/* Mostrar la mano del jugador actual */}
@@ -235,6 +265,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
           ))}
         </div>
       </div>
+      
     </div>
   );
 }
