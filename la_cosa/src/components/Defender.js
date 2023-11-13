@@ -27,6 +27,7 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
   const [respondiendoIntercambio, setRespondiendoIntercambio] = useState(false);
   const [efectoWhisky, setEfectoWhisky] = useState(false);       //agregado por whisky
   const [cartasMismoJugador, setcartasMismoJugador] = useState([]);   //agregado para mostrar cartas whisky
+  const [efectoUps, setEfectoUps] = useState(false);
   const [efectoAterrador, setEfectoAterrador] = useState(false);
   const [entreNosotros, setEntreNosotros] = useState(false);
 
@@ -71,6 +72,12 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
               setEfectoWhisky(true);
               
             
+             }
+            if (data.event === "Ups") {
+              setcartasMismoJugador(data.data);
+              setEfectoUps(true);
+            }
+
           }
           if(data.event === "Aterrador"){
             setEfectoAterrador(true); 
@@ -284,6 +291,13 @@ window.location.reload();
             <div key={index}>{carta}</div>
              ))}
           </div>
+        )}
+        {efectoUps && (
+          <div className="cartas_mismo_jugador">
+          <h4>Ups: Cartas del jugador que jugó ups:</h4>
+            {cartasMismoJugador.map((carta, index) => (
+            <div key={index}>{carta}</div>
+             ))}
         )} 
         {(entreNosotros) && (
           

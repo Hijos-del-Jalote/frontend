@@ -15,7 +15,7 @@ import DescartarCarta from "./DescartarCarta";
 import "../styles/PartidaEnCurso.css";
 
 
-function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
+function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponentesConJugadorMismo }) {
   const [habilitarSeleccionarOponente, setHabilitarSeleccionarOponente] =
     useState(false);
   const [carta, setCarta] = useState(null);
@@ -31,15 +31,8 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
 
   const [descartandoCarta, setDescartandoCarta] = useState(false);
   const cartasData = jugadorActual.cartas;
-
-
   const [estadoPartida, setEstadoPartida] = useState("");
-
-
   const [respondiendoIntercambio, setRespondiendoIntercambio] = useState(false);
-
-
-
   // Metodos del componente
 
   // aprieta un lanzallamas
@@ -47,6 +40,7 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     console.log("dfsfdssd");
     setHabilitarSeleccionarOponente(true);
     setCarta(cartaAJugar);
+    
   };
 
   const onJugarCarta = () => {
@@ -121,6 +115,9 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
     console.log(carta);
     console.log("Oponente a jugar");
     console.log(opnenteAJugar);
+    
+    
+
     try {
       if (!intercambiandoCarta) {
         await axios.post(
@@ -143,19 +140,17 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador }) {
   return (
     <div className="container_partida_encurso">
       <div className="jugadores_cards">
-        
-        {oponentes.map((jugador) => (
-          <div className="player_card" key={jugador.id}>
-            <PlayerComponent
-              player={jugador}
-              seleccionarOponente={habilitarSeleccionarOponente}
-              onClick={onSetOponente}
-            />
-          </div>
-        ))}
+      {(carta && carta.nombre === "Hacha" ? oponentesConJugadorMismo : oponentes).map((jugador) => (
+        <div className="player_card" key={jugador.id}>
+          <PlayerComponent
+            player={jugador}
+            seleccionarOponente={habilitarSeleccionarOponente}
+            onClick={onSetOponente}
+          />
+        </div>
+      ))}
+
       </div>
-
-
       <div className="mazo_container">
         <div className="mazo">
           <h5>Mazo</h5>
