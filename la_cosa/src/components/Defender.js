@@ -28,6 +28,7 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
   const [efectoWhisky, setEfectoWhisky] = useState(false);       //agregado por whisky
   const [cartasMismoJugador, setcartasMismoJugador] = useState([]);   //agregado para mostrar cartas whisky
   const [efectoAterrador, setEfectoAterrador] = useState(false);
+  const [entreNosotros, setEntreNosotros] = useState(false);
 
   useEffect(() => {
     console.log("HOLA");
@@ -97,6 +98,10 @@ window.location.reload();
             }
             if(data.event === "Analisis") {
               setEfectoAnalisis(true);
+              setCartasOtro(data.data);
+            }
+            if(data.event === "Que quede entre nosotros") {
+              setEntreNosotros(true);
               setCartasOtro(data.data);
             }
             
@@ -275,7 +280,19 @@ window.location.reload();
              ))}
           </div>
         )} 
+        {(entreNosotros) && (
+          
+          <div className="col-md-auto mt-3">
+            <h5>Entre Nosotros: Las cartas del otro son: </h5>
+            {cartasOtro.map((carta, index) => (
+            <div key={index}>{carta}</div>
+             ))}
+            
+            
+          </div>
+        )}
         {
+          
           
         <div className="col-md-auto mt-3">
           <h5>{estadoPartida}</h5>
