@@ -28,8 +28,6 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
   const [efectoWhisky, setEfectoWhisky] = useState(false);       //agregado por whisky
   const [cartasMismoJugador, setcartasMismoJugador] = useState([]);   //agregado para mostrar cartas whisky
 
-  const [fallaste, setFallaste] = useState(false);
-
   useEffect(() => {
     console.log("HOLA");
     
