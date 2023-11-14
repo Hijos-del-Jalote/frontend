@@ -124,4 +124,7 @@
     border: 10px solid green;
   }
   
-  
+  .smaller-font {
+    font-size: 0.6em;
+    color: black;
+  }

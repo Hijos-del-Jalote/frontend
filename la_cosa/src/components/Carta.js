@@ -70,7 +70,7 @@ function CartaComponent({
           >
             <div className="card-body d-flex flex-column justify-content-around">
               <h5 className="card-title text-center">{carta.nombre}</h5>
-              <p className="card-text text-center">{carta.descripcion}</p>
+              <p className="card-text text-center smaller-font">{carta.descripcion}</p>
               <p className="card-text text-center text-primary">{carta.tipo}</p>
             </div>
           </div>
@@ -82,7 +82,7 @@ function CartaComponent({
         >
           <div className="card-body d-flex flex-column justify-content-around">
             <h5 className="card-title text-center">{carta.nombre}</h5>
-            <p className="card-text text-center">{carta.descripcion}</p>
+            <p className="card-text text-center smaller-font">{carta.descripcion}</p>
             <p className="card-text text-center text-primary">{carta.tipo}</p>
           </div>
         </div>
