@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import InfoPartida from "./InfoPartida";
 import PartidaEnCurso from "./PartidaEnCurso";
 import { useWebSocket } from "./WebSocketContext";
-import FinalizarPartida from "./FinalizarPartida";
 import "../styles/Partida.css";
 
 function Partida() {
@@ -66,9 +65,7 @@ function Partida() {
       }
   }, [idPartida, idJugador]);
 
-  if(resultados!=null){
-    return <FinalizarPartida isHumanoTeamWinner={resultados.isHumanoTeamWinner} winners={resultados.winners} idJugador={idJugador}></FinalizarPartida>
-  }
+  
 
   // Que muestre cargando mientras no se descargaron los datos
   if (!partida) {
