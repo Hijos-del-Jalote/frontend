@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 //import axios from 'axios';
 import { useWebSocket } from './WebSocketContext';
-import {useSearchParams } from "react-router-dom";
+import {useSearchParams, useNavigate} from "react-router-dom";
 import {actualizarPartida} from './Partida2';
 import CartaComponent from "./Carta";
 import ResponderIntercambio from './ResponderIntercambio';
+import FinalizarPartida from "./FinalizarPartida";
 
 
 function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
@@ -30,7 +31,8 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
   const [efectoUps, setEfectoUps] = useState(false);
   const [efectoAterrador, setEfectoAterrador] = useState(false);
   const [entreNosotros, setEntreNosotros] = useState(false);
-
+  const [resultados, setResultados] = useState(null);
+  const navigate = useNavigate();
   useEffect(() => {
     console.log("HOLA");
     
@@ -78,7 +80,7 @@ function Defensa({ jugadorActual, webSocket, onResponderIntercambio}) {
               setEfectoUps(true);
             }
 
-          }
+          
           if(data.event === "Aterrador"){
             setEfectoAterrador(true); 
             setCartasOtro(data.data);
@@ -138,7 +140,7 @@ window.location.reload();
                     setModoDefensa(true);
                     
                   }
-
+                  
                   
               }
               if(data.event === "intercambio") {
@@ -175,10 +177,22 @@ window.location.reload();
                 
 
                 
+              }
+              if (data.event === "finalizar"){
+                const datinha = JSON.parse(data.data)
+                console.log(datinha.isHumanoTeamWinner)
+                console.log(datinha.winners)
+                setResultados(datinha);
+                
+                
               }       
               
         }
     }
+    if(resultados!=null) {
+      navigate(`/partida-resultados`);
+    }
+    
     //const algunaCartaEsDefensa = jugadorActual.cartas.some(carta => carta.tipo === 'defensa');
     //setModoDefensa(algunaCartaEsDefensa);
   }, [idCarta, webSocket]);
@@ -230,11 +244,14 @@ window.location.reload();
         onResponderIntercambio();
         setModoDefensa(false);
       }}
-    
+      
   };
-  return (//esto no se como hacer para que se vea bien hasta aca llegué
-    
-    <div className="row">
+  if(resultados!=null) {
+    return (<FinalizarPartida isHumanoTeamWinner={resultados.isHumanoTeamWinner}
+      winners={resultados.winners} idJugador={idJugador}></FinalizarPartida>)
+  }
+  else {
+    return (<div className="row">
       {!modoDefensa &&(<ResponderIntercambio
               cartasData={cartasData}
               cantidadCartasEnMano={cartasData.length}
@@ -298,6 +315,7 @@ window.location.reload();
             {cartasMismoJugador.map((carta, index) => (
             <div key={index}>{carta}</div>
              ))}
+             </div>
         )} 
         {(entreNosotros) && (
           
@@ -318,8 +336,8 @@ window.location.reload();
           
         </div>
       }
-    </div>
-  );
+    </div>)
+  }
 }
 
 export default Defensa;

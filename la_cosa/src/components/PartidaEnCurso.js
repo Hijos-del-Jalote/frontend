@@ -132,7 +132,6 @@ function PartidaEnCurso({ oponentes, jugadorActual, esTurno, idJugador, oponente
       console.log("Jugador eliminado exitosamente");
     } catch (error) {
       console.log(error);
-      setEstadoPartida(error.response.data.detail);
     }
   };
 

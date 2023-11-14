@@ -32,7 +32,7 @@ const FinalizarPartida = ({ isHumanoTeamWinner, winners, idJugador}) => {
   }
 
   return (
-    <div className="container_principal">
+    <div className="container_principal2">
       <h2 className="title">FIN DE LA PARTIDA</h2>
       <p className="mensaje">{mensaje}</p>
       <div className="list">{ganadoresMensaje}</div>
